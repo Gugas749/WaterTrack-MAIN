@@ -53,6 +53,10 @@
     <string name="authActivity_RegisterFrag_TextField_ConfirmPassword">Confirm Password</string>
     <string name="authActivity_RegisterFrag_Button_Register">Register</string>
     <string name="authActivity_RegisterFrag_TextButton_OldUser">Already a User? Login Now</string>
+    <string name="authActivity_RegisterFrag_VerifyEmail">User created with success. Please check your email address to verify your account.</string>
+    <string name="authActivity_RegisterFrag_Field_RequiredField_Error">Required field</string>
+    <string name="authActivity_RegisterFrag_Field_PasswordsDiferent_Error">Passwords don\'t match</string>
+    <string name="authActivity_RegisterFrag_Field_EmailNotValid_Error">This email is not valid</string>
     <!-- MAIN ACTIVITY -->
     <string name="mainActivity_SideMenu_Settings">Settings</string>
     <string name="mainActivity_SideMenu_Reports">Reports</string>

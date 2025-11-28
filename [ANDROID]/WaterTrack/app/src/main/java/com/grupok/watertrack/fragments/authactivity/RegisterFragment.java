@@ -80,21 +80,18 @@ public class RegisterFragment extends Fragment implements APIMethods.SignUpRespo
         binding.butRegisterRegisterFragAuthAc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(signupEmptyFieldsTest()){
+                if(signupEmptyFieldsTest() && signupFieldsTest()){
                     signupAction();
                 }
             }
         });
         binding.editTextConfirmPasswordRegisterFragAuthAc.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                String password = v.getText().toString().trim();
-
-                if (password.isEmpty()) {
-                    binding.outlinedTextFieldPassword.setError(getString(R.string.authActivity_LoginFrag_Field_RequiredField_Error));
-                } else {
-                    binding.outlinedTextFieldPassword.setError(null);
-                    closeKeyboard();
-                    signupAction();
+                if (signupEmptyFieldsTest()) {
+                    if(signupFieldsTest()){
+                        closeKeyboard();
+                        signupAction();
+                    }
                 }
                 return true;
             }
@@ -119,23 +116,42 @@ public class RegisterFragment extends Fragment implements APIMethods.SignUpRespo
     private boolean signupEmptyFieldsTest(){
         boolean aux = true;
         if(binding.editTextEmailRegisterFragAuthAc.getText() == null || binding.editTextEmailRegisterFragAuthAc.getText().toString().trim().isEmpty()){
-            binding.outlinedTextFieldEmail.setError(getString(R.string.authActivity_LoginFrag_Field_RequiredField_Error));
+            binding.outlinedTextFieldEmail.setError(getString(R.string.authActivity_RegisterFrag_Field_RequiredField_Error));
             aux = false;
         }else{
             binding.outlinedTextFieldEmail.setError(null);
             binding.outlinedTextFieldEmail.setErrorEnabled(false);
         }
         if(binding.editTextPasswordRegisterFragAuthAc.getText() == null || binding.editTextPasswordRegisterFragAuthAc.getText().toString().trim().isEmpty()){
-            binding.outlinedTextFieldPassword.setError(getString(R.string.authActivity_LoginFrag_Field_RequiredField_Error));
+            binding.outlinedTextFieldPassword.setError(getString(R.string.authActivity_RegisterFrag_Field_RequiredField_Error));
             aux = false;
         }else{
             binding.outlinedTextFieldPassword.setError(null);
             binding.outlinedTextFieldPassword.setErrorEnabled(false);
         }
         if(binding.editTextConfirmPasswordRegisterFragAuthAc.getText() == null || binding.editTextConfirmPasswordRegisterFragAuthAc.getText().toString().trim().isEmpty()){
-            binding.outlinedTextFieldConfirmPassword.setError(getString(R.string.authActivity_LoginFrag_Field_RequiredField_Error));
+            binding.outlinedTextFieldConfirmPassword.setError(getString(R.string.authActivity_RegisterFrag_Field_RequiredField_Error));
             aux = false;
         }else{
+            binding.outlinedTextFieldConfirmPassword.setError(null);
+            binding.outlinedTextFieldConfirmPassword.setErrorEnabled(false);
+        }
+        return aux;
+    }
+    private boolean signupFieldsTest(){
+        boolean aux = true;
+        if(!binding.editTextConfirmPasswordRegisterFragAuthAc.getText().toString().trim().equals(binding.editTextPasswordRegisterFragAuthAc.getText().toString().trim())){
+            binding.outlinedTextFieldConfirmPassword.setError(getString(R.string.authActivity_RegisterFrag_Field_PasswordsDiferent_Error));
+            aux = false;
+        }else{
+            binding.outlinedTextFieldConfirmPassword.setError(null);
+            binding.outlinedTextFieldConfirmPassword.setErrorEnabled(false);
+        }
+        if(!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.editTextEmailRegisterFragAuthAc.getText().toString().trim()).matches()){
+            binding.outlinedTextFieldEmail.setError(getString(R.string.authActivity_RegisterFrag_Field_EmailNotValid_Error));
+            aux = false;
+        }
+        else{
             binding.outlinedTextFieldConfirmPassword.setError(null);
             binding.outlinedTextFieldConfirmPassword.setErrorEnabled(false);
         }
@@ -155,7 +171,7 @@ public class RegisterFragment extends Fragment implements APIMethods.SignUpRespo
     private void signupAction(){
         binding.loadingViewRegisterFrag.setVisibility(View.VISIBLE);
         APIMethods apiMethods = new APIMethods();
-        apiMethods.login(getContext(),
+        apiMethods.signup(getContext(),
                 binding.editTextEmailRegisterFragAuthAc.getText().toString().trim(),
                 binding.editTextConfirmPasswordRegisterFragAuthAc.getText().toString().trim());
         apiMethods.setSignUpResponse(THIS);
@@ -167,9 +183,9 @@ public class RegisterFragment extends Fragment implements APIMethods.SignUpRespo
             binding.editTextEmailRegisterFragAuthAc.setText("");
             binding.editTextPasswordRegisterFragAuthAc.setText("");
             binding.editTextConfirmPasswordRegisterFragAuthAc.setText("");
-            snackBarShow.display(binding.getRoot(), getString(R.string.authActivity_RegisterFrag_VerifyEmail), -1, 1, binding.snackbarViewRegisterFrag, context);
+            snackBarShow.display(binding.getRoot(), getString(R.string.authActivity_RegisterFrag_VerifyEmail), -1, 2, binding.snackbarViewRegisterFrag, context);
         }else{
-            snackBarShow.display(binding.getRoot(), message, -1, 1, binding.snackbarViewRegisterFrag, context);
+            snackBarShow.display(binding.getRoot(), message, -1, 2, binding.snackbarViewRegisterFrag, context);
         }
     }
 }

@@ -93,12 +93,7 @@ public class LoginFragment extends Fragment implements APIMethods.LoginResponse 
         });
         binding.editTextPasswordLoginFragAuthAc.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                String password = v.getText().toString().trim();
-
-                if (password.isEmpty()) {
-                    binding.outlinedTextFieldPassword.setError(getString(R.string.authActivity_LoginFrag_Field_RequiredField_Error));
-                } else {
-                    binding.outlinedTextFieldPassword.setError(null);
+                if (loginEmptyFieldsTest()) {
                     closeKeyboard();
                     loginAction();
                 }
@@ -156,7 +151,7 @@ public class LoginFragment extends Fragment implements APIMethods.LoginResponse 
     private void loginAction(){
         binding.loadingViewLoginFrag.setVisibility(View.VISIBLE);
         APIMethods apiMethods = new APIMethods();
-        apiMethods.login(getContext(), binding.parentViewLoginFrag,
+        apiMethods.login(getContext(),
                 binding.editTextEmailLoginFragAuthAc.getText().toString().trim(),
                 binding.editTextPasswordLoginFragAuthAc.getText().toString().trim());
         apiMethods.setLoginResponse(THIS);

@@ -116,7 +116,7 @@
                 app:cornerRadius="8dp"
                 android:layout_gravity="center_horizontal"
                 android:backgroundTint="?attr/buttonTint"
-                android:textColor="?attr/textColorPrimary"/>
+                android:textColor="?attr/textColorButtons"/>
         </FrameLayout>
         <FrameLayout
             android:layout_below="@id/holder_buttonLogin_RegisterFrag"
