@@ -21,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.room.Room;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 import com.grupok.watertrack.R;
 import com.grupok.watertrack.database.LocalDataBase;
 import com.grupok.watertrack.database.daos.AvariasContadoresDao;
@@ -47,7 +48,7 @@ import com.grupok.watertrack.fragments.mainactivityfrags.detailscontadorview.Mai
 import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.mainview.MainACMainViewFrag;
 import com.grupok.watertrack.scripts.CustomAlertDialogFragment;
-import com.grupok.watertrack.scripts.apiCRUD.APIGets;
+import com.grupok.watertrack.scripts.apiCRUD.APIMethods;
 import com.grupok.watertrack.scripts.localDBCRUD.LocalDBgetAll;
 
 import java.util.ArrayList;
@@ -88,40 +89,28 @@ public class MainActivity extends AppCompatActivity implements
         //EdgeToEdge.enable(this);
         setContentView(binding.getRoot());
 
-        String value = getIntent().getStringExtra("currentUser");
+        this.currentUserInfo = new Gson().fromJson(
+                getIntent().getStringExtra("currentUser"),
+                UserInfosEntity.class
+        );
 
-        init(value);
+        init();
     }
 
-    private void init(String value){
+    private void init(){
         THIS = this;
         allDisable = false;
         disableBackPressed();
         logsContEntitiesList = new ArrayList<>();
         contadoresEntityList = new ArrayList<>();
 
-        DatabaseCallback callback = new DatabaseCallback() {
-            @Override
-            public void onTaskCompleted(LocalDBgetAll result) {
-                //carregou info da DB LOCAL
-                logsContEntitiesList = result.logsContEntityList;
-                contadoresEntityList = result.contadoresEntityList;
-                currentUserInfo = result.userInfo;
+        setupSideMenu();
+        setupBackButton();
+        setupKeyboardListener();
 
-                setupSideMenu();
-                setupBackButton();
-                setupKeyboardListener();
-
-                cycleFragments("MainViewFrag", null);
-
-                APIGets apiGets = new APIGets();
-                //apiGets.getUsers(THIS);
-
-            }
-        };
+        cycleFragments("MainViewFrag", null);
 
         setupLocalDataBase();
-        new LocalDatabaseGetAllDataTask(callback, value).execute();
     }
     //----------------------SETUPS---------------------------
     private void setupLocalDataBase(){
@@ -173,10 +162,11 @@ public class MainActivity extends AppCompatActivity implements
         binding.drawerLayoutMainAcSideMenu.addDrawerListener(drawerToggleSideMenu);
         drawerToggleSideMenu.syncState();
         //-----------------------------------------
-        TextView usernameSideMenu = findViewById(R.id.headerSideMenu_Username_MainAc);
-        TextView addressSideMenu = findViewById(R.id.headerSideMenu_Address_MainAc);
-        usernameSideMenu.setText(currentUserInfo.nome);
-        addressSideMenu.setText(currentUserInfo.Morada);
+        View header = binding.navigationViewMainAcSideMenu.getHeaderView(0);
+        TextView usernameSideMenu = header.findViewById(R.id.headerSideMenu_Username_MainAc);
+        TextView addressSideMenu = header.findViewById(R.id.headerSideMenu_Address_MainAc);
+        usernameSideMenu.setText(currentUserInfo.username);
+        addressSideMenu.setText(currentUserInfo.address);
         //-----------------------------------------
 
         binding.imageViewButtonSideMenuMainAC.setOnClickListener(new View.OnClickListener() {
@@ -235,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
     }
-
     public void cycleFragments(String goTo, Bundle data){
         switch (goTo){
             case "MainViewFrag":

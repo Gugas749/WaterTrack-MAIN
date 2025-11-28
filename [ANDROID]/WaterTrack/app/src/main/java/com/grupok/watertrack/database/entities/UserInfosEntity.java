@@ -5,38 +5,52 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 
+import java.util.Date;
 import java.util.Locale;
 
 @Entity(tableName = "User_Infos")
 public class UserInfosEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
-    @ColumnInfo(name = "nome")
-    public String nome;
+    @ColumnInfo(name = "userId")
+    public int userId;
+    @ColumnInfo(name = "username")
+    public String username;
     @ColumnInfo(name = "email")
     public String email;
-    @ColumnInfo(name = "password")
-    public String Password;
-    @ColumnInfo(name = "morada")
-    public String Morada;
-    @ColumnInfo(name = "cargo")
-    public int Cargo;
+    @ColumnInfo(name = "status")
+    public int status;
+    // PROFILE INFO
+    @ColumnInfo(name = "birthDate")
+    public String birthDate;
+    @ColumnInfo(name = "address")
+    public String address;
+    //TECH INFO
+    @ColumnInfo(name = "enterpriseID")
+    public int enterpriseID;
+    @ColumnInfo(name = "profissionalCertificateNumber")
+    public String certificationNumber;
+    // ANDROID EXTRAS
     @ColumnInfo(name = "theme")
     public String Theme;
     @ColumnInfo(name = "language")
     public String Language;
+    @ColumnInfo(name = "cargo")
+    public int cargo;
 
-    public UserInfosEntity(String nome, String email, String Password, String Morada, int Cargo, String Theme, String Language) {
-        this.nome = nome;
+    public UserInfosEntity(int userId, String username, String email, int status) {
+        this.userId = userId;
+        this.username = username;
         this.email = email;
-        this.Password = Password;
-        this.Morada = Morada;
-        this.Cargo = Cargo;
-        this.Theme = Theme;
-        this.Language = Language;
+        this.status = status;
     }
 
-    public void setInfos(String email){
-        this.email = email;
+    public void setProfileInfo(String birthDate, String address){
+        this.birthDate = birthDate;
+        this.address = address;
+    }
+    public void setTechInfo(int enterpriseID, String certificationNumber){
+        this.enterpriseID = enterpriseID;
+        this.certificationNumber = certificationNumber;
     }
 }

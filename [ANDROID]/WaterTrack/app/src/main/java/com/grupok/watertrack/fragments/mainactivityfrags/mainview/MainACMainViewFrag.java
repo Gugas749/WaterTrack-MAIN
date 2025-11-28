@@ -65,7 +65,7 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
     private void init(){
         THIS = this;
         context = getContext();
-        adapter = new RVAdapterMainAcMainView(this.getContext(), contadoresEntityList, parent.currentUserInfo.Cargo, parent);
+        adapter = new RVAdapterMainAcMainView(this.getContext(), contadoresEntityList, parent.currentUserInfo.cargo, parent);
         adapter.setItemClickListenner(this);
         snackBarShow = new SnackBarShow();
 
@@ -77,7 +77,7 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
         contadoresEntityList.add(example);
 
 
-        if(parent.currentUserInfo.Cargo == 1){
+        if(parent.currentUserInfo.cargo == 1){
             binding.butAddContadorMainViewMainAc.setVisibility(View.GONE);
         }
 
@@ -168,8 +168,6 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
 
     }
     private void menuItemClickHandler(){
-
-
         if (binding.outlinedTextFieldSearchMainViewFragMainAc.getVisibility() == View.GONE) {
             binding.outlinedTextFieldSearchMainViewFragMainAc.setVisibility(View.VISIBLE);
 

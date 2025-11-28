@@ -26,9 +26,9 @@
                 android:id="@+id/text_credit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:padding="12dp"
-                android:textSize="16sp" />
+                android:textColor="?attr/textColorPrimary"
+                android:padding="@dimen/_9sdp"
+                android:textSize="@dimen/_14sdp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

@@ -8,6 +8,7 @@
     tools:context=".fragments.authactivity.LoginFragment">
 
     <RelativeLayout
+        android:id="@+id/parentView_LoginFrag"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <FrameLayout
@@ -131,5 +132,33 @@
                     android:layout_marginLeft="@dimen/_7sdp"/>
             </LinearLayout>
         </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/holder_buttonLogin_LoginFrag">
+            <FrameLayout
+                android:id="@+id/snackbarView_LoginFrag"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
     </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/loadingView_LoginFrag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            app:indicatorSize="48dp"
+            app:trackThickness="4dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            app:indicatorColor="?attr/textOutlineColor"/>
+    </FrameLayout>
 </FrameLayout>

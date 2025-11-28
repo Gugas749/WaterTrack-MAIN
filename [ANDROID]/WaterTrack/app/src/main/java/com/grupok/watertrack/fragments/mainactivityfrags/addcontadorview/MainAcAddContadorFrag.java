@@ -138,7 +138,7 @@ public class MainAcAddContadorFrag extends Fragment {
         protected List<String> doInBackground(Void... voids) {
             List<UserInfosEntity> userList = userInfosDao.getUserInfos();
             for (UserInfosEntity user : userList){
-                listString.add(""+user.id+" - "+user.nome);
+                listString.add(""+user.id+" - "+user.username);
             }
 
             return listString;

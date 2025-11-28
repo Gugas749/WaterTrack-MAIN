@@ -45,6 +45,8 @@
     <string name="authActivity_LoginFrag_Button_Login">Login</string>
     <string name="authActivity_LoginFrag_TextButton_ForgotPassword">Forgot Password?</string>
     <string name="authActivity_LoginFrag_TextButton_NewUser">New User? Register Now</string>
+    <string name="authActivity_LoginFrag_Field_RequiredField_Error">Required field</string>
+    <string name="authActivity_LoginFrag_LocalDB_Insert_Error">Wasn\'t able to save the user info. Please login again.</string>
     <!-- AUTH ACTIVITY | REGISTER FRAGMENT -->
     <string name="authActivity_RegisterFrag_TextField_Email">Email</string>
     <string name="authActivity_RegisterFrag_TextField_Password">Password</string>
@@ -80,6 +82,8 @@
     <string name="mainActivity_AddContadorFrag_ComboBox_Status">Status</string>
     <!-- MAIN ACTIVITY | DETAILS CONTADOR -->
     <string name="mainActivity_DetailsContadorFrag_Header">Meter</string>
+    <string name="mainActivity_DetailsContadorFrag_infoRow_Contador_Name">Meter</string>
+    <string name="mainActivity_DetailsContadorFrag_infoRow_Contador_Address">Meter</string>
     <!-- MAIN ACTIVITY | READINGS CONTADOR -->
     <string name="mainActivity_ReadingsContadorFrag_LabelDetails">Reading Details</string>
     <string name="mainActivity_ReadingsContadorFrag_LabelReadings">Readings</string>
@@ -88,6 +92,10 @@
     <string name="mainActivity_ReportFrag_ComboBox_Problem">Problem</string>
     <string name="mainActivity_ReportFrag_TextField_Description">Description</string>
     <string name="mainActivity_ReportFrag_TextField_Other_Problem">Other</string>
+
+    <!-- API METHODS -->
+    <string name="apiMethods_JsonParseError">JSON PARSE ERROR</string>
+    <string name="apiMethods_VolleyError">VOLLEY ERROR</string>
 
     <!-- CREDITS -->
     <string name="mainActivity_CreditsFrag_Header">Credits</string>

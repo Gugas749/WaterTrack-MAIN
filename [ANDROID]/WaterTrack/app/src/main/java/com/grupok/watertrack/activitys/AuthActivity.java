@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Room;
 
+import com.google.gson.Gson;
 import com.grupok.watertrack.database.LocalDataBase;
 import com.grupok.watertrack.database.daos.ContadoresDao;
 import com.grupok.watertrack.database.daos.LogsContadoresDao;
@@ -29,6 +31,9 @@ public class AuthActivity extends AppCompatActivity {
     private ActivityAuthBinding binding;
     private boolean isLogged;
     private AuthActivity THIS;
+    //----------------LOCAL DB-----------------
+    private LocalDataBase localDataBase;
+    private UserInfosDao userInfosDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +45,29 @@ public class AuthActivity extends AppCompatActivity {
         //-------------------- SHAREDPREFERENCE INFO ------------------------
         SharedPreferences prefs = getSharedPreferences("Perf_User", MODE_PRIVATE);
         isLogged = prefs.getBoolean("logged", false);
+        String userEmail = prefs.getString("userEmail", "");
 
         if(isLogged){
-            Intent intent = new Intent(AuthActivity.this, MainActivity.class);
-            startActivity(intent);
+            setupLocalDataBase();
+            DatabaseCallback callback = new DatabaseCallback() {
+                @Override
+                public void onTaskCompleted(UserInfosEntity result) {
+                    if(result != null){
+                        Intent intent = new Intent(AuthActivity.this, MainActivity.class);
+                        intent.putExtra("currentUser", new Gson().toJson(result));
+                        startActivity(intent);
+                    }else{
+                        cycleFragments("LoginFrag", "", null);
+                    }
+                }
+            };
+            new LocalDatabaseGetUserInfo(callback, userEmail).execute();
         }else{
-            cycleFragments("LoginFrag", "");
+            cycleFragments("LoginFrag", "", null);
         }
     }
 
-    public void cycleFragments(String goTo, String extra){
+    public void cycleFragments(String goTo, String extra, UserInfosEntity user){
         switch (goTo){
             case "LoginFrag":
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_auth_activity, new LoginFragment(this, extra)).commitAllowingStateLoss();
@@ -59,7 +77,7 @@ public class AuthActivity extends AppCompatActivity {
                 break;
             case "MainAC":
                 Intent intent = new Intent(AuthActivity.this, MainActivity.class);
-                intent.putExtra("currentUser", extra);
+                intent.putExtra("currentUser", new Gson().toJson(user));
                 startActivity(intent);
                 break;
         }
@@ -70,6 +88,36 @@ public class AuthActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         if (newConfig.uiMode != getApplicationContext().getResources().getConfiguration().uiMode) {
             recreate();
+        }
+    }
+    private void setupLocalDataBase(){
+        localDataBase = Room.databaseBuilder(this, LocalDataBase.class, "WaterTrackLocalDB").build();
+        userInfosDao = localDataBase.userInfosDao();
+    }
+    public interface DatabaseCallback {
+        void onTaskCompleted(UserInfosEntity result);
+    }
+    private class LocalDatabaseGetUserInfo extends AsyncTask<Void, Void, UserInfosEntity> {
+        private DatabaseCallback callback;
+        private String userEmail;
+
+        public LocalDatabaseGetUserInfo(DatabaseCallback callback, String userEmail) {
+            this.callback = callback;
+            this.userEmail = userEmail;
+        }
+
+        @Override
+        protected UserInfosEntity doInBackground(Void... voids) {
+            Log.i("WATERTRACKINFO", "Inserting data to the local DB...");
+
+            return userInfosDao.getUser(userEmail);
+        }
+
+        @Override
+        protected void onPostExecute(UserInfosEntity result) {
+            if (callback != null) {
+                callback.onTaskCompleted(result);
+            }
         }
     }
 }

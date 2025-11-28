@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    tools:context=".fragments.authactivity.LoginFragment">
+    tools:context=".fragments.authactivity.RegisterFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <FrameLayout
-            android:id="@+id/holder_imageView_Logo_LoginFrag"
+            android:id="@+id/holder_imageView_Logo_RegisterFrag"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_120sdp"
             android:layout_marginTop="@dimen/_130sdp">
             <ImageView
-                android:id="@+id/imageView_logo_LoginFrag"
+                android:id="@+id/imageView_logo_RegisterFrag"
                 android:layout_width="@dimen/_120sdp"
                 android:layout_height="@dimen/_120sdp"
                 android:layout_gravity="center"
@@ -27,7 +27,7 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/holder_imageView_Logo_LoginFrag"
+            android:layout_below="@+id/holder_imageView_Logo_RegisterFrag"
             android:hint="@string/authActivity_RegisterFrag_TextField_Email"
             app:hintTextColor="@color/textfield_stroke_colors"
             app:boxStrokeColor="@color/textfield_stroke_colors"
@@ -102,7 +102,7 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
         <FrameLayout
-            android:id="@+id/holder_buttonLogin_LoginFrag"
+            android:id="@+id/holder_buttonLogin_RegisterFrag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/outlinedTextFieldConfirmPassword"
@@ -116,10 +116,10 @@
                 app:cornerRadius="8dp"
                 android:layout_gravity="center_horizontal"
                 android:backgroundTint="?attr/buttonTint"
-                android:textColor="?attr/textColorButtons"/>
+                android:textColor="?attr/textColorPrimary"/>
         </FrameLayout>
         <FrameLayout
-            android:layout_below="@id/holder_buttonLogin_LoginFrag"
+            android:layout_below="@id/holder_buttonLogin_RegisterFrag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -143,5 +143,33 @@
                     android:layout_marginLeft="@dimen/_7sdp"/>
             </LinearLayout>
         </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/holder_buttonLogin_RegisterFrag">
+            <FrameLayout
+                android:id="@+id/snackbarView_RegisterFrag"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
     </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/loadingView_RegisterFrag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            app:indicatorSize="48dp"
+            app:trackThickness="4dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            app:indicatorColor="?attr/textOutlineColor"/>
+    </FrameLayout>
 </FrameLayout>

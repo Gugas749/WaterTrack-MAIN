@@ -40,7 +40,7 @@ public class RVAdapterFieldsReadingsContadores extends RecyclerView.Adapter<RVAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.rv_row_fields_readingscontadores, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.rv_row_fields_contadores, parent, false);
         return new ViewHolder(view);
     }
 
@@ -61,8 +61,8 @@ public class RVAdapterFieldsReadingsContadores extends RecyclerView.Adapter<RVAd
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView_Label_rvRowFields_ReadingsContadores = itemView.findViewById(R.id.textView_Label_rvRowFields_ReadingsContadores);
-            textView_Data_rvRowFields_ReadingsContadores = itemView.findViewById(R.id.textView_Data_rvRowFields_ReadingsContadores);
+            textView_Label_rvRowFields_ReadingsContadores = itemView.findViewById(R.id.textView_Label_rvRowFields_Contadores);
+            textView_Data_rvRowFields_ReadingsContadores = itemView.findViewById(R.id.textView_Data_rvRowFields_Contadores);
         }
     }
 

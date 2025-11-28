@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- GENERAL -->
+    <color name="black">#0f0f0f</color>
+    <color name="white">#FFFFFF</color>
     <color name="background_Light">#FFFFFF</color>
     <color name="cards_inputs_Light">#F5F7FA</color>
     <color name="menuColor_Light">#F5F7FA</color>

@@ -1,5 +1,9 @@
 package com.grupok.watertrack.fragments.authactivity;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -9,6 +13,8 @@ import androidx.room.Room;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.grupok.watertrack.R;
@@ -20,16 +26,17 @@ import com.grupok.watertrack.database.daos.UserInfosDao;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.databinding.FragmentLoginBinding;
 import com.grupok.watertrack.databinding.FragmentRegisterBinding;
+import com.grupok.watertrack.scripts.SnackBarShow;
+import com.grupok.watertrack.scripts.apiCRUD.APIMethods;
 
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements APIMethods.SignUpResponse {
 
     private AuthActivity parent;
     private FragmentRegisterBinding binding;
     private String loginEmailInputed;
-    private LocalDataBase localDataBase;
-    private LogsContadoresDao logsContadoresDao;
-    private ContadoresDao contadoresDao;
-    private UserInfosDao userInfosDao;
+    private RegisterFragment THIS;
+    private Context context;
+    public SnackBarShow snackBarShow = new SnackBarShow();
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -60,28 +67,45 @@ public class RegisterFragment extends Fragment {
     }
 
     private void init(){
+        THIS = this;
+        context = this.getContext();
         setupOldUserBut();
-        setupLoginBut();
+        setupRegisterButton();
 
         loadOldInfo();
-
-        setupLocalDataBase();
     }
 
     //------------------------------- SETUPS -----------------------------------
-    private void setupLoginBut(){
+    private void setupRegisterButton(){
         binding.butRegisterRegisterFragAuthAc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new LocalDatabaseUpdateTask().execute();
+                if(signupEmptyFieldsTest()){
+                    signupAction();
+                }
             }
+        });
+        binding.editTextConfirmPasswordRegisterFragAuthAc.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                String password = v.getText().toString().trim();
+
+                if (password.isEmpty()) {
+                    binding.outlinedTextFieldPassword.setError(getString(R.string.authActivity_LoginFrag_Field_RequiredField_Error));
+                } else {
+                    binding.outlinedTextFieldPassword.setError(null);
+                    closeKeyboard();
+                    signupAction();
+                }
+                return true;
+            }
+            return false;
         });
     }
     private void setupOldUserBut(){
         binding.butOldUserRegisterFragAuthAc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                parent.cycleFragments("LoginFrag", binding.editTextEmailRegisterFragAuthAc.getText().toString());
+                parent.cycleFragments("LoginFrag", binding.editTextEmailRegisterFragAuthAc.getText().toString(), null);
             }
         });
     }
@@ -92,31 +116,60 @@ public class RegisterFragment extends Fragment {
             binding.editTextEmailRegisterFragAuthAc.setText(loginEmailInputed);
         }
     }
-    private void setupLocalDataBase(){
-        localDataBase = Room.databaseBuilder(getContext(), LocalDataBase.class, "WaterTrackLocalDB").build();
-        logsContadoresDao = localDataBase.logsContadoresDao();
-        contadoresDao = localDataBase.contadoresDao();
-        userInfosDao = localDataBase.userInfosDao();
+    private boolean signupEmptyFieldsTest(){
+        boolean aux = true;
+        if(binding.editTextEmailRegisterFragAuthAc.getText() == null || binding.editTextEmailRegisterFragAuthAc.getText().toString().trim().isEmpty()){
+            binding.outlinedTextFieldEmail.setError(getString(R.string.authActivity_LoginFrag_Field_RequiredField_Error));
+            aux = false;
+        }else{
+            binding.outlinedTextFieldEmail.setError(null);
+            binding.outlinedTextFieldEmail.setErrorEnabled(false);
+        }
+        if(binding.editTextPasswordRegisterFragAuthAc.getText() == null || binding.editTextPasswordRegisterFragAuthAc.getText().toString().trim().isEmpty()){
+            binding.outlinedTextFieldPassword.setError(getString(R.string.authActivity_LoginFrag_Field_RequiredField_Error));
+            aux = false;
+        }else{
+            binding.outlinedTextFieldPassword.setError(null);
+            binding.outlinedTextFieldPassword.setErrorEnabled(false);
+        }
+        if(binding.editTextConfirmPasswordRegisterFragAuthAc.getText() == null || binding.editTextConfirmPasswordRegisterFragAuthAc.getText().toString().trim().isEmpty()){
+            binding.outlinedTextFieldConfirmPassword.setError(getString(R.string.authActivity_LoginFrag_Field_RequiredField_Error));
+            aux = false;
+        }else{
+            binding.outlinedTextFieldConfirmPassword.setError(null);
+            binding.outlinedTextFieldConfirmPassword.setErrorEnabled(false);
+        }
+        return aux;
     }
-    private class LocalDatabaseUpdateTask extends AsyncTask<Void, Void, UserInfosEntity> {
-        @Override
-        protected UserInfosEntity doInBackground(Void... voids) {
-            UserInfosEntity aaa = new UserInfosEntity("admin", "admin", "1234", "Rua das Flores 19, Lisboa",
-                    0, "Dark", "en-EN");
-            userInfosDao.insert(aaa);
-            UserInfosEntity aaa1 = new UserInfosEntity("tecnico", "tecnico", "1234", "Rua das Flores 19, Lisboa",
-                    2, "Dark", "en-EN");
-            userInfosDao.insert(aaa1);
-            UserInfosEntity aaa2 = new UserInfosEntity("morador", "morador", "1234", "Rua das Flores 19, Lisboa",
-                    1, "Dark", "en-EN");
-            userInfosDao.insert(aaa2);
-
-            return aaa;
+    private void closeKeyboard(){
+        View view = parent.getCurrentFocus();
+        if (view == null) {
+            view = new View(getContext());
         }
 
-        @Override
-        protected void onPostExecute(UserInfosEntity object) {
-            Toast.makeText(getContext(), "Foi", Toast.LENGTH_SHORT).show();
+        InputMethodManager imm = (InputMethodManager) parent.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+    private void signupAction(){
+        binding.loadingViewRegisterFrag.setVisibility(View.VISIBLE);
+        APIMethods apiMethods = new APIMethods();
+        apiMethods.login(getContext(),
+                binding.editTextEmailRegisterFragAuthAc.getText().toString().trim(),
+                binding.editTextConfirmPasswordRegisterFragAuthAc.getText().toString().trim());
+        apiMethods.setSignUpResponse(THIS);
+    }
+    @Override
+    public void onSignUpResponse(boolean response, String message) {
+        binding.loadingViewRegisterFrag.setVisibility(View.GONE);
+        if(response){
+            binding.editTextEmailRegisterFragAuthAc.setText("");
+            binding.editTextPasswordRegisterFragAuthAc.setText("");
+            binding.editTextConfirmPasswordRegisterFragAuthAc.setText("");
+            snackBarShow.display(binding.getRoot(), getString(R.string.authActivity_RegisterFrag_VerifyEmail), -1, 1, binding.snackbarViewRegisterFrag, context);
+        }else{
+            snackBarShow.display(binding.getRoot(), message, -1, 1, binding.snackbarViewRegisterFrag, context);
         }
     }
 }

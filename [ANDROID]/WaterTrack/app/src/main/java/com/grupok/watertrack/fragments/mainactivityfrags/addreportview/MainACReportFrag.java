@@ -66,7 +66,7 @@ public class MainACReportFrag extends Fragment {
     }
 
     private void init() {
-        int cargo = parent.currentUserInfo.Cargo;
+        int cargo = parent.currentUserInfo.cargo;
 
         fillProblem(listString);
         setupComboProblem();

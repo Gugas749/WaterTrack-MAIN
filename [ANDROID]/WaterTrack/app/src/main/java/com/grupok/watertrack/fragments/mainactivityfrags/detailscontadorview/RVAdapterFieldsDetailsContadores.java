@@ -53,7 +53,7 @@ public class RVAdapterFieldsDetailsContadores extends RecyclerView.Adapter<RVAda
     @NonNull
     @Override
     public RVAdapterFieldsDetailsContadores.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.rv_row_fields_detailscontadores, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.rv_row_fields_contadores, parent, false);
         return new RVAdapterFieldsDetailsContadores.ViewHolder(view);
     }
 
@@ -74,8 +74,8 @@ public class RVAdapterFieldsDetailsContadores extends RecyclerView.Adapter<RVAda
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView_Label_rvRowFields_DetailsContadores = itemView.findViewById(R.id.textView_Label_rvRowFields_DetailsContadores);
-            textView_Data_rvRowFields_DetailsContadores = itemView.findViewById(R.id.textView_Data_rvRowFields_DetailsContadores);
+            textView_Label_rvRowFields_DetailsContadores = itemView.findViewById(R.id.textView_Label_rvRowFields_Contadores);
+            textView_Data_rvRowFields_DetailsContadores = itemView.findViewById(R.id.textView_Data_rvRowFields_Contadores);
         }
     }
 

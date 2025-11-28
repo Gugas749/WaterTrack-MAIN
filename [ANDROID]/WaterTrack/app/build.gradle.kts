@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.grupok.watertrack"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "0.0.1"

@@ -9,7 +9,7 @@
         android:checkable="false" />
     <item
         android:id="@+id/mainAc_SideMenu_Reports"
-        android:icon="@drawable/settings_24"
+        android:icon="@drawable/rounded_bug_report_24"
         android:title="@string/mainActivity_SideMenu_Reports"
         android:checkable="false" />
     <item

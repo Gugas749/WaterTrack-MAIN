@@ -16,7 +16,7 @@ public class SnackBarShow {
         TypedValue background = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.menuBackgroundColor, background, true);
         TypedValue textColor = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.textColorSecondary, textColor, true);
+        context.getTheme().resolveAttribute(R.attr.textColorPrimary, textColor, true);
 
         Snackbar.make(rootVview, text, length)
                 .setBackgroundTint(background.data)

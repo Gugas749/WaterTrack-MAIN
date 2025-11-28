@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface UserInfosDao {
     @Insert
-    void insert(UserInfosEntity user);
+    long insert(UserInfosEntity user);
 
     @Update
     void update(UserInfosEntity user);
@@ -21,6 +21,9 @@ public interface UserInfosDao {
 
     @Query("SELECT * FROM User_Infos")
     List<UserInfosEntity> getUserInfos();
+
+    @Query("SELECT * FROM User_Infos WHERE email = :userEmail")
+    UserInfosEntity getUser(String userEmail);
 
     @Query("DELETE FROM User_Infos")
     void clearAllEntries();
