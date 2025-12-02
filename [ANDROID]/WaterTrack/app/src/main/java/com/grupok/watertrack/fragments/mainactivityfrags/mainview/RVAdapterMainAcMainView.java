@@ -23,35 +23,35 @@ import com.grupok.watertrack.R;
 import com.grupok.watertrack.activitys.MainActivity;
 
 
-import com.grupok.watertrack.database.entities.ContadorEntity;
+import com.grupok.watertrack.database.entities.MeterEntity;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class RVAdapterMainAcMainView extends RecyclerView.Adapter<RVAdapterMainAcMainView.MyViewHolder> implements Serializable{
     private Context context;
-    private List<ContadorEntity> contadoresEntityList;
-    private ContadorItemClick listenner;
+    private List<MeterEntity> contadoresEntityList;
+    private MetersItemClick listenner;
     private int classeUser;
     private MainActivity parent;
 
     private int selectedItem = RecyclerView.NO_POSITION;
 
-    public interface ContadorItemClick{
-        void onBackupsItemClick(ContadorEntity contador);
+    public interface MetersItemClick{
+        void onMetersItemClick(MeterEntity contador);
     }
 
-    public RVAdapterMainAcMainView(Context context, List<ContadorEntity> contadoresEntityList, int classeUser, MainActivity parent) {
+    public RVAdapterMainAcMainView(Context context, List<MeterEntity> contadoresEntityList, int classeUser, MainActivity parent) {
         this.context = context;
         this.contadoresEntityList = contadoresEntityList;
         this.classeUser = classeUser;
         this.parent = parent;
     }
-    public void updateData(List<ContadorEntity> contadoresEntityList){
+    public void updateData(List<MeterEntity> contadoresEntityList){
         this.contadoresEntityList = contadoresEntityList;
         notifyDataSetChanged();
     }
-    public void setItemClickListenner(ContadorItemClick listenner){
+    public void setItemClickListenner(MetersItemClick listenner){
         this.listenner = listenner;
     }
     @NonNull
@@ -65,20 +65,20 @@ public class RVAdapterMainAcMainView extends RecyclerView.Adapter<RVAdapterMainA
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        final ContadorEntity contadorSelected = contadoresEntityList.get(position);
+        final MeterEntity contadorSelected = contadoresEntityList.get(position);
         if(contadorSelected != null){
             if(classeUser == 1){
                 holder.textViewNameOrAddress.setText(contadorSelected.nome);
-                holder.textViewAddressOrId.setText(contadorSelected.morada);
+                holder.textViewAddressOrId.setText(contadorSelected.address);
             }else{
-                holder.textViewNameOrAddress.setText(contadorSelected.morada);
+                holder.textViewNameOrAddress.setText(contadorSelected.address);
                 holder.textViewAddressOrId.setText(String.valueOf(contadorSelected.id));
             }
 
             int color = 0;
             TypedValue typedValue = new TypedValue();
             holder.stateIcon.setImageResource(R.drawable.radios_button_icon_24);
-            switch (contadorSelected.estado){
+            switch (contadorSelected.state){
                 case 0: // Desativo
                     context.getTheme().resolveAttribute(R.attr.colorError, typedValue, true);
                     color = typedValue.data;
@@ -120,8 +120,7 @@ public class RVAdapterMainAcMainView extends RecyclerView.Adapter<RVAdapterMainA
             notifyItemChanged(selectedItem);
 
             if (listenner != null) {
-                listenner.onBackupsItemClick(contadorSelected);
-                Log.d("LOGTESTE", "Clicked on contador: " + contadorSelected.id);
+                listenner.onMetersItemClick(contadorSelected);
             }
         });
     }

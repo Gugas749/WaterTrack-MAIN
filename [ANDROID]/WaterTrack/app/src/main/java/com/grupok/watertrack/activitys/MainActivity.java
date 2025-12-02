@@ -3,9 +3,7 @@ package com.grupok.watertrack.activitys;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Rect;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,18 +23,14 @@ import com.google.gson.Gson;
 import com.grupok.watertrack.R;
 import com.grupok.watertrack.database.LocalDataBase;
 import com.grupok.watertrack.database.daos.AvariasContadoresDao;
-import com.grupok.watertrack.database.daos.ContadoresDao;
+import com.grupok.watertrack.database.daos.MeterDao;
 import com.grupok.watertrack.database.daos.EmpresasDao;
 import com.grupok.watertrack.database.daos.LogsContadoresDao;
 import com.grupok.watertrack.database.daos.TecnicoInfoDao;
 import com.grupok.watertrack.database.daos.TiposContadoresDao;
 import com.grupok.watertrack.database.daos.UserInfosDao;
-import com.grupok.watertrack.database.entities.AvariasContadoresEntity;
-import com.grupok.watertrack.database.entities.ContadorEntity;
-import com.grupok.watertrack.database.entities.EmpresasEntity;
+import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.LogsContadoresEntity;
-import com.grupok.watertrack.database.entities.TecnicoInfoEntity;
-import com.grupok.watertrack.database.entities.TiposContadoresEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.databinding.ActivityMainBinding;
 import com.grupok.watertrack.fragments.alertDialogFragments.AlertDialogQuestionFragment;
@@ -48,6 +42,7 @@ import com.grupok.watertrack.fragments.mainactivityfrags.detailscontadorview.Mai
 import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.mainview.MainACMainViewFrag;
 import com.grupok.watertrack.scripts.CustomAlertDialogFragment;
+import com.grupok.watertrack.scripts.SnackBarShow;
 import com.grupok.watertrack.scripts.apiCRUD.APIMethods;
 import com.grupok.watertrack.scripts.localDBCRUD.LocalDBgetAll;
 
@@ -55,8 +50,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-    CustomAlertDialogFragment.ConfirmButtonClickAlertDialogQuestionFrag,
-    CustomAlertDialogFragment.CancelButtonClickAlertDialogQuestionFrag{
+        CustomAlertDialogFragment.ConfirmButtonClickAlertDialogQuestionFrag,
+        CustomAlertDialogFragment.CancelButtonClickAlertDialogQuestionFrag, APIMethods.GetMetersResponse {
 
     private ActivityMainBinding binding;
     private MainActivity parent;
@@ -67,11 +62,11 @@ public class MainActivity extends AppCompatActivity implements
     private ActionBarDrawerToggle drawerToggleSideMenu;
     //-------------------LISTS---------------
     private List<LogsContadoresEntity> logsContEntitiesList;
-    private List<ContadorEntity> contadoresEntityList;
+    private List<MeterEntity> contadoresEntityList;
     //-------------------LOCAL DATABASE---------------
     private LocalDataBase localDataBase;
     private LogsContadoresDao logsContadoresDao;
-    private ContadoresDao contadoresDao;
+    private MeterDao meterDao;
     private AvariasContadoresDao avariasContadoresDao;
     private EmpresasDao empresasDao;
     private TecnicoInfoDao tecnicoInfoDao;
@@ -116,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements
     private void setupLocalDataBase(){
         localDataBase = Room.databaseBuilder(getApplicationContext(), LocalDataBase.class, "WaterTrackLocalDB").build();
         logsContadoresDao = localDataBase.logsContadoresDao();
-        contadoresDao = localDataBase.contadoresDao();
+        meterDao = localDataBase.contadoresDao();
         avariasContadoresDao = localDataBase.avariasContadoresDao();
         empresasDao = localDataBase.empresasDao();
         tecnicoInfoDao = localDataBase.tecnicoInfoDao();
@@ -228,9 +223,11 @@ public class MainActivity extends AppCompatActivity implements
     public void cycleFragments(String goTo, Bundle data){
         switch (goTo){
             case "MainViewFrag":
-                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_fragmentContainer_MainAC, new MainACMainViewFrag(this, contadoresEntityList)).commitAllowingStateLoss();
-                binding.imageViewButtonBackMainAC.setVisibility(View.GONE);
-                currentView = 0;
+                //TODO: listenner mosquito para mudanças na api relacionadas aos contadores
+                binding.loadingViewMainAc.setVisibility(View.VISIBLE);
+                APIMethods apiMethods = new APIMethods();
+                apiMethods.getMeters(getApplicationContext());
+                apiMethods.setGetMetersResponse(THIS);
                 break;
             case "AddContadorFrag":
                 getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_fragmentContainer_MainAC, new MainAcAddContadorFrag(this)).commitAllowingStateLoss();
@@ -238,16 +235,17 @@ public class MainActivity extends AppCompatActivity implements
                 currentView = 1;
                 break;
             case "DetailsContadorFrag":
-                MainACDetailsContadorFrag detailsFrag = new MainACDetailsContadorFrag(this, contadoresEntityList);
-                binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
-                if (data != null) {
+                if(data != null){
+                    binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
+
+                    MainACDetailsContadorFrag detailsFrag = new MainACDetailsContadorFrag(this);
                     detailsFrag.setArguments(data);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.frameLayout_fragmentContainer_MainAC, detailsFrag)
+                            .commitAllowingStateLoss();
+                    currentView = 2;
                 }
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.frameLayout_fragmentContainer_MainAC, detailsFrag)
-                        .commitAllowingStateLoss();
-                currentView = 2;
                 break;
 
             case "ReadingsContadorFrag":
@@ -352,8 +350,21 @@ public class MainActivity extends AppCompatActivity implements
                 break;
         }
     }
-    //----------------------DATABASE OPERATIONS---------------------------
-    private class LocalDatabaseGetAllDataTask extends AsyncTask<Void, Void, LocalDBgetAll> {
+    //----------------------API OPERATIONS---------------------------
+    @Override
+    public void onGetMetersResponse(boolean response, String message, List<MeterEntity> list) {
+        if(response){
+            binding.loadingViewMainAc.setVisibility(View.GONE);
+            contadoresEntityList = list;
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_fragmentContainer_MainAC, new MainACMainViewFrag(this, list)).commitAllowingStateLoss();
+            binding.imageViewButtonBackMainAC.setVisibility(View.GONE);
+            currentView = 0;
+        }else{
+            //TODO: display snackbar com o erro
+        }
+    }
+    //----------------------LOCAL DATABASE OPERATIONS---------------------------
+    /*private class LocalDatabaseGetAllDataTask extends AsyncTask<Void, Void, LocalDBgetAll> {
         private DatabaseCallback callback;
         private String currentUserEmail;
 
@@ -366,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements
         protected LocalDBgetAll doInBackground(Void... voids) {
             Log.i("WATERTRACKINFO", "Fetching data from local DB...");
             List<LogsContadoresEntity> list1 = logsContadoresDao.getLogsContadores();
-            List<ContadorEntity> list2 = contadoresDao.getContadores();
+            List<MeterEntity> list2 = meterDao.getContadores();
             List<AvariasContadoresEntity> list3 = avariasContadoresDao.getAvariasContadores();
             List<EmpresasEntity> list4 = empresasDao.getEmpresas();
             List<TecnicoInfoEntity> list5 = tecnicoInfoDao.getTecnicosInfo();
@@ -391,5 +402,5 @@ public class MainActivity extends AppCompatActivity implements
                 callback.onTaskCompleted(result);
             }
         }
-    }
+    }*/
 }

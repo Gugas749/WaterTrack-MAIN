@@ -196,11 +196,16 @@ public class LoginFragment extends Fragment implements APIMethods.LoginResponse 
         protected UserInfosEntity doInBackground(Void... voids) {
             Log.i("WATERTRACKINFO", "Inserting data to the local DB...");
 
-            long id = userInfosDao.insert(userInfo);
-
-            if(id == -1){//se nao inserir fica null para dar login outra vez
-                userInfo = null;
+            UserInfosEntity user = userInfosDao.getUser(userInfo.email);
+            if(user != null){
+                userInfo = user;
+            }else{
+                long id = userInfosDao.insert(userInfo);
+                if(id == -1){//se nao inserir fica null para dar login outra vez
+                    userInfo = null;
+                }
             }
+
             return userInfo;
         }
 

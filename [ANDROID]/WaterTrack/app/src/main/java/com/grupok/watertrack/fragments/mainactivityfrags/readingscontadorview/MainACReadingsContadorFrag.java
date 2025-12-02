@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.grupok.watertrack.activitys.MainActivity;
-import com.grupok.watertrack.database.entities.ContadorEntity;
+import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.LogsContadoresEntity;
 import com.grupok.watertrack.databinding.FragmentMainACReadingsContadorBinding;
 
@@ -25,7 +25,7 @@ public class MainACReadingsContadorFrag extends Fragment {
     private Context context;
     private MainACReadingsContadorFrag THIS;
     private FragmentMainACReadingsContadorBinding binding;
-    private List<ContadorEntity> contadoresEntityList;
+    private List<MeterEntity> contadoresEntityList;
     private List<LogsContadoresEntity> logsContadoresEntitiesList;
     private RVAdapterFieldsReadingsContadores fieldsAdapter;
     private int contadorId;
@@ -34,7 +34,7 @@ public class MainACReadingsContadorFrag extends Fragment {
         // Required empty public constructor
     }
 
-    public MainACReadingsContadorFrag(MainActivity parent, List<LogsContadoresEntity> logsContadoresEntitiesList, List<ContadorEntity> contadoresEntityList) {
+    public MainACReadingsContadorFrag(MainActivity parent, List<LogsContadoresEntity> logsContadoresEntitiesList, List<MeterEntity> contadoresEntityList) {
         this.parent = parent;
         this.contadoresEntityList = contadoresEntityList;
         this.logsContadoresEntitiesList = logsContadoresEntitiesList;

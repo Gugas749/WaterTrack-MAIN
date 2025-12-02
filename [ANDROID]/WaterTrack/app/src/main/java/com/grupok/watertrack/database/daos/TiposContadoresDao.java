@@ -5,7 +5,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.grupok.watertrack.database.entities.TiposContadoresEntity;
+import com.grupok.watertrack.database.entities.MeterTypeEntity;
 
 import java.util.List;
 
@@ -13,17 +13,17 @@ import java.util.List;
 public interface TiposContadoresDao {
 
     @Insert
-    void insert(TiposContadoresEntity tipoContador);
+    void insert(MeterTypeEntity tipoContador);
 
     @Insert
-    void insertList(List<TiposContadoresEntity> tiposContadores);
+    void insertList(List<MeterTypeEntity> tiposContadores);
 
     @Update
-    void update(TiposContadoresEntity tipoContador);
+    void update(MeterTypeEntity tipoContador);
 
-    @Query("SELECT * FROM TIPOS_contadores")
-    List<TiposContadoresEntity> getTiposContadores();
+    @Query("SELECT * FROM MeterTypes")
+    List<MeterTypeEntity> getTiposContadores();
 
-    @Query("DELETE FROM TIPOS_contadores")
+    @Query("DELETE FROM MeterTypes")
     void clearAllEntries();
 }

@@ -4,8 +4,8 @@
         <item name="colorContainer">@color/cards_inputs_Dark</item>
         <item name="buttonTint">@color/butPrimary_Dark</item>
         <item name="textOutlineColor">@color/textFieldOutline_Dark</item>
-        <item name="buttonIconTint">@color/menuColor_Dark</item>
-        <item name="buttonIcon">@color/menuColor_Dark</item>
+        <item name="buttonIconTintPrimary">@color/menuColor_Dark</item>
+        <item name="buttonIconTintSecondary">@color/menuColor_Dark</item>
         <item name="colorError">@color/feedbackError_Dark</item>
         <item name="colorWarning">@color/feedbackWarn_Dark</item>
         <item name="colorSuccess">@color/feedbackSuccess_Dark</item>

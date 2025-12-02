@@ -10,9 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.grupok.watertrack.R;
-import com.grupok.watertrack.database.entities.ContadorEntity;
-import com.grupok.watertrack.database.entities.LogsContadoresEntity;
-import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.RVAdapterFieldsReadingsContadores;
+import com.grupok.watertrack.database.entities.EnterpriseEntity;
+import com.grupok.watertrack.database.entities.MeterEntity;
+import com.grupok.watertrack.database.entities.MeterTypeEntity;
+import com.grupok.watertrack.database.entities.UserInfosEntity;
+import com.grupok.watertrack.scripts.apiCRUD.APIMethods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,32 +23,39 @@ public class RVAdapterFieldsDetailsContadores extends RecyclerView.Adapter<RVAda
 
     private final Context context;
     private List<RVAdapterFieldsDetailsContadores.ShownFields> fieldsList;
+    private EnterpriseEntity selectedEnterprise;
+    private MeterTypeEntity selectedType;
+    private UserInfosEntity selectedUser;
 
     private ContadorItemClick callback;
 
     public interface ContadorItemClick{
-        void onBackupsItemClick(ContadorEntity contador);
+        void onBackupsItemClick(MeterEntity contador);
     }
 
-    public RVAdapterFieldsDetailsContadores(Context context, ContadorEntity leitura) {
+    public RVAdapterFieldsDetailsContadores(Context context, MeterEntity leitura, MeterTypeEntity selectedType, UserInfosEntity selectedUser, EnterpriseEntity selectedEnterprise) {
         this.context = context;
+        this.selectedUser = selectedUser;
+        this.selectedType = selectedType;
+        this.selectedEnterprise = selectedEnterprise;
         fieldsList = new ArrayList<>();
         atualizarCampos(leitura);
     }
 
-    public void atualizarCampos(ContadorEntity leitura) {
+    public void atualizarCampos(MeterEntity leitura) {
         fieldsList.clear();
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Nome do Contador", leitura.nome));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Morada do Contador", leitura.morada));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("IDMORADOR",String.valueOf(leitura.idMorador)));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("TIPO",String.valueOf (leitura.idTipo)));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("EMPRESA",String.valueOf (leitura.idEmpresa)));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Morada do Contador", leitura.address));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Morador", selectedUser.username));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Tipo", selectedType.description));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Empresa", selectedEnterprise.name));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("CLASSE", leitura.classe));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Data de Instalação", leitura.dataInstalacao));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Capacidade Maxima", leitura.capacidadeMax));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Unidade de Medida", leitura.unidadeMedida));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Temperatura Suportada", leitura.temperaturaSuportada));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Estado do Contador", String.valueOf (leitura.estado)));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Data de Instalação", leitura.instalationDate));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Shutdown Date", leitura.shutdownDate));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Capacidade Maxima", leitura.maxCapacity));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Unidade de Medida", leitura.measureUnity));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Temperatura Suportada", leitura.supportedTemperature));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Estado do Contador", String.valueOf (leitura.state)));
         notifyDataSetChanged();
     }
 

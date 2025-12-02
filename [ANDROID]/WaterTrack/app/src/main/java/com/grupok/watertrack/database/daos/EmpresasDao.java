@@ -5,7 +5,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.grupok.watertrack.database.entities.EmpresasEntity;
+import com.grupok.watertrack.database.entities.EnterpriseEntity;
 
 import java.util.List;
 
@@ -13,17 +13,17 @@ import java.util.List;
 public interface EmpresasDao {
 
     @Insert
-    void insert(EmpresasEntity empresa);
+    void insert(EnterpriseEntity empresa);
 
     @Insert
-    void insertList(List<EmpresasEntity> empresas);
+    void insertList(List<EnterpriseEntity> empresas);
 
     @Update
-    void update(EmpresasEntity empresa);
+    void update(EnterpriseEntity empresa);
 
-    @Query("SELECT * FROM Empresas")
-    List<EmpresasEntity> getEmpresas();
+    @Query("SELECT * FROM Enterprises")
+    List<EnterpriseEntity> getEmpresas();
 
-    @Query("DELETE FROM Empresas")
+    @Query("DELETE FROM Enterprises")
     void clearAllEntries();
 }

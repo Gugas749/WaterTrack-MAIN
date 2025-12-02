@@ -9,7 +9,7 @@
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_70sdp">
         <TextView
-            android:id="@+id/textView_Header_DetailsContador_MainAc"
+            android:id="@+id/textView_Header_DetailsContadorFrag_MainAc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/mainActivity_DetailsContadorFrag_Header"
@@ -22,9 +22,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
-            android:layout_below="@+id/textView_Header_DetailsContador_MainAc">
+            android:layout_below="@+id/textView_Header_DetailsContadorFrag_MainAc">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_Fields_InfoContador_MainAc"
+                android:id="@+id/rv_Fields_InfoContador_DetailsContadorFrag_MainAc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:overScrollMode="never" />
@@ -32,12 +32,12 @@
     </RelativeLayout>
     <!-- BOTTOM NAVIGATION -->
     <FrameLayout
-        android:id="@+id/holder_bottomnavigation_DetailsContador_MainAc"
+        android:id="@+id/holder_bottomnavigation_DetailsContadorFrag_MainAc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom">
         <Button
-            android:id="@+id/butReadings_DetailsContador_MainAc"
+            android:id="@+id/butReadings_DetailsContadorFrag_MainAc"
             style="?attr/materialIconButtonFilledStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
             android:backgroundTint="?attr/buttonTint"
             app:iconTint="?attr/buttonIconTintPrimary"/>
         <Button
-            android:id="@+id/butReportProblem_DetailsContador_MainAc"
+            android:id="@+id/butReportProblem_DetailsContadorFrag_MainAc"
             style="?attr/materialIconButtonFilledStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,6 +64,26 @@
             android:layout_gravity="end"
             app:iconTint="?attr/buttonIconTintPrimary"
             android:backgroundTint="?attr/buttonTint" />
+    </FrameLayout>
+    <!--                -->
+    <!-- LOADING VIEW -->
+    <FrameLayout
+        android:id="@+id/loadingView_DetailsContadorFrag_MainAc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            app:indicatorSize="48dp"
+            app:trackThickness="4dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            app:indicatorColor="?attr/textOutlineColor"/>
     </FrameLayout>
     <!--                -->
 </FrameLayout>

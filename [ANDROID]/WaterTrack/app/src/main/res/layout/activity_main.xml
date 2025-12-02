@@ -8,14 +8,6 @@
     android:background="?attr/colorPrimary"
     android:id="@+id/drawerLayout_MainAc_SideMenu">
 
-    <!-- FULL SCREEN CONTAINER -->
-    <FrameLayout
-        android:id="@+id/frameLayout_fullScreenFragmentContainer_MainAc"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="@dimen/_8sdp" />
-    <!-- ... -->
-
     <!-- MAIN CONTAINER -->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -51,7 +43,7 @@
                 android:layout_height="@dimen/_31sdp"
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/_27sdp"
-                android:layout_marginRight="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
                 android:layout_marginBottom="@dimen/_16sdp"
                 android:padding="@dimen/_4sdp"
                 android:src="@drawable/hamburguer_menu"
@@ -82,4 +74,32 @@
         app:itemTextColor="?attr/textColorSideMenu"/>
     <!--                -->
 
+    <!-- FULL SCREEN CONTAINER -->
+    <FrameLayout
+        android:id="@+id/frameLayout_fullScreenFragmentContainer_MainAc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="@dimen/_8sdp" />
+    <!-- ... -->
+
+    <!-- LOADING VIEW -->
+    <FrameLayout
+        android:id="@+id/loadingView_MainAc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            app:indicatorSize="48dp"
+            app:trackThickness="4dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            app:indicatorColor="?attr/textOutlineColor"/>
+    </FrameLayout>
+    <!--                -->
 </androidx.drawerlayout.widget.DrawerLayout>

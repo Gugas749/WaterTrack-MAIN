@@ -7,18 +7,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Room;
 
 import com.google.gson.Gson;
 import com.grupok.watertrack.database.LocalDataBase;
-import com.grupok.watertrack.database.daos.ContadoresDao;
-import com.grupok.watertrack.database.daos.LogsContadoresDao;
 import com.grupok.watertrack.database.daos.UserInfosDao;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.databinding.ActivityAuthBinding;

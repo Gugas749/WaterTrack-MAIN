@@ -1,6 +1,5 @@
 package com.grupok.watertrack.fragments.mainactivityfrags.addreportview;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -15,7 +14,7 @@ import android.widget.Filterable;
 import android.widget.Toast;
 import com.grupok.watertrack.R;
 import com.grupok.watertrack.activitys.MainActivity;
-import com.grupok.watertrack.database.entities.ContadorEntity;
+import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.databinding.FragmentMainACReportBinding;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ public class MainACReportFrag extends Fragment {
 
     private MainActivity parent;
     private FragmentMainACReportBinding binding;
-    private List<ContadorEntity> contadoresEntityList;
+    private List<MeterEntity> contadoresEntityList;
     private List<String> listString = new ArrayList<>();
     private int contadorId;
     private String contadorNome;
@@ -35,7 +34,7 @@ public class MainACReportFrag extends Fragment {
         // Required empty public constructor
     }
 
-    public MainACReportFrag(MainActivity parent, List<ContadorEntity> contadoresEntityList) {
+    public MainACReportFrag(MainActivity parent, List<MeterEntity> contadoresEntityList) {
         this.parent = parent;
         this.contadoresEntityList = contadoresEntityList;
     }
@@ -49,10 +48,10 @@ public class MainACReportFrag extends Fragment {
         }
 
         if (contadoresEntityList != null && contadorId != -1) {
-            for (ContadorEntity c : contadoresEntityList) {
+            for (MeterEntity c : contadoresEntityList) {
                 if (c.id == contadorId) {
                     contadorNome = c.nome;
-                    contadorMorada = c.morada;
+                    contadorMorada = c.address;
                     break;
                 }
             }
@@ -172,10 +171,10 @@ public class MainACReportFrag extends Fragment {
 
     private static class MeterAdapter extends ArrayAdapter<String> implements Filterable {
         private final Context context;
-        private final List<ContadorEntity> originalList;
+        private final List<MeterEntity> originalList;
         private List<String> filteredList;
 
-        public MeterAdapter(Context context, List<ContadorEntity> contadores) {
+        public MeterAdapter(Context context, List<MeterEntity> contadores) {
             super(context, android.R.layout.simple_dropdown_item_1line, new ArrayList<>());
             this.context = context;
             this.originalList = contadores;
@@ -183,10 +182,10 @@ public class MainACReportFrag extends Fragment {
             addAll(filteredList);
         }
 
-        private static List<String> buildStringList(List<ContadorEntity> list) {
+        private static List<String> buildStringList(List<MeterEntity> list) {
             List<String> result = new ArrayList<>();
-            for (ContadorEntity c : list) {
-                String texto = c.id + " — " + c.nome + " (" + c.morada + ")";
+            for (MeterEntity c : list) {
+                String texto = c.id + " — " + c.nome + " (" + c.address + ")";
                 result.add(texto);
             }
             return result;
@@ -202,11 +201,11 @@ public class MainACReportFrag extends Fragment {
                         filtered = buildStringList(originalList);
                     } else {
                         String query = constraint.toString().toLowerCase(Locale.ROOT);
-                        for (ContadorEntity c : originalList) {
+                        for (MeterEntity c : originalList) {
                             if (String.valueOf(c.id).contains(query) ||
                                     c.nome.toLowerCase(Locale.ROOT).contains(query) ||
-                                    c.morada.toLowerCase(Locale.ROOT).contains(query)) {
-                                filtered.add(c.id + " — " + c.nome + " (" + c.morada + ")");
+                                    c.address.toLowerCase(Locale.ROOT).contains(query)) {
+                                filtered.add(c.id + " — " + c.nome + " (" + c.address + ")");
                             }
                         }
                     }

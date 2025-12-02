@@ -2,7 +2,6 @@ package com.grupok.watertrack.scripts.apiCRUD;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -11,6 +10,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.grupok.watertrack.R;
+import com.grupok.watertrack.database.entities.EnterpriseEntity;
+import com.grupok.watertrack.database.entities.MeterEntity;
+import com.grupok.watertrack.database.entities.MeterTypeEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 
 import org.json.JSONException;
@@ -174,6 +176,157 @@ public class APIMethods {
                 },
                 error -> {
                     signUpResponse.onSignUpResponse(false, context.getString(R.string.apiMethods_VolleyError));
+                }
+        );
+
+        queue.add(request);
+    }
+    //-------------------------------------------------------------------------------------------
+
+    //-----------------------------------------GET METERS-------------------------------------------
+    private GetMetersResponse getMetersResponse;
+    public interface GetMetersResponse{
+        void onGetMetersResponse(boolean response, String message, List<MeterEntity> list);
+    }
+    public void setGetMetersResponse(GetMetersResponse listenner){
+        this.getMetersResponse = listenner;
+    }
+    public void getMeters(Context context){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/meters";
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    // login success
+                    try {
+                        List<MeterEntity> list = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject meter = response.getJSONObject(i);
+                            MeterEntity contador = new MeterEntity("N/A",
+                                    meter.getString("address"),
+                                    meter.getInt("userID"),
+                                    meter.getInt("meterTypeID"),
+                                    meter.getInt("enterpriseID"),
+                                    meter.getString("class"),
+                                    meter.getString("instalationDate"),
+                                    meter.getString("shutdownDate"),
+                                    meter.getString("maxCapacity"),
+                                    meter.getString("measureUnity"),
+                                    meter.getString("supportedTemperature"),
+                                    meter.getInt("state"));
+                            contador.setId(meter.getInt("id"));
+                            list.add(contador);
+                        }
+                        getMetersResponse.onGetMetersResponse(true, "", list);
+                    } catch (JSONException e) {
+                        getMetersResponse.onGetMetersResponse(false, context.getString(R.string.apiMethods_JsonParseError), null);
+                    }
+                },
+                error -> {
+                    getMetersResponse.onGetMetersResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
+                }
+        );
+
+        queue.add(request);
+    }
+    //-------------------------------------------------------------------------------------------
+
+    //-----------------------------------------GET ENTERPRISE BY ID-------------------------------------------
+    private GetEnterpriseByIdResponse getEnterpriseByIdResponse;
+    public interface GetEnterpriseByIdResponse{
+        void onGetEnterpriseByIdResponse(boolean response, String message, EnterpriseEntity enterprise);
+    }
+    public void setGetEnterpriseByIdResponse(GetEnterpriseByIdResponse listenner){
+        this.getEnterpriseByIdResponse = listenner;
+    }
+    public void getEnterpriseById(Context context, int id){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/enterprises/"+id;
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    try{
+                        EnterpriseEntity enterprise = new EnterpriseEntity(response.getString("name"),
+                                response.getString("address"),
+                                response.getString("contactNumber"),
+                                response.getString("contactEmail"),
+                                response.getString("website"));
+                        enterprise.setId(id);
+                        getEnterpriseByIdResponse.onGetEnterpriseByIdResponse(true, "", enterprise);
+                    } catch (JSONException e) {
+                        getEnterpriseByIdResponse.onGetEnterpriseByIdResponse(false, context.getString(R.string.apiMethods_JsonParseError), null);
+                    }
+                },
+                error -> {
+                    getEnterpriseByIdResponse.onGetEnterpriseByIdResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
+                }
+        );
+
+        queue.add(request);
+    }
+    //-------------------------------------------------------------------------------------------
+
+    //-----------------------------------------GET USER BY ID-------------------------------------------
+    private GetUserByIdResponse getUserByIdResponse;
+    public interface GetUserByIdResponse{
+        void onGetUserByIdResponse(boolean response, String message, UserInfosEntity user);
+    }
+    public void setGetUserByIdResponse(GetUserByIdResponse listenner){
+        this.getUserByIdResponse = listenner;
+    }
+    public void getUserById(Context context, int id){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/users/"+id;
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    try{
+                        UserInfosEntity user = new UserInfosEntity(response.getInt("id"),
+                                response.getString("username"),
+                                response.getString("email"),
+                                response.getInt("status"));
+                        getUserByIdResponse.onGetUserByIdResponse(true, "", user);
+                    } catch (JSONException e) {
+                        getUserByIdResponse.onGetUserByIdResponse(false, context.getString(R.string.apiMethods_JsonParseError), null);
+                    }
+                },
+                error -> {
+                    getUserByIdResponse.onGetUserByIdResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
+                }
+        );
+
+        queue.add(request);
+    }
+    //-------------------------------------------------------------------------------------------
+
+    //-----------------------------------------GET METER TYPE BY ID-------------------------------------------
+    private GetMeterTypeByIdResponse getMeterTypeByIdResponse;
+    public interface GetMeterTypeByIdResponse{
+        void onGetMeterTypeByIdResponse(boolean response, String message, MeterTypeEntity type);
+    }
+    public void setGetMeterTypeByIdResponse(GetMeterTypeByIdResponse listenner){
+        this.getMeterTypeByIdResponse = listenner;
+    }
+    public void getMeterTypeById(Context context, int id){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/meter-types/"+id;
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    try{
+                        MeterTypeEntity meterType = new MeterTypeEntity(response.getString("description"));
+                        meterType.setId(id);
+                        getMeterTypeByIdResponse.onGetMeterTypeByIdResponse(true, "", meterType);
+                    } catch (JSONException e) {
+                        getMeterTypeByIdResponse.onGetMeterTypeByIdResponse(false, context.getString(R.string.apiMethods_JsonParseError), null);
+                    }
+                },
+                error -> {
+                    getMeterTypeByIdResponse.onGetMeterTypeByIdResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
                 }
         );
 

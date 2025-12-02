@@ -16,8 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.gson.Gson;
 import com.grupok.watertrack.R;
-import com.grupok.watertrack.database.entities.ContadorEntity;
+import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.activitys.MainActivity;
 import com.grupok.watertrack.databinding.FragmentMainACMainViewBinding;
 import com.grupok.watertrack.scripts.SnackBarShow;
@@ -25,7 +26,7 @@ import com.grupok.watertrack.scripts.SnackBarShow;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainView.ContadorItemClick {
+public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainView.MetersItemClick {
 
     private MainActivity parent;
     private Context context;
@@ -33,14 +34,14 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
     private SnackBarShow snackBarShow;
     public int popUpMenuOption = 0; //1- Address 2-Name
     private FragmentMainACMainViewBinding binding;
-    private List<ContadorEntity> contadoresEntityList;
+    private List<MeterEntity> contadoresEntityList;
     private RVAdapterMainAcMainView adapter;
 
     public MainACMainViewFrag() {
         // Required empty public constructor
     }
 
-    public MainACMainViewFrag(MainActivity parent, List<ContadorEntity> contadoresEntityList) {
+    public MainACMainViewFrag(MainActivity parent, List<MeterEntity> contadoresEntityList) {
         this.parent = parent;
         this.contadoresEntityList = contadoresEntityList;
     }
@@ -68,14 +69,6 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
         adapter = new RVAdapterMainAcMainView(this.getContext(), contadoresEntityList, parent.currentUserInfo.cargo, parent);
         adapter.setItemClickListenner(this);
         snackBarShow = new SnackBarShow();
-
-        ContadorEntity example = new ContadorEntity("Gui", "R. Dr. Duarte Álvares Abreu 21, Cadaval, Lisboa, Portugal", 1,1,1,"A", "dataInstalacao", "capMax", "uniMedida", "tempSup", 0);
-        contadoresEntityList.add(example);
-        example = new ContadorEntity("Diogo", "R. Das Flores 21, Lourinha, Lisboa, Portugal", 1,1,1,"A", "dataInstalacao", "capMax", "uniMedida", "tempSup", 1);
-        contadoresEntityList.add(example);
-        example = new ContadorEntity("Gutti", "Rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr", 1,1,1,"A", "dataInstalacao", "capMax", "uniMedida", "tempSup", 2);
-        contadoresEntityList.add(example);
-
 
         if(parent.currentUserInfo.cargo == 1){
             binding.butAddContadorMainViewMainAc.setVisibility(View.GONE);
@@ -146,7 +139,7 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //acontece sempre q o texto muda
-                List<ContadorEntity> filtered = filterBySearch(""+s);
+                List<MeterEntity> filtered = filterBySearch(""+s);
                 adapter.updateData(filtered);
                 adapter.notifyDataSetChanged();
             }
@@ -197,18 +190,18 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
         }, 150); // delay em ms para aparecer o teclado a tempo
 
     }
-    private List<ContadorEntity> filterBySearch(String text){
-        List<ContadorEntity> filtered = new ArrayList<>();
+    private List<MeterEntity> filterBySearch(String text){
+        List<MeterEntity> filtered = new ArrayList<>();
         switch (popUpMenuOption){
             case 1:
-                for (ContadorEntity contador : contadoresEntityList) {
-                    if(contador.morada.toLowerCase().contains(text.toLowerCase())){
+                for (MeterEntity contador : contadoresEntityList) {
+                    if(contador.address.toLowerCase().contains(text.toLowerCase())){
                         filtered.add(contador);
                     }
                 }
                 break;
             case 2:
-                for (ContadorEntity contador : contadoresEntityList) {
+                for (MeterEntity contador : contadoresEntityList) {
                     if(contador.nome.toLowerCase().contains(text.toLowerCase())){
                         filtered.add(contador);
                     }
@@ -235,9 +228,9 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
         });
     }
     @Override
-    public void onBackupsItemClick(ContadorEntity contador) {
+    public void onMetersItemClick(MeterEntity contador) {
         Bundle data = new Bundle();
-        data.putInt("contadorId", contador.id);
+        data.putString("meter", new Gson().toJson(contador));
         parent.cycleFragments("DetailsContadorFrag", data);
     }
 }

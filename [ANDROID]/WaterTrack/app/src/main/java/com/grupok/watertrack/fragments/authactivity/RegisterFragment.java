@@ -1,30 +1,18 @@
 package com.grupok.watertrack.fragments.authactivity;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.room.Room;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.grupok.watertrack.R;
 import com.grupok.watertrack.activitys.AuthActivity;
-import com.grupok.watertrack.database.LocalDataBase;
-import com.grupok.watertrack.database.daos.ContadoresDao;
-import com.grupok.watertrack.database.daos.LogsContadoresDao;
-import com.grupok.watertrack.database.daos.UserInfosDao;
-import com.grupok.watertrack.database.entities.UserInfosEntity;
-import com.grupok.watertrack.databinding.FragmentLoginBinding;
 import com.grupok.watertrack.databinding.FragmentRegisterBinding;
 import com.grupok.watertrack.scripts.SnackBarShow;
 import com.grupok.watertrack.scripts.apiCRUD.APIMethods;
