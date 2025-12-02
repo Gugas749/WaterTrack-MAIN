@@ -13,8 +13,6 @@
 > 
 > revisar/limpar excesso de codigo
 > 
-> ### CreditosFrag
-> 
 > ### SettingsFrag
 >
 > ### Script da Conexao com a api
