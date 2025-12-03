@@ -44,6 +44,7 @@ public class RVAdapterFieldsDetailsContadores extends RecyclerView.Adapter<RVAda
 
     public void atualizarCampos(MeterEntity leitura) {
         fieldsList.clear();
+        //TODO: trocar para strings getString()
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Nome do Contador", leitura.nome));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Morada do Contador", leitura.address));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Morador", selectedUser.username));
@@ -55,7 +56,19 @@ public class RVAdapterFieldsDetailsContadores extends RecyclerView.Adapter<RVAda
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Capacidade Maxima", leitura.maxCapacity));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Unidade de Medida", leitura.measureUnity));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Temperatura Suportada", leitura.supportedTemperature));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Estado do Contador", String.valueOf (leitura.state)));
+        String status = "N/A";
+        switch (leitura.state){
+            case 0:
+                status = "Desativado";
+                break;
+            case 1:
+                status = "Ativo";
+                break;
+            case 2:
+                status = "Com Problema";
+                break;
+        }
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Estado do Contador", status));
         notifyDataSetChanged();
     }
 

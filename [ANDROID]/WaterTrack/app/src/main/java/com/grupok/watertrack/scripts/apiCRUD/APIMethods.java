@@ -268,7 +268,7 @@ public class APIMethods {
     }
     //-------------------------------------------------------------------------------------------
 
-    //-----------------------------------------GET USER BY ID-------------------------------------------
+    // <editor-fold desc="GET USER BY ID">
     private GetUserByIdResponse getUserByIdResponse;
     public interface GetUserByIdResponse{
         void onGetUserByIdResponse(boolean response, String message, UserInfosEntity user);
@@ -300,8 +300,9 @@ public class APIMethods {
 
         queue.add(request);
     }
-    //-------------------------------------------------------------------------------------------
+    // </editor-fold>
 
+    //TODO: trocar e separar usando o region como no GET USER BY ID
     //-----------------------------------------GET METER TYPE BY ID-------------------------------------------
     private GetMeterTypeByIdResponse getMeterTypeByIdResponse;
     public interface GetMeterTypeByIdResponse{
