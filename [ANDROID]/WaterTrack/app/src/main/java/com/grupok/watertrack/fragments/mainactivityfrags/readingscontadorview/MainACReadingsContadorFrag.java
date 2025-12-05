@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.gson.Gson;
 import com.grupok.watertrack.activitys.MainActivity;
 import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.LogsContadoresEntity;
@@ -29,6 +30,8 @@ public class MainACReadingsContadorFrag extends Fragment {
     private List<LogsContadoresEntity> logsContadoresEntitiesList;
     private RVAdapterFieldsReadingsContadores fieldsAdapter;
     private int contadorId;
+    private MeterEntity meterSelected;
+
 
     public MainACReadingsContadorFrag() {
         // Required empty public constructor
@@ -56,7 +59,9 @@ public class MainACReadingsContadorFrag extends Fragment {
 
         if (getArguments() != null) {
             contadorId = getArguments().getInt("contadorId", -1);
-            Log.d("LOGTESTE", "Received contadorId: " + contadorId);
+
+            String meterJson = getArguments().getString("lastMeterData", null);
+            meterSelected = new Gson().fromJson(meterJson, MeterEntity.class);
         }
 
         return binding.getRoot();

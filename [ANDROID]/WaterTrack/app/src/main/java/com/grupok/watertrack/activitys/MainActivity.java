@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.room.Room;
 
 import com.google.android.material.navigation.NavigationView;
@@ -56,10 +58,12 @@ public class MainActivity extends AppCompatActivity implements
     private ActivityMainBinding binding;
     private MainActivity parent;
     private MainActivity THIS;
+    private Context context;
     private int currentView;
     public UserInfosEntity currentUserInfo;
     private Boolean allDisable;
     private ActionBarDrawerToggle drawerToggleSideMenu;
+    public SnackBarShow snackBarShow = new SnackBarShow();
     //-------------------LISTS---------------
     private List<LogsContadoresEntity> logsContEntitiesList;
     private List<MeterEntity> contadoresEntityList;
@@ -137,7 +141,10 @@ public class MainActivity extends AppCompatActivity implements
                         cycleFragments("MainViewFrag", null);
                         break;
                     case 3: // READINGS CONTADOR
-                        cycleFragments("DetailsContadorFrag", null);
+                        Fragment currentFrag = getSupportFragmentManager().findFragmentById(R.id.frameLayout_fragmentContainer_MainAC);
+                        Bundle data = new Bundle();
+                        data.putString("meter", currentFrag.getArguments().getString("lastMeterData", ""));
+                        cycleFragments("DetailsContadorFrag", data);
                         break;
                     case 4: // Creditos
                     case 5: // Reports (Side menu)
@@ -235,17 +242,22 @@ public class MainActivity extends AppCompatActivity implements
                 currentView = 1;
                 break;
             case "DetailsContadorFrag":
-                if(data != null){
-                    binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
-
-                    MainACDetailsContadorFrag detailsFrag = new MainACDetailsContadorFrag(this);
-                    detailsFrag.setArguments(data);
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.frameLayout_fragmentContainer_MainAC, detailsFrag)
-                            .commitAllowingStateLoss();
-                    currentView = 2;
+                if (data != null && data.containsKey("meter")) {
+                    Log.d("erros", "cycleFragments: " +
+                            new Gson().fromJson(data.getString("meter"), MeterEntity.class)
+                    );
+                } else {
+                    Log.d("erros", "cycleFragments: bundle vazio ou sem meterData");
                 }
+                binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
+
+                MainACDetailsContadorFrag detailsFrag = new MainACDetailsContadorFrag(this);
+                detailsFrag.setArguments(data);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frameLayout_fragmentContainer_MainAC, detailsFrag)
+                        .commitAllowingStateLoss();
+                currentView = 2;
                 break;
 
             case "ReadingsContadorFrag":
@@ -360,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements
             binding.imageViewButtonBackMainAC.setVisibility(View.GONE);
             currentView = 0;
         }else{
-            //TODO: display snackbar com o erro
+            snackBarShow.display(binding.getRoot(), getString(R.string.apiMethods_VolleyError), -1, 1, binding.snackbarViewMainActivity, context);
         }
     }
     //----------------------LOCAL DATABASE OPERATIONS---------------------------

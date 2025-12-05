@@ -88,6 +88,18 @@
     <string name="mainActivity_DetailsContadorFrag_Header">Meter</string>
     <string name="mainActivity_DetailsContadorFrag_infoRow_Contador_Name">Meter</string>
     <string name="mainActivity_DetailsContadorFrag_infoRow_Contador_Address">Meter</string>
+    <!-- MAIN ACTIVITY | DETAILS CONTADOR | RV-->
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Name">Counter Name</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Address">Counter Address</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Username">Resident</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Description">Type</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_EnterpriseName">Company</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Classe">Class</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_InstalationDate">Installation Date</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_ShutdownDate">Deactivation Date</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_MaxCapacity">Maximum Capacity</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_MeasureUnity">Unit of Measure</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_SupportedTemperature">Supported Temperature</string>
     <!-- MAIN ACTIVITY | READINGS CONTADOR -->
     <string name="mainActivity_ReadingsContadorFrag_LabelDetails">Reading Details</string>
     <string name="mainActivity_ReadingsContadorFrag_LabelReadings">Readings</string>

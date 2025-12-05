@@ -13,12 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
+import com.grupok.watertrack.R;
 import com.grupok.watertrack.activitys.MainActivity;
 import com.grupok.watertrack.database.entities.EnterpriseEntity;
 import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.MeterTypeEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.databinding.FragmentMainACDetailsContadorBinding;
+import com.grupok.watertrack.scripts.SnackBarShow;
 import com.grupok.watertrack.scripts.apiCRUD.APIMethods;
 
 import java.util.List;
@@ -36,6 +38,7 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
     private EnterpriseEntity selectedEnterprise;
     private MeterTypeEntity selectedType;
     private UserInfosEntity selectedUser;
+    public SnackBarShow snackBarShow = new SnackBarShow();
 
     public MainACDetailsContadorFrag() {
         // Required empty public constructor
@@ -77,9 +80,10 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
     }
     //-----------------------SETUPS-------------------------------
     private void setupReadingsButton(){
-        Bundle data = new Bundle();
         binding.butReadingsDetailsContadorFragMainAc.setOnClickListener(v -> {
+            Bundle data = new Bundle();
             data.putInt("contadorId", meterSelected.id);
+            data.putString("lastMeterData", new Gson().toJson(meterSelected));
             parent.cycleFragments("ReadingsContadorFrag", data);
         });
     }
@@ -133,7 +137,7 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
                 finalLoadRV();
             }
         }else{
-            //TODO: display snackbar com o erro
+            snackBarShow.display(binding.getRoot(), getString(R.string.apiMethods_VolleyError), -1, 1, binding.snackbarViewDetailsContadorFrag, context);
         }
     }
     @Override
@@ -145,7 +149,7 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
                 finalLoadRV();
             }
         }else{
-            //TODO: display snackbar com o erro
+            snackBarShow.display(binding.getRoot(), getString(R.string.apiMethods_VolleyError), -1, 1, binding.snackbarViewDetailsContadorFrag, context);
         }
     }
     @Override
@@ -157,7 +161,7 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
                 finalLoadRV();
             }
         }else{
-            //TODO: display snackbar com o erro
+            snackBarShow.display(binding.getRoot(), getString(R.string.apiMethods_VolleyError), -1, 1, binding.snackbarViewDetailsContadorFrag, context);
         }
     }
     //------------------------------------------------------

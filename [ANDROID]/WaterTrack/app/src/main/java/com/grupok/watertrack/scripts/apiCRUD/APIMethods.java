@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class APIMethods {
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="GET USERS">
     private GetUsersResponse getUsersResponse;
     public interface GetUsersResponse{
         void onGetUsersResponse(int responseType, List<UserInfosEntity> users);
@@ -71,9 +73,9 @@ public class APIMethods {
         // Add the request to the RequestQueue.
         queue.add(request);
     }
+    // </editor-fold>
     //-------------------------------------------------------------------------------------------
-
-    //------------------------------------------LOGIN--------------------------------------------
+    // <editor-fold desc="LOGIN">
     private LoginResponse loginResponse;
     public interface LoginResponse{
         void onLoginResponse(boolean response, UserInfosEntity user, String message);
@@ -135,9 +137,9 @@ public class APIMethods {
 
         queue.add(request);
     }
+    // </editor-fold>
     //-------------------------------------------------------------------------------------------
-
-    //-----------------------------------------SIGN UP-------------------------------------------
+    // <editor-fold desc="SIGN UP">
     private SignUpResponse signUpResponse;
     public interface SignUpResponse{
         void onSignUpResponse(boolean response, String message);
@@ -181,9 +183,9 @@ public class APIMethods {
 
         queue.add(request);
     }
+    // </editor-fold>
     //-------------------------------------------------------------------------------------------
-
-    //-----------------------------------------GET METERS-------------------------------------------
+    // <editor-fold desc="GET METERS">
     private GetMetersResponse getMetersResponse;
     public interface GetMetersResponse{
         void onGetMetersResponse(boolean response, String message, List<MeterEntity> list);
@@ -230,9 +232,9 @@ public class APIMethods {
 
         queue.add(request);
     }
+    // </editor-fold>
     //-------------------------------------------------------------------------------------------
-
-    //-----------------------------------------GET ENTERPRISE BY ID-------------------------------------------
+    // <editor-fold desc="GET ENTERPRISE BY ID">
     private GetEnterpriseByIdResponse getEnterpriseByIdResponse;
     public interface GetEnterpriseByIdResponse{
         void onGetEnterpriseByIdResponse(boolean response, String message, EnterpriseEntity enterprise);
@@ -266,8 +268,8 @@ public class APIMethods {
 
         queue.add(request);
     }
+    // </editor-fold>
     //-------------------------------------------------------------------------------------------
-
     // <editor-fold desc="GET USER BY ID">
     private GetUserByIdResponse getUserByIdResponse;
     public interface GetUserByIdResponse{
@@ -301,9 +303,8 @@ public class APIMethods {
         queue.add(request);
     }
     // </editor-fold>
-
-    //TODO: trocar e separar usando o region como no GET USER BY ID
-    //-----------------------------------------GET METER TYPE BY ID-------------------------------------------
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="GET METER TYPE BY ID">
     private GetMeterTypeByIdResponse getMeterTypeByIdResponse;
     public interface GetMeterTypeByIdResponse{
         void onGetMeterTypeByIdResponse(boolean response, String message, MeterTypeEntity type);
@@ -333,5 +334,6 @@ public class APIMethods {
 
         queue.add(request);
     }
+    // </editor-fold>
     //-------------------------------------------------------------------------------------------
 }
