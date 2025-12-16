@@ -11,55 +11,63 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.grupok.watertrack.R;
-import com.grupok.watertrack.database.entities.LogsContadoresEntity;
+import com.grupok.watertrack.database.entities.MeterReadingEntity;
 
 import java.util.List;
 
-public class RVAdapterReadingsACReadingsContadores extends RecyclerView.Adapter<RVAdapterReadingsACReadingsContadores.ViewHolder> {
+public class RVAdapterReadingsACReadingsContadores
+        extends RecyclerView.Adapter<RVAdapterReadingsACReadingsContadores.ViewHolder> {
 
     private final Context context;
-    private final List<LogsContadoresEntity> logsList;
-    private int selectedPosition = 0;
-    private final OnLeituraSelecionada listener;
+    private List<MeterReadingEntity> readingsEntities;
+    private int selectedPosition = -1; // Nenhuma selecionada por defeito
+    private OnSelectionChangedListener listener;
 
-    public interface OnLeituraSelecionada {
-        void onSelect(LogsContadoresEntity leitura);
+    public interface OnSelectionChangedListener {
+        void onSelectionChanged(MeterReadingEntity selectedReading);
     }
 
-    public RVAdapterReadingsACReadingsContadores(Context context, List<LogsContadoresEntity> logsList, OnLeituraSelecionada listener) {
-        this.context = context;
-        this.logsList = logsList;
+    public void setOnSelectionChangedListener(OnSelectionChangedListener listener){
         this.listener = listener;
+    }
+
+    public RVAdapterReadingsACReadingsContadores(Context context, List<MeterReadingEntity> readingsEntities) {
+        this.context = context;
+        this.readingsEntities = readingsEntities;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.rv_row_readings_readingscontadores, parent, false);
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.rv_row_readings_readingscontadores, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        LogsContadoresEntity log = logsList.get(position);
-        holder.data.setText(log.data);
+        MeterReadingEntity leitura = readingsEntities.get(position);
+        holder.data.setText(leitura.date);
+
         holder.radioButton.setChecked(position == selectedPosition);
 
-        View.OnClickListener clickListener = v -> {
-            int oldPos = selectedPosition;
+        holder.radioButton.setOnClickListener(v -> {
             selectedPosition = holder.getAdapterPosition();
-            notifyItemChanged(oldPos);
-            notifyItemChanged(selectedPosition);
-            listener.onSelect(log);
-        };
-
-        holder.radioButton.setOnClickListener(clickListener);
-        holder.itemView.setOnClickListener(clickListener);
+            notifyDataSetChanged();
+            if (listener != null) {
+                listener.onSelectionChanged(readingsEntities.get(selectedPosition));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return logsList.size();
+        return readingsEntities == null ? 0 : readingsEntities.size();
+    }
+
+    public MeterReadingEntity getSelectedReading() {
+        if (selectedPosition != -1) return readingsEntities.get(selectedPosition);
+        return null;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -14,6 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.60">
+
         <TextView
             android:id="@+id/textView_LabelDetails_ReadingsContador_MainAc"
             android:layout_width="match_parent"
@@ -24,6 +25,19 @@
             android:textStyle="bold"
             android:layout_margin="@dimen/_5sdp"
             android:paddingStart="@dimen/_6sdp"/>
+
+        <!-- TODO STRING -->
+        <TextView
+            android:id="@+id/textView_EmptyFields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sem leitura selecionada"
+            android:textColor="?attr/textColorPrimary"
+            android:gravity="center"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:padding="@dimen/_8sdp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_Fields_ReadingsContador_MainAc"
@@ -53,10 +67,42 @@
             android:textStyle="bold"
             android:layout_margin="@dimen/_5sdp"
             android:paddingStart="@dimen/_6sdp"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_Readings_ReadingsContador_MainAc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
+    <!-- LOADING VIEW -->
+    <FrameLayout
+        android:id="@+id/loadingView_ReadingsContadorFrag_MainAc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            app:indicatorSize="48dp"
+            app:trackThickness="4dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            app:indicatorColor="?attr/textOutlineColor"/>
+    </FrameLayout>
+    <!--                -->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/snackbarView_ReadingsContadorFrag"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

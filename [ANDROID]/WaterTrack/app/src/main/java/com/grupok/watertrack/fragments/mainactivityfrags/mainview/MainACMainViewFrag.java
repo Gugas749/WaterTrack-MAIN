@@ -37,21 +37,21 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
     private List<MeterEntity> contadoresEntityList;
     private RVAdapterMainAcMainView adapter;
 
+    //------------------------------------//
+    //------------------------------------//
+
     public MainACMainViewFrag() {
         // Required empty public constructor
     }
-
     public MainACMainViewFrag(MainActivity parent, List<MeterEntity> contadoresEntityList) {
         this.parent = parent;
         this.contadoresEntityList = contadoresEntityList;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMainACMainViewBinding.inflate(inflater);
@@ -62,7 +62,8 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
 
         return binding.getRoot();
     }
-
+    //------------------------------------//
+    //------------------------------------//
     private void init(){
         THIS = this;
         context = getContext();

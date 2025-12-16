@@ -27,12 +27,12 @@ import com.grupok.watertrack.database.LocalDataBase;
 import com.grupok.watertrack.database.daos.AvariasContadoresDao;
 import com.grupok.watertrack.database.daos.MeterDao;
 import com.grupok.watertrack.database.daos.EmpresasDao;
-import com.grupok.watertrack.database.daos.LogsContadoresDao;
+import com.grupok.watertrack.database.daos.MeterReadingDao;
 import com.grupok.watertrack.database.daos.TecnicoInfoDao;
 import com.grupok.watertrack.database.daos.TiposContadoresDao;
 import com.grupok.watertrack.database.daos.UserInfosDao;
 import com.grupok.watertrack.database.entities.MeterEntity;
-import com.grupok.watertrack.database.entities.LogsContadoresEntity;
+import com.grupok.watertrack.database.entities.MeterReadingEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.databinding.ActivityMainBinding;
 import com.grupok.watertrack.fragments.alertDialogFragments.AlertDialogQuestionFragment;
@@ -53,7 +53,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         CustomAlertDialogFragment.ConfirmButtonClickAlertDialogQuestionFrag,
-        CustomAlertDialogFragment.CancelButtonClickAlertDialogQuestionFrag, APIMethods.GetMetersResponse {
+        CustomAlertDialogFragment.CancelButtonClickAlertDialogQuestionFrag,
+        APIMethods.GetMetersResponse,
+        APIMethods.GetReadingsByMeterIdResponse {
 
     private ActivityMainBinding binding;
     private MainActivity parent;
@@ -65,11 +67,11 @@ public class MainActivity extends AppCompatActivity implements
     private ActionBarDrawerToggle drawerToggleSideMenu;
     public SnackBarShow snackBarShow = new SnackBarShow();
     //-------------------LISTS---------------
-    private List<LogsContadoresEntity> logsContEntitiesList;
+    private List<MeterReadingEntity> meterReagindsEntitiesList;
     private List<MeterEntity> contadoresEntityList;
     //-------------------LOCAL DATABASE---------------
     private LocalDataBase localDataBase;
-    private LogsContadoresDao logsContadoresDao;
+    private MeterReadingDao logsContadoresDao;
     private MeterDao meterDao;
     private AvariasContadoresDao avariasContadoresDao;
     private EmpresasDao empresasDao;
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements
         THIS = this;
         allDisable = false;
         disableBackPressed();
-        logsContEntitiesList = new ArrayList<>();
+        meterReagindsEntitiesList = new ArrayList<>();
         contadoresEntityList = new ArrayList<>();
 
         setupSideMenu();
@@ -228,11 +230,11 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
     public void cycleFragments(String goTo, Bundle data){
+        APIMethods apiMethods = new APIMethods();
         switch (goTo){
             case "MainViewFrag":
                 //TODO: listenner mosquito para mudanças na api relacionadas aos contadores
                 binding.loadingViewMainAc.setVisibility(View.VISIBLE);
-                APIMethods apiMethods = new APIMethods();
                 apiMethods.getMeters(getApplicationContext());
                 apiMethods.setGetMetersResponse(THIS);
                 break;
@@ -261,15 +263,15 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             case "ReadingsContadorFrag":
-                MainACReadingsContadorFrag readingsContadorFrag = new MainACReadingsContadorFrag(this, logsContEntitiesList, contadoresEntityList);
+                MainACReadingsContadorFrag readingsContadorFrag = new MainACReadingsContadorFrag();
                 binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
+
                 if (data != null) {
                     readingsContadorFrag.setArguments(data);
                 }
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.frameLayout_fragmentContainer_MainAC, readingsContadorFrag)
-                        .commitAllowingStateLoss();
+
+                apiMethods.setGetReadingsByMeterIdResponse(this, readingsContadorFrag);
+                apiMethods.getReadingsByMeterId(getApplicationContext(), data.getInt("contadorId", -1));
                 currentView = 3;
                 break;
 
@@ -373,6 +375,24 @@ public class MainActivity extends AppCompatActivity implements
             currentView = 0;
         }else{
             snackBarShow.display(binding.getRoot(), getString(R.string.apiMethods_VolleyError), -1, 1, binding.snackbarViewMainActivity, context);
+        }
+    }
+    @Override
+    public void onGetReadingsByMeterIdResponse(
+            boolean response,
+            String message,
+            List<MeterReadingEntity> list,
+            MainACReadingsContadorFrag frag) {
+
+        if (response) {
+            frag.setMeterReadings(list);
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frameLayout_fragmentContainer_MainAC, frag)
+                    .commitAllowingStateLoss();
+
+            currentView = 3;
         }
     }
     //----------------------LOCAL DATABASE OPERATIONS---------------------------
