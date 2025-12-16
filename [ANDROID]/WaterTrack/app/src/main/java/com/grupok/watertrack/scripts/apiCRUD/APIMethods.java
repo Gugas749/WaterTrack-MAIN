@@ -11,9 +11,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.grupok.watertrack.R;
 import com.grupok.watertrack.database.entities.EnterpriseEntity;
+import com.grupok.watertrack.database.entities.MeterReadingEntity;
 import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.MeterTypeEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
+import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -336,4 +338,58 @@ public class APIMethods {
     }
     // </editor-fold>
     //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="GET READINGS BY METER ID">
+    private GetReadingsByMeterIdResponse getReadingsByMeterIdResponse;
+    private MainACReadingsContadorFrag fragGetreadings;
+    public interface GetReadingsByMeterIdResponse{
+        void onGetReadingsByMeterIdResponse(boolean response, String message, List<MeterReadingEntity> list, MainACReadingsContadorFrag frag);
+    }
+    public void setGetReadingsByMeterIdResponse(GetReadingsByMeterIdResponse listenner, MainACReadingsContadorFrag frag){
+        this.getReadingsByMeterIdResponse = listenner;
+        this.fragGetreadings = frag;
+    }
+    public void getReadingsByMeterId(Context context, int id){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/meter-readings/frommeter/"+id;
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    // login success
+                    try {
+                        List<MeterReadingEntity> list = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject reading = response.getJSONObject(i);
+                            MeterReadingEntity leituras = new MeterReadingEntity(
+                                    reading.getInt("userID"),
+                                    reading.getInt("meterID"),
+                                    reading.getInt("problemID"),
+                                    reading.getString("reading"),
+                                    reading.getString("accumulatedConsumption"),
+                                    reading.getString("date"),
+                                    reading.getString("waterPressure"),
+                                    reading.getString("desc"),
+                                    reading.getInt("readingType"),
+                                    reading.getInt("problemState")
+                            );
+                            leituras.setId(reading.getInt("id"));
+                            list.add(leituras);
+                        }
+                        Log.d("erros", "getReadingsByMeterId: list size: " + list.size());
+                        getReadingsByMeterIdResponse.onGetReadingsByMeterIdResponse(true, "", list, fragGetreadings);
+                    } catch (JSONException e) {
+                        Log.d("erros", "jsonERROR: error:"+ e.getMessage());
+                        getReadingsByMeterIdResponse.onGetReadingsByMeterIdResponse(false, context.getString(R.string.apiMethods_JsonParseError), null, fragGetreadings);
+                    }
+                },
+                error -> {
+                    getReadingsByMeterIdResponse.onGetReadingsByMeterIdResponse(false, context.getString(R.string.apiMethods_VolleyError), null, fragGetreadings);
+                }
+        );
+
+        queue.add(request);
+    }
+    // </editor-fold>
+
+
 }

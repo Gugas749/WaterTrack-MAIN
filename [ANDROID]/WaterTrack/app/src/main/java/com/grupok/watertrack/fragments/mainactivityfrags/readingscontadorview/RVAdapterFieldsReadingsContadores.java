@@ -1,6 +1,7 @@
 package com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.grupok.watertrack.R;
-import com.grupok.watertrack.database.entities.LogsContadoresEntity;
+import com.grupok.watertrack.database.entities.MeterEntity;
+import com.grupok.watertrack.database.entities.MeterReadingEntity;
+import com.grupok.watertrack.database.entities.MeterTypeEntity;
+import com.grupok.watertrack.database.entities.UserInfosEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,21 +23,52 @@ public class RVAdapterFieldsReadingsContadores extends RecyclerView.Adapter<RVAd
 
     private final Context context;
     private List<ShownFields> fieldsList;
+    private MeterEntity meterEntity;
+    private UserInfosEntity selectedUser;
 
-    public RVAdapterFieldsReadingsContadores(Context context, LogsContadoresEntity leitura) {
+    public RVAdapterFieldsReadingsContadores(Context context, MeterReadingEntity leitura, MeterEntity meterEntity, UserInfosEntity selectedUser) {
         this.context = context;
         fieldsList = new ArrayList<>();
+        this.selectedUser = selectedUser;
+        this.meterEntity = meterEntity;
         atualizarCampos(leitura);
     }
 
-    public void atualizarCampos(LogsContadoresEntity leitura) {
+    public void atualizarCampos(MeterReadingEntity leitura) {
         fieldsList.clear();
-        fieldsList.add(new ShownFields("Referencia do Contador", String.valueOf(leitura.idContador)));
-        fieldsList.add(new ShownFields("Leitura", leitura.leitura));
-        fieldsList.add(new ShownFields("Consumo Acumulado", leitura.consumoAcumulado));
-        fieldsList.add(new ShownFields("Data", leitura.data));
-        fieldsList.add(new ShownFields("Pressão da Água", leitura.pressaoAgua));
-        fieldsList.add(new ShownFields("Observações", leitura.descricao));
+
+        if (leitura == null) {
+            notifyDataSetChanged();
+            return;
+        }
+
+        fieldsList.add(new ShownFields("id", String.valueOf(leitura.id)));
+        fieldsList.add(new ShownFields("userid", selectedUser != null ? selectedUser.username : "N/A")); //TODO: FIX DA NULL
+        fieldsList.add(new ShownFields("meterid",  String.valueOf(meterEntity.id)));
+
+        String problem = "N/A";
+        switch (leitura.problemID){ //TODO: NAO SEI QUAIS OS TIPOS DE PROBLEMAS SAO
+            case 0:
+                problem = "Leitura Ausente";
+                break;
+            case 1:
+                problem = "Leitura Normal";
+                break;
+            case 2:
+                problem = "Leitura Baixa";
+                break;
+        }
+
+        fieldsList.add(new ShownFields("problemid",  problem));
+
+        fieldsList.add(new ShownFields("reading", leitura.reading));
+        fieldsList.add(new ShownFields("accumulatedConsumption", leitura.accumulatedConsumption));
+        fieldsList.add(new ShownFields("Data", leitura.date));
+        fieldsList.add(new ShownFields("waterPressure", leitura.waterPressure));
+        fieldsList.add(new ShownFields("desc", leitura.desc));
+        fieldsList.add(new ShownFields("readingType",  String.valueOf(leitura.readingType))); //TODO FAZER SWITCH NISTO?
+        fieldsList.add(new ShownFields("problemState",  String.valueOf(leitura.problemState))); //TODO FAZER SWITCH NISTO?
+
         notifyDataSetChanged();
     }
 
