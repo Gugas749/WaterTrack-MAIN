@@ -81,10 +81,23 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
     //-----------------------SETUPS-------------------------------
     private void setupReadingsButton(){
         binding.butReadingsDetailsContadorFragMainAc.setOnClickListener(v -> {
-            Bundle data = new Bundle();
-            data.putInt("contadorId", meterSelected.id);
-            data.putString("lastMeterData", new Gson().toJson(meterSelected));
-            parent.cycleFragments("ReadingsContadorFrag", data);
+            APIMethods api = new APIMethods();
+            api.setGetReadingsByMeterIdResponse((response, message, list, frag) -> {
+                if(response && list != null && !list.isEmpty()){
+                    Bundle data = new Bundle();
+                    data.putInt("contadorId", meterSelected.id);
+                    data.putString("lastMeterData", new Gson().toJson(meterSelected));
+                    parent.cycleFragments("ReadingsContadorFrag", data);
+                } else {
+                    snackBarShow.display(binding.getRoot(),
+                            "Este contador não tem leituras associadas.",
+                            -1, 1,
+                            binding.butReadingsDetailsContadorFragMainAc,
+                            context);
+                }
+            }, null);
+
+            api.getReadingsByMeterId(context, meterSelected.id);
         });
     }
     private void setupReportsButton(){

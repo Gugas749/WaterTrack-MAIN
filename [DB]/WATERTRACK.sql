@@ -1,5 +1,13 @@
-CREATE DATABASE  IF NOT EXISTS `watertrack` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `watertrack`;
+-- CRIAR DATABASE 'watertrack'
+-- E COLOCAR ISTO LA DENTRO
+--
+--
+--
+-- SEM SCHEMA
+--
+--
+--
+--
 -- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
 -- Host: localhost    Database: watertrack
@@ -40,7 +48,7 @@ CREATE TABLE `auth_assignment` (
 
 LOCK TABLES `auth_assignment` WRITE;
 /*!40000 ALTER TABLE `auth_assignment` DISABLE KEYS */;
-INSERT INTO `auth_assignment` VALUES ('admin','1',NULL),('resident','10',1763054566);
+INSERT INTO `auth_assignment` VALUES ('admin','1',NULL),('resident','10',1763054566),('resident','11',1763485486),('resident','13',1763507717),('resident','14',1763733463),('resident','17',1764341588),('resident','18',1764341604),('technician','12',1763507683);
 /*!40000 ALTER TABLE `auth_assignment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,7 +261,7 @@ CREATE TABLE `meterreading` (
   CONSTRAINT `fk_meterReading_meter` FOREIGN KEY (`meterID`) REFERENCES `meter` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_meterReading_meterProblem` FOREIGN KEY (`problemID`) REFERENCES `meterproblem` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_meterReading_user` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +270,7 @@ CREATE TABLE `meterreading` (
 
 LOCK TABLES `meterreading` WRITE;
 /*!40000 ALTER TABLE `meterreading` DISABLE KEYS */;
-INSERT INTO `meterreading` VALUES (1,1,3,1,'1000','1000','2025-09-10','100','leitura',0,0);
+INSERT INTO `meterreading` VALUES (1,1,3,1,'1000','1000','2025-09-10','100','leitura',0,0),(2,1,4,1,'100000','23045','0000-00-00','54','leitura',0,0),(3,1,3,1,'2391','2183','0000-00-00','156','leitura',1,0);
 /*!40000 ALTER TABLE `meterreading` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -331,7 +339,7 @@ CREATE TABLE `technicianinfo` (
   KEY `idx_enterprise_id` (`enterpriseID`),
   CONSTRAINT `fk_technicianinfo_enterprise` FOREIGN KEY (`enterpriseID`) REFERENCES `enterprise` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_technicianinfo_user` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -340,7 +348,7 @@ CREATE TABLE `technicianinfo` (
 
 LOCK TABLES `technicianinfo` WRITE;
 /*!40000 ALTER TABLE `technicianinfo` DISABLE KEYS */;
-INSERT INTO `technicianinfo` VALUES (1,1,1,'123456789');
+INSERT INTO `technicianinfo` VALUES (1,1,1,'123456789'),(2,8,1,'1234567890'),(3,12,1,'123456789'),(4,10,1,'1234567890');
 /*!40000 ALTER TABLE `technicianinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -366,7 +374,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `password_reset_token` (`password_reset_token`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -375,7 +383,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','ciOgYMRWd5Bj1kFjuDqqKM0tuOLH2a_p','$2y$13$4XRzxuE4BeIZSrolUqGiDe.DVBhd0P0EM.KFa9F7wE3eWYUPXRW76',NULL,'admin@example.com',10,1761144963,1761144963,'O699eNwy857kQqgmD5LxUJIJoVDqfUbT_1761144963'),(2,'morador','YCf36yVba0tnI_awSXzlh_i_Rfp8fl-9','$2y$13$LfA/9PoXM7HpCicYNQB.l.M/lue8daEJBqMVyl0FH2.pekob/ia02',NULL,'morador@example.com',9,1762182667,1762182667,'cRhvNdlomdSrXuOHE-aIQNZJxI5ADFdx_1762182667'),(3,'teste','BE5_yx9XydKnDS3wgJQSFeqVNqjTZLff','$2y$13$wm5nITGZe.IeifNqDLz3SO.OOPSlnzxAMPtKhjQy1DIprZZxThzzO',NULL,'teste@example.com',9,1762265684,1762265684,'9RSv6_cv2NEOrQRtUJOfyS138tprOanY_1762265684'),(4,'teste2','6uDjNt67AUmGtlzNk7JQdyEZTNZ3nLxa','$2y$13$lpeHlyuG./lknG8ovk62RumKojDCzqHqZm0Pz1vhfkfR8uYZH/cOO',NULL,'teste2@example.com',9,1762265911,1762265911,'Bb0b_os6m_4Wk5OIfIh-7JgI2LI8mq0-_1762265911'),(5,'tsete3','KPdKX4YpqhDoU5FOKMFC3yzwfkgRdhHd','$2y$13$xGRMnRtaOR38qS0H45qs5.BZ8ilivip1uEUDDCiq0E.hmlY3kZ7IK',NULL,'teste3@example.com',9,1762265942,1762265942,'ZMZtjv3UxomWlqoZJuh0n_AxLG1qc2VG_1762265942'),(6,'teste4','Wiq3-5607uvXgl_TpX9pqPyCLdjw9aOR','$2y$13$XShrb9KkWHSqa534akr7Y.tGUGnzwzf2veE22qkCGaMMJ9OWw2giS',NULL,'teste4@example.com',9,1762266168,1762266168,'OE3hwOXQ1ZtSYINOIpIcGFS63NG4pf1R_1762266168'),(7,'teste5','u65kL5IWf5wSRruZKwov8BwY0GioD1Zy','$2y$13$OijtH188QvUNWoZxzEG6iuvTHOueuHL0bgMGsPKUuS7tt0v/WgdH6',NULL,'teste5@example.com',9,1762266493,1762266493,'XFSZzp4CDJ4Z--GpppRZBdsKfmPFGtcC_1762266493'),(8,'tsete6','3pXLOJJKsrlkjbOgzAhKD3pnjw4zCs19','$2y$13$yp77.gFJO9Y3sjj3.tawFu9o61LMfYFYYy9mCMqhSzD9kPGlDZUBW',NULL,'teste6@example.com',9,1762266568,1762266568,'wvwUNftL8tETKEpzPbPsGyZ_HhLygKrY_1762266568'),(9,'teste7','PPHgGE6QtPiHfZMDOUdXFtf9q6dS_Vc6','$2y$13$1yhPCGoiS/1TqI1v9BJ2FOynct.L2WuftLDB.yo9sKOGTpJrxa3Mi',NULL,'teste7@example.com',9,1762266602,1762266602,'ivMqWyJwvCA3URjHBR-5BWO8a2WJkAJa_1762266602'),(10,'rbacteste','yv1sqlCai-RsD-drRkVHpVfKPBdMcfum','$2y$13$3wjpcvV5rV6q1osrVoXlTOaV3fe6ef6TOpTll27n6iY7d4G/N1DLa',NULL,'rbacteste@gmail.com',9,1763054566,1763054566,'R4PwR3zOopeqdnUQwQGkxrUBkWvOT9mh_1763054566');
+INSERT INTO `user` VALUES (1,'admin','ciOgYMRWd5Bj1kFjuDqqKM0tuOLH2a_p','$2y$13$4XRzxuE4BeIZSrolUqGiDe.DVBhd0P0EM.KFa9F7wE3eWYUPXRW76',NULL,'admin@example.com',10,1761144963,1765472149,'O699eNwy857kQqgmD5LxUJIJoVDqfUbT_1761144963'),(2,'morador','YCf36yVba0tnI_awSXzlh_i_Rfp8fl-9','$2y$13$LfA/9PoXM7HpCicYNQB.l.M/lue8daEJBqMVyl0FH2.pekob/ia02',NULL,'morador@example.com',9,1762182667,1762182667,'cRhvNdlomdSrXuOHE-aIQNZJxI5ADFdx_1762182667'),(3,'teste','BE5_yx9XydKnDS3wgJQSFeqVNqjTZLff','$2y$13$wm5nITGZe.IeifNqDLz3SO.OOPSlnzxAMPtKhjQy1DIprZZxThzzO',NULL,'teste@example.com',9,1762265684,1762265684,'9RSv6_cv2NEOrQRtUJOfyS138tprOanY_1762265684'),(4,'teste2','6uDjNt67AUmGtlzNk7JQdyEZTNZ3nLxa','$2y$13$lpeHlyuG./lknG8ovk62RumKojDCzqHqZm0Pz1vhfkfR8uYZH/cOO',NULL,'teste2@example.com',9,1762265911,1762265911,'Bb0b_os6m_4Wk5OIfIh-7JgI2LI8mq0-_1762265911'),(5,'tsete3','KPdKX4YpqhDoU5FOKMFC3yzwfkgRdhHd','$2y$13$xGRMnRtaOR38qS0H45qs5.BZ8ilivip1uEUDDCiq0E.hmlY3kZ7IK',NULL,'teste3@example.com',9,1762265942,1762265942,'ZMZtjv3UxomWlqoZJuh0n_AxLG1qc2VG_1762265942'),(6,'teste4','Wiq3-5607uvXgl_TpX9pqPyCLdjw9aOR','$2y$13$XShrb9KkWHSqa534akr7Y.tGUGnzwzf2veE22qkCGaMMJ9OWw2giS',NULL,'teste4@example.com',9,1762266168,1762266168,'OE3hwOXQ1ZtSYINOIpIcGFS63NG4pf1R_1762266168'),(7,'teste5','u65kL5IWf5wSRruZKwov8BwY0GioD1Zy','$2y$13$OijtH188QvUNWoZxzEG6iuvTHOueuHL0bgMGsPKUuS7tt0v/WgdH6',NULL,'teste5@example.com',9,1762266493,1762266493,'XFSZzp4CDJ4Z--GpppRZBdsKfmPFGtcC_1762266493'),(8,'tsete6','3pXLOJJKsrlkjbOgzAhKD3pnjw4zCs19','$2y$13$yp77.gFJO9Y3sjj3.tawFu9o61LMfYFYYy9mCMqhSzD9kPGlDZUBW',NULL,'teste6@example.com',10,1762266568,1763507336,'wvwUNftL8tETKEpzPbPsGyZ_HhLygKrY_1762266568'),(9,'teste7','PPHgGE6QtPiHfZMDOUdXFtf9q6dS_Vc6','$2y$13$1yhPCGoiS/1TqI1v9BJ2FOynct.L2WuftLDB.yo9sKOGTpJrxa3Mi',NULL,'teste7@example.com',9,1762266602,1762266602,'ivMqWyJwvCA3URjHBR-5BWO8a2WJkAJa_1762266602'),(10,'rbacteste','yv1sqlCai-RsD-drRkVHpVfKPBdMcfum','$2y$13$3wjpcvV5rV6q1osrVoXlTOaV3fe6ef6TOpTll27n6iY7d4G/N1DLa',NULL,'rbacteste@gmail.com',9,1763054566,1765472404,'R4PwR3zOopeqdnUQwQGkxrUBkWvOT9mh_1763054566'),(11,'inactiveuser','JS696qmoZMZqwMJ6wr6MBYxQVezt3EPm','$2y$13$UCTTuEQMZgkFoBUxdCcjGOookNBG6Q2U2I1R8UhGwLblm3e57eKba',NULL,'inactiveuser@example.com',9,1763485486,1763485486,'XBgRPm54u2t4-sLrPgZyV00Ep_fv1qyk_1763485486'),(12,'teste10','nq2k2_z1EMFRFDCP3_IFVgtdnBIkuMzk','$2y$13$dRMlZC0sMMAjcoVSFugv4Oen59GeryJRoYkIewbMKIDOHpddZiO8i',NULL,'teste10@example.com',9,1763507683,1763507683,'9aq8AdBTSsUyJ12wsHW9tsUYGyLocMFn_1763507683'),(13,'teste11','w6_q44R_3IzpkmExWL3j5a6-9ncru35m','$2y$13$0y68sqm.elP54DZSl/eM5uJMI6PjHQiepjNn9SIlAAgNx3MXYkEqG',NULL,'teste11@example.com',9,1763507717,1763507717,'8XGXoPpIMm7A1Em5YgWHep0gXDyKfA3W_1763507717'),(14,'example4','WYK3FOglPmxlTmfVTmJ2bwVj0kv9mN0I','$2y$13$XCaUdm7yzjmWeMPJOXvm2Oj5WP..h4l2RD7SSkH4hswTYOFIqg4HG',NULL,'example4@example.com',10,1763733463,1763733463,'gTiFtWa4nrthMLPbBrv5wVVZM-OTiwxY_1763733463'),(17,'testeApiSignup','f5Mk_Tu0Us6bXx8rEAYop44CTcNQnIvc','$2y$13$529jo9W6O1ioYdMx6z4ULu6dkp4nvvMrLmjbdZoCUQtmXLhxkaciK',NULL,'testeApiSignup@example.pt',9,1764341588,1764341588,'SbTRpV0F4iLbqZfpMcW_I2fbrSBNYi8G_1764341588'),(18,'testeApiSignup2','NngOfjL7EelIolMdMXy0DE15xq-3weUS','$2y$13$zgCxCOCmhddjnKnROSmzWuPIkOkIUep.XcmNRLANki.LMxCb9blpq',NULL,'testeApiSignup2@example.pt',9,1764341604,1764341604,'wXFs3uKICuJnb43JV6i1MDOlLfzlfw8Z_1764341604');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -391,11 +399,12 @@ CREATE TABLE `userprofile` (
   `birthDate` date NOT NULL,
   `address` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `userID` int NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userID` (`userID`),
   KEY `idx_user_id` (`userID`),
   CONSTRAINT `fk_userprofile_user` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -404,7 +413,7 @@ CREATE TABLE `userprofile` (
 
 LOCK TABLES `userprofile` WRITE;
 /*!40000 ALTER TABLE `userprofile` DISABLE KEYS */;
-INSERT INTO `userprofile` VALUES (1,'2000-01-01','Rua dos ADMS',1),(2,'2000-01-01','N/A',8),(3,'2000-01-01','N/A',9),(4,'2000-01-01','N/A',10);
+INSERT INTO `userprofile` VALUES (1,'2000-01-01','Rua dos ADMS',1,NULL),(2,'2000-01-01','N/A',8,'N/A'),(3,'2000-01-01','N/A',9,NULL),(4,'2000-01-01','N/A',10,'N/A'),(5,'2000-01-01','N/A',11,NULL),(6,'2020-01-01','rua teste',12,'teste10'),(7,'2020-01-01','rua teste',13,'teste11'),(8,'2000-01-01','N/A',14,NULL),(9,'2000-01-01','N/A',17,'N/A'),(10,'2000-01-01','N/A',18,'N/A');
 /*!40000 ALTER TABLE `userprofile` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -417,4 +426,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-14 14:20:50
+-- Dump completed on 2025-12-11 17:09:23

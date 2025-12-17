@@ -68,7 +68,7 @@ public class RVAdapterFieldsDetailsContadores extends RecyclerView.Adapter<RVAda
                 status = "Com Problema";
                 break;
         }
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Estado do Contador", status));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Estado do Contador", status)); //TODO STRING
         notifyDataSetChanged();
     }
 
