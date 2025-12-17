@@ -8,11 +8,14 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.grupok.watertrack.R;
 import com.grupok.watertrack.database.entities.MeterReadingEntity;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class RVAdapterReadingsACReadingsContadores
@@ -20,7 +23,7 @@ public class RVAdapterReadingsACReadingsContadores
 
     private final Context context;
     private List<MeterReadingEntity> readingsEntities;
-    private int selectedPosition = -1; // Nenhuma selecionada por defeito
+    private int selectedPosition = -1;
     private OnSelectionChangedListener listener;
 
     public interface OnSelectionChangedListener {
@@ -46,15 +49,27 @@ public class RVAdapterReadingsACReadingsContadores
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         MeterReadingEntity leitura = readingsEntities.get(position);
-        holder.data.setText(leitura.date);
+
+        //PARA FORMATAR A DATA (yyyy-mm-dd PARA dd-mm-yyyy)
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate date = LocalDate.parse(leitura.date, inputFormatter);
+        holder.data.setText(date.format(outputFormatter));
 
         holder.radioButton.setChecked(position == selectedPosition);
 
-        holder.radioButton.setOnClickListener(v -> {
+        holder.cardView.setOnClickListener(v -> {
+            int oldPosition = selectedPosition;
             selectedPosition = holder.getAdapterPosition();
-            notifyDataSetChanged();
-            if (listener != null) {
+
+            if (oldPosition != RecyclerView.NO_POSITION) {
+                notifyItemChanged(oldPosition);
+            }
+            notifyItemChanged(selectedPosition);
+
+            if (listener != null && selectedPosition != RecyclerView.NO_POSITION) {
                 listener.onSelectionChanged(readingsEntities.get(selectedPosition));
             }
         });
@@ -64,20 +79,17 @@ public class RVAdapterReadingsACReadingsContadores
     public int getItemCount() {
         return readingsEntities == null ? 0 : readingsEntities.size();
     }
-
-    public MeterReadingEntity getSelectedReading() {
-        if (selectedPosition != -1) return readingsEntities.get(selectedPosition);
-        return null;
-    }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         RadioButton radioButton;
         TextView data;
+        CardView cardView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             radioButton = itemView.findViewById(R.id.radioData_rvRowReadings_ReadingsContadores);
             data = itemView.findViewById(R.id.textView_Data_rvRowReadings_ReadingsContadores);
+            cardView = itemView.findViewById(R.id.cardView_Holder_rvRowReadings_ReadingsContadores);
         }
     }
+
 }

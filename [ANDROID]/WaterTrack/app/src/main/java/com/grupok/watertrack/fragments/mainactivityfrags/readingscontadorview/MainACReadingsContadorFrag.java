@@ -2,6 +2,7 @@ package com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,9 @@ public class MainACReadingsContadorFrag extends Fragment implements APIMethods.G
     private int contadorId;
 
     //----------------------------//
-    private boolean userResponse = false;
-    private boolean typeResponse = false;
+    private boolean userLoaded = false;
+    private boolean readingsLoaded = false;
+
     private UserInfosEntity selectedUser;
     //----------------------------//
     public SnackBarShow snackBarShow = new SnackBarShow();
@@ -61,18 +63,23 @@ public class MainACReadingsContadorFrag extends Fragment implements APIMethods.G
     }
 
     private void init() {
-        binding.loadingViewReadingsContadorFragMainAc.setVisibility(View.GONE);
+        context = getContext();
 
-        if (meterReadingEntities.isEmpty()) {
-            binding.textViewEmptyFields.setVisibility(View.VISIBLE);
-            binding.textViewEmptyFields.setText("Este contador não tem leituras.");
-        } else {
-            binding.textViewEmptyFields.setVisibility(View.VISIBLE);
-            setupRVView();
-        }
+        actionLoadRV();
     }
 
-    private void setupRVView() {
+    private void actionLoadRV(){
+        binding.loadingViewReadingsContadorFragMainAc.setVisibility(View.VISIBLE);
+        binding.textViewEmptyFields.setVisibility(View.VISIBLE);
+
+        APIMethods apiMethods = new APIMethods();
+        apiMethods.getUserById(context, meterSelected.userID);
+        apiMethods.setGetUserByIdResponse(this);
+    }
+
+    private void finalLoadRV() {
+        binding.loadingViewReadingsContadorFragMainAc.setVisibility(View.GONE);
+
         readingsAdapter = new RVAdapterReadingsACReadingsContadores(context, meterReadingEntities);
         readingsAdapter.setOnSelectionChangedListener(selectedReading -> {
             if (selectedReading != null) {
@@ -92,20 +99,27 @@ public class MainACReadingsContadorFrag extends Fragment implements APIMethods.G
     }
     public void setMeterReadings(List<MeterReadingEntity> list) {
         this.meterReadingEntities = list;
-
-        if (binding != null) {
-            setupRVView();
+        readingsLoaded = true;
+        if(userLoaded){
+            finalLoadRV();
         }
     }
     public void onGetUserByIdResponse(boolean response, String message, UserInfosEntity user) {
-        if(response){
-            userResponse = true;
+        if (response) {
             selectedUser = user;
-            if(typeResponse && userResponse){
-                setupRVView();
+            userLoaded = true;
+            if(readingsLoaded){
+                finalLoadRV();
             }
-        }else{
-            snackBarShow.display(binding.getRoot(), getString(R.string.apiMethods_VolleyError), -1, 1, binding.snackbarViewReadingsContadorFrag, context);
+        } else {
+            snackBarShow.display(
+                    binding.getRoot(),
+                    getString(R.string.apiMethods_VolleyError),
+                    -1,
+                    1,
+                    binding.snackbarViewReadingsContadorFrag,
+                    context
+            );
         }
     }
 }

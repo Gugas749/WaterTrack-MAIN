@@ -16,6 +16,8 @@ import com.grupok.watertrack.database.entities.MeterReadingEntity;
 import com.grupok.watertrack.database.entities.MeterTypeEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,27 +45,32 @@ public class RVAdapterFieldsReadingsContadores extends RecyclerView.Adapter<RVAd
         }
 
         fieldsList.add(new ShownFields("id", String.valueOf(leitura.id)));
-        fieldsList.add(new ShownFields("userid", selectedUser != null ? selectedUser.username : "N/A")); //TODO: FIX DA NULL
+        fieldsList.add(new ShownFields("userid", selectedUser.username));
         fieldsList.add(new ShownFields("meterid",  String.valueOf(meterEntity.id)));
 
-        String problem = "N/A";
+        String stringProblem = "N/A";
         switch (leitura.problemID){ //TODO: NAO SEI QUAIS OS TIPOS DE PROBLEMAS SAO
             case 0:
-                problem = "Leitura Ausente";
+                stringProblem = "Leitura Ausente";
                 break;
             case 1:
-                problem = "Leitura Normal";
+                stringProblem = "Leitura Normal";
                 break;
             case 2:
-                problem = "Leitura Baixa";
+                stringProblem = "Leitura Baixa";
                 break;
         }
 
-        fieldsList.add(new ShownFields("problemid",  problem));
-
+        fieldsList.add(new ShownFields("problemid",  stringProblem));
         fieldsList.add(new ShownFields("reading", leitura.reading));
         fieldsList.add(new ShownFields("accumulatedConsumption", leitura.accumulatedConsumption));
-        fieldsList.add(new ShownFields("Data", leitura.date));
+
+        //PARA FORMATAR A DATA (yyyy-mm-dd PARA dd-mm-yyyy) //TODO: TROCAR QUANDO FOR TROCADO NO BACKEND
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate date = LocalDate.parse(leitura.date, inputFormatter);
+        fieldsList.add(new ShownFields("Data", date.format(outputFormatter)));
+
         fieldsList.add(new ShownFields("waterPressure", leitura.waterPressure));
         fieldsList.add(new ShownFields("desc", leitura.desc));
         fieldsList.add(new ShownFields("readingType",  String.valueOf(leitura.readingType))); //TODO FAZER SWITCH NISTO?

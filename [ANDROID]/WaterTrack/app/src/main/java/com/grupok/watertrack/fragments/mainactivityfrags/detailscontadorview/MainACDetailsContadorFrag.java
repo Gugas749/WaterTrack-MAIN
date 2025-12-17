@@ -158,7 +158,7 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
         if(response){
             userResponse = true;
             selectedUser = user;
-            if(enterpriseResponse && typeResponse && userResponse){
+            if(enterpriseResponse && typeResponse){
                 finalLoadRV();
             }
         }else{
@@ -170,7 +170,7 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
         if(response){
             typeResponse = true;
             selectedType = type;
-            if(enterpriseResponse && typeResponse && userResponse){
+            if(enterpriseResponse && userResponse){
                 finalLoadRV();
             }
         }else{
