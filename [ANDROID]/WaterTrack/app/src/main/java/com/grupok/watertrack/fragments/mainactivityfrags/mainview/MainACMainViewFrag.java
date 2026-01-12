@@ -203,7 +203,7 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
                 break;
             case 2:
                 for (MeterEntity contador : contadoresEntityList) {
-                    if(contador.nome.toLowerCase().contains(text.toLowerCase())){
+                    if(contador.address.toLowerCase().contains(text.toLowerCase())){
                         filtered.add(contador);
                     }
                 }

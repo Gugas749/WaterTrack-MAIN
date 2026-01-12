@@ -44,38 +44,19 @@ public class RVAdapterFieldsReadingsContadores extends RecyclerView.Adapter<RVAd
             return;
         }
 
-        fieldsList.add(new ShownFields("id", String.valueOf(leitura.id)));
-        fieldsList.add(new ShownFields("userid", selectedUser.username));
-        fieldsList.add(new ShownFields("meterid",  String.valueOf(meterEntity.id)));
+        fieldsList.add(new ShownFields(context.getString(R.string.mainActivity_ReadingsContadorFrag_RV_fieldsList_ID), String.valueOf(leitura.id)));
+        fieldsList.add(new ShownFields(context.getString(R.string.mainActivity_ReadingsContadorFrag_RV_fieldsList_Creator), String.valueOf(leitura.tecnicoID))); // TODO: METER O USERNAME DO TECNICO QUE FEZ A LEITURA
+        fieldsList.add(new ShownFields(context.getString(R.string.mainActivity_ReadingsContadorFrag_RV_fieldsList_AdressContador),  String.valueOf(meterEntity.address)));
+        fieldsList.add(new ShownFields(context.getString(R.string.mainActivity_ReadingsContadorFrag_RV_fieldsList_Reading), leitura.reading));
+        fieldsList.add(new ShownFields(context.getString(R.string.mainActivity_ReadingsContadorFrag_RV_fieldsList_AccumulatedConsumption), leitura.accumulatedConsumption));
 
-        String stringProblem = "N/A";
-        switch (leitura.problemID){ //TODO: NAO SEI QUAIS OS TIPOS DE PROBLEMAS SAO
-            case 0:
-                stringProblem = "Leitura Ausente";
-                break;
-            case 1:
-                stringProblem = "Leitura Normal";
-                break;
-            case 2:
-                stringProblem = "Leitura Baixa";
-                break;
-        }
-
-        fieldsList.add(new ShownFields("problemid",  stringProblem));
-        fieldsList.add(new ShownFields("reading", leitura.reading));
-        fieldsList.add(new ShownFields("accumulatedConsumption", leitura.accumulatedConsumption));
-
-        //PARA FORMATAR A DATA (yyyy-mm-dd PARA dd-mm-yyyy) //TODO: TROCAR QUANDO FOR TROCADO NO BACKEND
+        //PARA FORMATAR A DATA (yyyy-mm-dd PARA dd-mm-yyyy) //TODO: FAZER UM SCRIPT GLOBAL PRA NAO TAR SEMPRE A REPETIR CODIGO
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate date = LocalDate.parse(leitura.date, inputFormatter);
-        fieldsList.add(new ShownFields("Data", date.format(outputFormatter)));
+        fieldsList.add(new ShownFields(context.getString(R.string.mainActivity_ReadingsContadorFrag_RV_fieldsList_Date), date.format(outputFormatter)));
 
-        fieldsList.add(new ShownFields("waterPressure", leitura.waterPressure));
-        fieldsList.add(new ShownFields("desc", leitura.desc));
-        fieldsList.add(new ShownFields("readingType",  String.valueOf(leitura.readingType))); //TODO FAZER SWITCH NISTO?
-        fieldsList.add(new ShownFields("problemState",  String.valueOf(leitura.problemState))); //TODO FAZER SWITCH NISTO?
-
+        fieldsList.add(new ShownFields(context.getString(R.string.mainActivity_ReadingsContadorFrag_RV_fieldsList_WaterPressure), leitura.waterPressure));
         notifyDataSetChanged();
     }
 

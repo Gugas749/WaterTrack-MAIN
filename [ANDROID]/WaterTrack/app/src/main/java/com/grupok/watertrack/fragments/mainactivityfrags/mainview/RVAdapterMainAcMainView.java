@@ -68,7 +68,6 @@ public class RVAdapterMainAcMainView extends RecyclerView.Adapter<RVAdapterMainA
         final MeterEntity contadorSelected = contadoresEntityList.get(position);
         if(contadorSelected != null){
             if(classeUser == 1){
-                holder.textViewNameOrAddress.setText(contadorSelected.nome);
                 holder.textViewAddressOrId.setText(contadorSelected.address);
             }else{
                 holder.textViewNameOrAddress.setText(contadorSelected.address);

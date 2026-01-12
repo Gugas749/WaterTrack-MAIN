@@ -207,7 +207,7 @@ public class APIMethods {
                         List<MeterEntity> list = new ArrayList<>();
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject meter = response.getJSONObject(i);
-                            MeterEntity contador = new MeterEntity("N/A",
+                            MeterEntity contador = new MeterEntity(
                                     meter.getString("address"),
                                     meter.getInt("userID"),
                                     meter.getInt("meterTypeID"),
@@ -361,16 +361,12 @@ public class APIMethods {
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject reading = response.getJSONObject(i);
                             MeterReadingEntity leituras = new MeterReadingEntity(
-                                    reading.getInt("userID"),
+                                    reading.getInt("tecnicoID"),
                                     reading.getInt("meterID"),
-                                    reading.getInt("problemID"),
                                     reading.getString("reading"),
                                     reading.getString("accumulatedConsumption"),
                                     reading.getString("date"),
-                                    reading.getString("waterPressure"),
-                                    reading.getString("desc"),
-                                    reading.getInt("readingType"),
-                                    reading.getInt("problemState")
+                                    reading.getString("waterPressure")
                             );
                             leituras.setId(reading.getInt("id"));
                             list.add(leituras);

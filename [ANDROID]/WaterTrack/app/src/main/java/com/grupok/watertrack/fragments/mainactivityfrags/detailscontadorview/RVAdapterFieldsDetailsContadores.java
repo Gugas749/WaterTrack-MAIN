@@ -33,31 +33,31 @@ public class RVAdapterFieldsDetailsContadores extends RecyclerView.Adapter<RVAda
         void onBackupsItemClick(MeterEntity contador);
     }
 
-    public RVAdapterFieldsDetailsContadores(Context context, MeterEntity leitura, MeterTypeEntity selectedType, UserInfosEntity selectedUser, EnterpriseEntity selectedEnterprise) {
+    public RVAdapterFieldsDetailsContadores(Context context, MeterEntity meterEntity, MeterTypeEntity selectedType, UserInfosEntity selectedUser, EnterpriseEntity selectedEnterprise) {
         this.context = context;
         this.selectedUser = selectedUser;
         this.selectedType = selectedType;
         this.selectedEnterprise = selectedEnterprise;
         fieldsList = new ArrayList<>();
-        atualizarCampos(leitura);
+        atualizarCampos(meterEntity);
     }
 
-    public void atualizarCampos(MeterEntity leitura) {
+    public void atualizarCampos(MeterEntity meterEntity) {
         fieldsList.clear();
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_Name), leitura.nome));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_Address), leitura.address));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_ID), String.valueOf(meterEntity.id)));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_Address), meterEntity.address));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_Username), selectedUser.username));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_Description), selectedType.description));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_EnterpriseName), selectedEnterprise.name));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_Classe), leitura.classe));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_InstalationDate), leitura.instalationDate));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_ShutdownDate), leitura.shutdownDate));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_MaxCapacity), leitura.maxCapacity));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_MeasureUnity), leitura.measureUnity));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_SupportedTemperature), leitura.supportedTemperature));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_Classe), meterEntity.classe));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_InstalationDate), meterEntity.instalationDate));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_ShutdownDate), meterEntity.shutdownDate));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_MaxCapacity), meterEntity.maxCapacity));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_MeasureUnity), meterEntity.measureUnity));
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_SupportedTemperature), meterEntity.supportedTemperature));
 
         String status = "N/A";
-        switch (leitura.state){
+        switch (meterEntity.state){
             case 0:
                 status = "Desativado";
                 break;

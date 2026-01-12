@@ -27,7 +27,6 @@ public class MainACReportFrag extends Fragment {
     private List<MeterEntity> contadoresEntityList;
     private List<String> listString = new ArrayList<>();
     private int contadorId;
-    private String contadorNome;
     private String contadorMorada;
 
     public MainACReportFrag() {
@@ -50,7 +49,6 @@ public class MainACReportFrag extends Fragment {
         if (contadoresEntityList != null && contadorId != -1) {
             for (MeterEntity c : contadoresEntityList) {
                 if (c.id == contadorId) {
-                    contadorNome = c.nome;
                     contadorMorada = c.address;
                     break;
                 }
@@ -161,9 +159,7 @@ public class MainACReportFrag extends Fragment {
 
         } else if (cargo == 0) { // morador
             if (contadorId != -1) {
-                String texto = "" + contadorId;
-                if (!contadorNome.isEmpty()) texto += " — " + contadorNome;
-                binding.comboBoxMeterReportFragMainAc.setText(texto);
+                binding.comboBoxMeterReportFragMainAc.setText(contadorId);
             }
             Toast.makeText(requireContext(), "Morador", Toast.LENGTH_SHORT).show();
         }
@@ -185,8 +181,7 @@ public class MainACReportFrag extends Fragment {
         private static List<String> buildStringList(List<MeterEntity> list) {
             List<String> result = new ArrayList<>();
             for (MeterEntity c : list) {
-                String texto = c.id + " — " + c.nome + " (" + c.address + ")";
-                result.add(texto);
+                result.add(c.address);
             }
             return result;
         }
@@ -203,9 +198,8 @@ public class MainACReportFrag extends Fragment {
                         String query = constraint.toString().toLowerCase(Locale.ROOT);
                         for (MeterEntity c : originalList) {
                             if (String.valueOf(c.id).contains(query) ||
-                                    c.nome.toLowerCase(Locale.ROOT).contains(query) ||
                                     c.address.toLowerCase(Locale.ROOT).contains(query)) {
-                                filtered.add(c.id + " — " + c.nome + " (" + c.address + ")");
+                                filtered.add(c.id + " — " + " (" + c.address + ")");
                             }
                         }
                     }

@@ -89,7 +89,7 @@
     <string name="mainActivity_DetailsContadorFrag_infoRow_Contador_Name">Meter</string>
     <string name="mainActivity_DetailsContadorFrag_infoRow_Contador_Address">Meter</string>
     <!-- MAIN ACTIVITY | DETAILS CONTADOR | RV-->
-    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Name">Counter Name</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_ID">Reference</string>
     <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Address">Counter Address</string>
     <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Username">Resident</string>
     <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Description">Type</string>
@@ -108,6 +108,25 @@
     <string name="mainActivity_ReportFrag_ComboBox_Problem">Problem</string>
     <string name="mainActivity_ReportFrag_TextField_Description">Description</string>
     <string name="mainActivity_ReportFrag_TextField_Other_Problem">Other</string>
+
+
+    <!-- MAIN ACTIVITY | READINGS DO CONTADOR | RV-->
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_ID">Reference</string>
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_Creator">Creator</string>
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_AdressContador">Meter Address</string>
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_Reading">Reading</string>
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_AccumulatedConsumption">Accumulated Consumption</string>
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_Date">Date</string>
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_WaterPressure">WaterPressure</string>
+
+
+
+
+
+
+
+
+
 
     <!-- API METHODS -->
     <string name="apiMethods_JsonParseError">JSON PARSE ERROR</string>

@@ -12,9 +12,6 @@ public class MeterEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    @ColumnInfo(name = "nome")
-    public String nome;
-
     @ColumnInfo(name = "address")
     public String address;
 
@@ -47,8 +44,7 @@ public class MeterEntity {
     @ColumnInfo(name = "state")
     public int state;
 
-    public MeterEntity(String nome, String address, int userID, int meterTypeID, int enterpriseID, String classe, String instalationDate, String shutdownDate, String maxCapacity, String measureUnity, String supportedTemperature, int state) {
-        this.nome = nome;
+    public MeterEntity(String address, int userID, int meterTypeID, int enterpriseID, String classe, String instalationDate, String shutdownDate, String maxCapacity, String measureUnity, String supportedTemperature, int state) {
         this.address = address;
         this.userID = userID;
         this.meterTypeID = meterTypeID;
