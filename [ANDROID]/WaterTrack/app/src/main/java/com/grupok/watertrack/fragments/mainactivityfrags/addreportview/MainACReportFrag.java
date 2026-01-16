@@ -140,7 +140,7 @@ public class MainACReportFrag extends Fragment {
     }
 
     private void setupUserType(int cargo) {
-        if (cargo == 1) { // técnico
+        if (cargo == 1 || cargo == 2) { // técnico
             if (contadorId != -1) {
                 // Se veio um contador no bundle → mostra-o
                 String texto = "" + contadorId;

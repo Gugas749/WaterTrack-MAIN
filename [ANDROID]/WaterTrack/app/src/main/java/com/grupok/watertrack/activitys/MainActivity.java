@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements
         CustomAlertDialogFragment.ConfirmButtonClickAlertDialogQuestionFrag,
         CustomAlertDialogFragment.CancelButtonClickAlertDialogQuestionFrag,
         APIMethods.GetMetersResponse,
-        APIMethods.GetReadingsByMeterIdResponse {
+        APIMethods.GetReadingsByMeterIdResponse,
+        APIMethods.GetUserRoleResponse{
 
     private ActivityMainBinding binding;
     private MainActivity parent;
@@ -112,8 +113,13 @@ public class MainActivity extends AppCompatActivity implements
         cycleFragments("MainViewFrag", null);
 
         setupLocalDataBase();
+
+        APIMethods apiMethods = new APIMethods();
+        apiMethods.getUserRole(this, currentUserInfo);
+        apiMethods.setGetUserRoleResponse(this);
     }
-    //----------------------SETUPS---------------------------
+
+    // <editor-fold desc="SETUPS">
     private void setupLocalDataBase(){
         localDataBase = Room.databaseBuilder(getApplicationContext(), LocalDataBase.class, "WaterTrackLocalDB").build();
         logsContadoresDao = localDataBase.logsContadoresDao();
@@ -159,7 +165,9 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
     }
-    //----------------------SIDE MENU---------------------------
+    // </editor-fold>
+
+    // <editor-fold desc="SIDE MENU">
     private void setupSideMenu(){
         //-------------menu---------------------
         drawerToggleSideMenu = new ActionBarDrawerToggle(this,binding.drawerLayoutMainAcSideMenu,R.string.general_continue,R.string.general_cancel);
@@ -215,7 +223,9 @@ public class MainActivity extends AppCompatActivity implements
             binding.drawerLayoutMainAcSideMenu.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }
-    //----------------------FUNCTIONS---------------------------
+    // </editor-fold>
+
+    // <editor-fold desc="FUNCTIONS">
     private void disableBackPressed(){
         binding.getRoot().setFocusableInTouchMode(true);
         binding.getRoot().requestFocus();
@@ -300,7 +310,9 @@ public class MainActivity extends AppCompatActivity implements
                 break;
         }
     }
-    //----------------------THEME DEBUGGER---------------------------
+    // </editor-fold>
+
+    // <editor-fold desc="THEME DEBUGGER">
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -308,7 +320,9 @@ public class MainActivity extends AppCompatActivity implements
             recreate();
         }
     }
-    //----------------------KEYBOARD LISTENNER---------------------------
+    // </editor-fold>
+
+    // <editor-fold desc="KEYBOARD LISTENNER">
     private void setupKeyboardListener() {
         View rootView = findViewById(android.R.id.content);
 
@@ -348,7 +362,9 @@ public class MainActivity extends AppCompatActivity implements
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-    //----------------------QUESTION ALERTDIALOG---------------------------
+    // </editor-fold>
+
+    // <editor-fold desc="QUESTION ALERTDIALOG">
     @Override
     public void onCancelButtonClicked(String Tag) {
         switch (Tag){
@@ -364,7 +380,9 @@ public class MainActivity extends AppCompatActivity implements
                 break;
         }
     }
-    //----------------------API OPERATIONS---------------------------
+    // </editor-fold>
+
+    // <editor-fold desc="API OPERATIONS">
     @Override
     public void onGetMetersResponse(boolean response, String message, List<MeterEntity> list) {
         if(response){
@@ -378,12 +396,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
     @Override
-    public void onGetReadingsByMeterIdResponse(
-            boolean response,
-            String message,
-            List<MeterReadingEntity> list,
-            MainACReadingsContadorFrag frag) {
-
+    public void onGetReadingsByMeterIdResponse(boolean response, String message, List<MeterReadingEntity> list, MainACReadingsContadorFrag frag) {
         if (response) {
             frag.setMeterReadings(list);
 
@@ -395,6 +408,18 @@ public class MainActivity extends AppCompatActivity implements
             currentView = 3;
         }
     }
+    @Override
+    public void onGetUserRoleResponse(boolean response, String responseText, String role) {
+        // TODO: TA AQUI
+        Log.i("ROLE", "RESPONSE: "+response);
+        Log.i("ROLE", "RESPONSE TEXT: "+responseText);
+        Log.i("ROLE", "ROLE DO USER: "+role);
+        if(role.equals("admin")){
+            binding.imageViewTesteMainAC.setVisibility(View.VISIBLE);
+        }
+    }
+    // </editor-fold>
+
     //----------------------LOCAL DATABASE OPERATIONS---------------------------
     /*private class LocalDatabaseGetAllDataTask extends AsyncTask<Void, Void, LocalDBgetAll> {
         private DatabaseCallback callback;

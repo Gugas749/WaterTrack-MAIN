@@ -1,9 +1,14 @@
 package com.grupok.watertrack.scripts.apiCRUD;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -20,8 +25,11 @@ import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.Ma
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class APIMethods {
     //-------------------------------------------------------------------------------------------
@@ -77,6 +85,60 @@ public class APIMethods {
     }
     // </editor-fold>
     //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="GET USER ROLE">
+    private GetUserRoleResponse getUserRoleResponse;
+    public interface GetUserRoleResponse{
+        void onGetUserRoleResponse(boolean response, String responseText, String role);
+    }
+    public void setGetUserRoleResponse(GetUserRoleResponse listenner){
+        this.getUserRoleResponse = listenner;
+    }
+    public void getUserRole(Context context, UserInfosEntity user){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url ="http://172.22.21.222/watertrack/backend/web/api/users/getrole/"+user.userId;
+
+        SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
+        String pass = prefs.getString(user.email, "");
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                response -> {
+                    try {
+                        getUserRoleResponse.onGetUserRoleResponse(true, "", response.getString("role")
+                        );
+                    } catch (JSONException e) {
+                        getUserRoleResponse.onGetUserRoleResponse(false, context.getString(R.string.apiMethods_JsonParseError), "");
+                    }
+                },
+                error -> {
+                    getUserRoleResponse.onGetUserRoleResponse(false, context.getString(R.string.apiMethods_VolleyError), "");
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+
+                String credentials = user.username + ":" + pass;
+                String auth = "Basic " + Base64.encodeToString(
+                        credentials.getBytes(StandardCharsets.UTF_8),
+                        Base64.NO_WRAP
+                );
+
+                headers.put("Authorization", auth);
+                headers.put("Accept", "application/json");
+
+                headers.put("Host", "172.22.21.222");
+
+                return headers;
+            }
+        };
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
     // <editor-fold desc="LOGIN">
     private LoginResponse loginResponse;
     public interface LoginResponse{
@@ -120,6 +182,10 @@ public class APIMethods {
                                 } catch (Exception e) {
                                     Log.i("API_Login", "Technician Info not found.");
                                 }
+
+                                SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
+                                prefs.edit().putString(user.email, password).apply();
+
                                 loginResponse.onLoginResponse(true, user, "");
                                 break;
                             case 2: // Username and password required

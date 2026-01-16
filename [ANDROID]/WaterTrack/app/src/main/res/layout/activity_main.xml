@@ -38,6 +38,16 @@
                 app:tint="?attr/buttonIconTintSecondary"/>
             <!-- flip horizontal android:scaleX="-1" -->
             <ImageView
+                android:id="@+id/imageView_teste_MainAC"
+                android:layout_width="@dimen/_31sdp"
+                android:layout_height="@dimen/_31sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_27sdp"
+                android:padding="@dimen/_4sdp"
+                android:visibility="gone"
+                android:src="@drawable/baseline_person_24"
+                app:tint="?attr/buttonIconTintSecondary"/>
+            <ImageView
                 android:id="@+id/imageView_buttonSideMenu_MainAC"
                 android:layout_width="@dimen/_31sdp"
                 android:layout_height="@dimen/_31sdp"
