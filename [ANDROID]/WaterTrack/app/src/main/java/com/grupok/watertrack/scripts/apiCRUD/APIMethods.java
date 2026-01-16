@@ -19,6 +19,7 @@ import com.grupok.watertrack.database.entities.EnterpriseEntity;
 import com.grupok.watertrack.database.entities.MeterReadingEntity;
 import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.MeterTypeEntity;
+import com.grupok.watertrack.database.entities.ReportsEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
 
@@ -614,6 +615,58 @@ public class APIMethods {
         queue.add(request);
     }
     // </editor-fold>
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="GET REPORTS">
+    private GetReportsResponse getReportsResponse;
+    public interface GetReportsResponse{
+        void onGetReportsResponse(boolean response, String responseText, List<ReportsEntity> reportsEntities);
+    }
+    public void setGetReportsResponse(GetReportsResponse listenner){
+        this.getReportsResponse = listenner;
+    }
+    public void getReports(Context context){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url ="http://172.22.21.222/watertrack/backend/web/api/meter-problems";
 
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                response -> {
+                    try {
+                        List<ReportsEntity> reportsEntities = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject object = response.getJSONObject(i);
 
+                            int tecnicoID = 0;
+                            if(!object.isNull("tecnicoID")){
+                                tecnicoID = object.getInt("tecnicoID");
+                            }
+
+                            ReportsEntity report = new ReportsEntity(
+                                    object.getInt("meterID"),
+                                    object.getInt("userID"),
+                                    tecnicoID,
+                                    object.getInt("problemState"),
+                                    object.getString("description"));
+                            report.setId(object.getInt("id"));
+                            reportsEntities.add(report);
+                        }
+
+                        getReportsResponse.onGetReportsResponse(true, "", reportsEntities);
+                    } catch (JSONException e) {
+                        getReportsResponse.onGetReportsResponse(false, context.getString(R.string.apiMethods_JsonParseError), null);
+                    }
+                },
+                error -> {
+                    getReportsResponse.onGetReportsResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
+                }
+        );
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="GET REPORTS BY METER ID">
+    // </editor-fold>
 }

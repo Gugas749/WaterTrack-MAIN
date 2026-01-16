@@ -1,12 +1,8 @@
-package com.grupok.watertrack.fragments.mainactivityfrags.mainview;
+package com.grupok.watertrack.fragments.mainactivityfrags.reportsview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
-
-import android.util.Log;
-
-
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,81 +15,83 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.grupok.watertrack.R;
-
 import com.grupok.watertrack.activitys.MainActivity;
-
 import com.grupok.watertrack.database.entities.MeterEntity;
+import com.grupok.watertrack.database.entities.ReportsEntity;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class RVAdapterMainAcMainView extends RecyclerView.Adapter<RVAdapterMainAcMainView.MyViewHolder> implements Serializable{
+public class RVAdapterMainAcReportsView extends RecyclerView.Adapter<RVAdapterMainAcReportsView.MyViewHolder> implements Serializable{
     private Context context;
-    private List<MeterEntity> contadoresEntityList;
-    private MetersItemClick listenner;
-    private int classeUser;
+    private List<ReportsEntity> reportsEntityList;
+    private List<MeterEntity> meterEntityList;
+    private ReportsItemClick listenner;
     private MainActivity parent;
 
     private int selectedItem = RecyclerView.NO_POSITION;
 
-    public interface MetersItemClick{
-        void onMetersItemClick(MeterEntity contador);
+    public interface ReportsItemClick{
+        void onReportsItemClick(ReportsEntity report);
     }
 
-    public RVAdapterMainAcMainView(Context context, List<MeterEntity> contadoresEntityList, int classeUser, MainActivity parent) {
+    public RVAdapterMainAcReportsView(Context context, List<ReportsEntity> reportsEntityList, MainActivity parent, List<MeterEntity> meterEntityList) {
         this.context = context;
-        this.contadoresEntityList = contadoresEntityList;
-        this.classeUser = classeUser;
+        this.reportsEntityList = reportsEntityList;
+        this.meterEntityList = meterEntityList;
         this.parent = parent;
     }
-    public void updateData(List<MeterEntity> contadoresEntityList){
-        this.contadoresEntityList = contadoresEntityList;
+    public void updateData(List<ReportsEntity> contadoresEntityList){
+        this.reportsEntityList = contadoresEntityList;
         notifyDataSetChanged();
     }
-    public void setItemClickListenner(MetersItemClick listenner){
+    public void setItemClickListenner(ReportsItemClick listenner){
         this.listenner = listenner;
     }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_row_contadores_mainac, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_row_reports_reportsview_mainac, parent, false);
         MyViewHolder holder=new MyViewHolder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        final MeterEntity contadorSelected = contadoresEntityList.get(position);
-        if(contadorSelected != null){
-            if(classeUser == 1){
-                holder.textViewAddressOrId.setText(contadorSelected.address);
+        final ReportsEntity reportSelected = reportsEntityList.get(position);
+        if(reportSelected != null){
+            MeterEntity selectedMeter = null;
+            for (MeterEntity meter : meterEntityList) {
+                if(meter.id == reportSelected.meterID){
+                    selectedMeter = meter;
+                }
+            }
+
+            holder.textViewLabel1.setText(reportSelected.description.toString());
+            if(selectedMeter != null){
+                holder.textViewLabel2.setText(selectedMeter.address);
             }else{
-                holder.textViewNameOrAddress.setText(contadorSelected.address);
-                holder.textViewAddressOrId.setText(String.valueOf(contadorSelected.id));
+                holder.textViewLabel2.setText("");
             }
 
             int color = 0;
             TypedValue typedValue = new TypedValue();
             holder.stateIcon.setImageResource(R.drawable.radios_button_icon_24);
-            switch (contadorSelected.state){
-                case 0: // Desativo
-                    context.getTheme().resolveAttribute(R.attr.colorError, typedValue, true);
-                    color = typedValue.data;
-                    break;
-                case 1: //Ativo
+            switch (reportSelected.problemState){
+                case 0: // RESOLVIDO
                     context.getTheme().resolveAttribute(R.attr.colorSuccess, typedValue, true);
                     color = typedValue.data;
                     break;
-                case 2: //Com problema
+                case 1: //EM PROGRESSO
                     context.getTheme().resolveAttribute(R.attr.colorWarning, typedValue, true);
                     color = typedValue.data;
-                    holder.stateIcon.setImageResource(R.drawable.warning_24);
                     break;
                 default:
-                    context.getTheme().resolveAttribute(R.attr.colorWarning, typedValue, true);
+                case 2: // POR RESOLVER
+                    context.getTheme().resolveAttribute(R.attr.colorError, typedValue, true);
                     color = typedValue.data;
-                    holder.stateIcon.setImageResource(R.drawable.warning_24);
                     break;
             }
             holder.stateIcon.setImageTintList(ColorStateList.valueOf(color));
@@ -118,28 +116,28 @@ public class RVAdapterMainAcMainView extends RecyclerView.Adapter<RVAdapterMainA
             notifyItemChanged(selectedItem);
 
             if (listenner != null) {
-                listenner.onMetersItemClick(contadorSelected);
+                listenner.onReportsItemClick(reportSelected);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return contadoresEntityList.size();
+        return reportsEntityList.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewAddressOrId, textViewNameOrAddress;
+        TextView textViewLabel1, textViewLabel2;
         CardView cardView;
         ImageView stateIcon;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewNameOrAddress = itemView.findViewById(R.id.textView_NameOrAddress_rvRowContadores_MainAc);
-            cardView = itemView.findViewById(R.id.cardView_Holder_rvRowContadores_MainAc);
-            textViewAddressOrId = itemView.findViewById(R.id.textView_AddressOrId_rvRowContadores_MainAc);
-            stateIcon = itemView.findViewById(R.id.imageView_iconHolder2_rvRowContadores_MainAc);
+            textViewLabel1 = itemView.findViewById(R.id.textView_Label1_rvRowReports_ReportsView_MainAc);
+            cardView = itemView.findViewById(R.id.cardView_Holder_rvRowReports_ReportsView_MainAc);
+            textViewLabel2 = itemView.findViewById(R.id.textView_Label2_rvRowReports_ReportsView_MainAc);
+            stateIcon = itemView.findViewById(R.id.imageView_statusIcon_rvRowReports_ReportsView_MainAc);
         }
     }
 }

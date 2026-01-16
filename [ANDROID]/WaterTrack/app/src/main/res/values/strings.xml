@@ -103,11 +103,14 @@
     <!-- MAIN ACTIVITY | READINGS CONTADOR -->
     <string name="mainActivity_ReadingsContadorFrag_LabelDetails">Reading Details</string>
     <string name="mainActivity_ReadingsContadorFrag_LabelReadings">Readings</string>
+    <!-- MAIN ACTIVITY | REPORTS -->
+    <string name="mainActivity_ReportsFrag_TextView_NothingToDisplay">Theres no Reports to be displayed.</string>
+    <string name="mainActivity_ReportsFrag_Label">Reports</string>
     <!-- MAIN ACTIVITY | ADD REPORT -->
-    <string name="mainActivity_ReportFrag_ComboBox_Meter">Meter</string>
-    <string name="mainActivity_ReportFrag_ComboBox_Problem">Problem</string>
-    <string name="mainActivity_ReportFrag_TextField_Description">Description</string>
-    <string name="mainActivity_ReportFrag_TextField_Other_Problem">Other</string>
+    <string name="mainActivity_AddReportFrag_ComboBox_Meter">Meter</string>
+    <string name="mainActivity_AddReportFrag_ComboBox_Problem">Problem</string>
+    <string name="mainActivity_AddReportFrag_TextField_Description">Description</string>
+    <string name="mainActivity_AddReportFrag_TextField_Other_Problem">Other</string>
 
 
     <!-- MAIN ACTIVITY | READINGS DO CONTADOR | RV-->
@@ -118,14 +121,6 @@
     <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_AccumulatedConsumption">Accumulated Consumption</string>
     <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_Date">Date</string>
     <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_WaterPressure">WaterPressure</string>
-
-
-
-
-
-
-
-
 
 
     <!-- API METHODS -->

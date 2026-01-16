@@ -26,7 +26,7 @@ import com.google.gson.Gson;
 import com.grupok.watertrack.R;
 import android.content.SharedPreferences;
 import com.grupok.watertrack.database.LocalDataBase;
-import com.grupok.watertrack.database.daos.AvariasContadoresDao;
+import com.grupok.watertrack.database.daos.ReportsDao;
 import com.grupok.watertrack.database.daos.MeterDao;
 import com.grupok.watertrack.database.daos.EmpresasDao;
 import com.grupok.watertrack.database.daos.MeterReadingDao;
@@ -39,7 +39,7 @@ import com.grupok.watertrack.databinding.ActivityMainBinding;
 import com.grupok.watertrack.fragments.alertDialogFragments.AlertDialogQuestionFragment;
 import com.grupok.watertrack.fragments.mainactivityfrags.addcontadorview.MainAcAddContadorFrag;
 
-import com.grupok.watertrack.fragments.mainactivityfrags.addreportview.MainACReportFrag;
+import com.grupok.watertrack.fragments.mainactivityfrags.reportsview.MainACReportsFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.creditsview.MainACCreditsFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.detailscontadorview.MainACDetailsContadorFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements
     private LocalDataBase localDataBase;
     private MeterReadingDao logsContadoresDao;
     private MeterDao meterDao;
-    private AvariasContadoresDao avariasContadoresDao;
+    private ReportsDao reportsDao;
     private EmpresasDao empresasDao;
     private TiposContadoresDao tiposContadoresDao;
     private UserInfosDao userInfosDao;
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements
         localDataBase = Room.databaseBuilder(getApplicationContext(), LocalDataBase.class, "WaterTrackLocalDB").build();
         logsContadoresDao = localDataBase.logsContadoresDao();
         meterDao = localDataBase.contadoresDao();
-        avariasContadoresDao = localDataBase.avariasContadoresDao();
+        reportsDao = localDataBase.reportsDao();
         empresasDao = localDataBase.empresasDao();
         tiposContadoresDao = localDataBase.tiposContadoresDao();
         userInfosDao = localDataBase.userInfosDao();
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements
         new Thread(() -> {
             localDataBase.logsContadoresDao().clearAllEntries();
             localDataBase.contadoresDao().clearAllEntries();
-            localDataBase.avariasContadoresDao().clearAllEntries();
+            localDataBase.reportsDao().clearAllEntries();
         }).start();
 
         Intent intent = new Intent(MainActivity.this, AuthActivity.class);
@@ -267,8 +267,6 @@ public class MainActivity extends AppCompatActivity implements
                 SharedPreferences prefs = getSharedPreferences("Perf_User", MODE_PRIVATE);
                 String role = prefs.getString("role", "");
                 String pass = prefs.getString(currentUserInfo.email, "");
-
-
 
                 switch (role){
                     case "admin":
@@ -327,6 +325,7 @@ public class MainActivity extends AppCompatActivity implements
 
             case "CreditsFrag":
                 MainACCreditsFrag creditsFrag = new MainACCreditsFrag();
+                creditsFrag.setArguments(data);
                 binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -336,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             case "ReportFrag":
-                MainACReportFrag reportFrag = new MainACReportFrag(this, contadoresEntityList);
+                MainACReportsFrag reportFrag = new MainACReportsFrag(this, contadoresEntityList, currentUserInfo);
                 binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
                 getSupportFragmentManager()
                         .beginTransaction()

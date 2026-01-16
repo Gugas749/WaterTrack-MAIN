@@ -103,7 +103,8 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
     private void setupReportsButton(){
         Bundle data = new Bundle();
         binding.butReportProblemDetailsContadorFragMainAc.setOnClickListener(v ->{
-            data.putInt("contadorId", meterSelected.id);
+            data.putBoolean("fromMeterView", true);
+            data.putInt("meterID", meterSelected.id);
             parent.cycleFragments("ReportFrag", data);
         });
     }

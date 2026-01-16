@@ -51,7 +51,11 @@ public class RVAdapterFieldsDetailsContadores extends RecyclerView.Adapter<RVAda
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_EnterpriseName), selectedEnterprise.name));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_Classe), meterEntity.classe));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_InstalationDate), meterEntity.instalationDate));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_ShutdownDate), meterEntity.shutdownDate));
+
+        if(meterEntity.shutdownDate != null && !meterEntity.shutdownDate.isEmpty()){
+            fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_ShutdownDate), meterEntity.shutdownDate));
+        }
+
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_MaxCapacity), meterEntity.maxCapacity));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_MeasureUnity), meterEntity.measureUnity));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_SupportedTemperature), meterEntity.supportedTemperature));
