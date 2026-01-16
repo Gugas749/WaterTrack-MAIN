@@ -28,10 +28,11 @@ import com.grupok.watertrack.scripts.apiCRUD.APIMethods;
 
 import java.util.List;
 
-public class LoginFragment extends Fragment implements APIMethods.LoginResponse {
+public class LoginFragment extends Fragment implements APIMethods.LoginResponse, APIMethods.GetUserRoleResponse {
     private AuthActivity parent;
     private FragmentLoginBinding binding;
     private String loginEmailInputed;
+    private UserInfosEntity userLogged = null;
     private LoginFragment THIS;
     private Context context;
     public SnackBarShow snackBarShow = new SnackBarShow();
@@ -163,20 +164,31 @@ public class LoginFragment extends Fragment implements APIMethods.LoginResponse 
             DatabaseCallback callback = new DatabaseCallback() {
                 @Override
                 public void onTaskCompleted(UserInfosEntity result) {
-                    if(result != null){
-                        SharedPreferences prefs = parent.getSharedPreferences("Perf_User", MODE_PRIVATE);
-                        prefs.edit().putBoolean("logged", true).apply();
-                        prefs.edit().putString("userEmail", result.email).apply();
-                        parent.cycleFragments("MainAC", "", result);
-                    }else{
-                        snackBarShow.display(binding.getRoot(), getString(R.string.authActivity_LoginFrag_LocalDB_Insert_Error), -1, 1, binding.snackbarViewLoginFrag, context);
+                    userLogged = result;
 
-                    }
+                    APIMethods apiMethods = new APIMethods();
+                    apiMethods.setGetUserRoleResponse(THIS);
+                    apiMethods.getUserRole(parent, result);
                 }
             };
             new LocalDatabaseInsertUserInfo(callback, user).execute();
         }else{
             snackBarShow.display(binding.getRoot(), message, -1, 1, binding.snackbarViewLoginFrag, context);
+        }
+    }
+    @Override
+    public void onGetUserRoleResponse(boolean response, String responseText, String role) {
+        parent.getSharedPreferences("Perf_User", MODE_PRIVATE)
+                .edit()
+                .putString("role", role)
+                .apply();
+        if(userLogged != null){
+            SharedPreferences prefs = parent.getSharedPreferences("Perf_User", MODE_PRIVATE);
+            prefs.edit().putBoolean("logged", true).apply();
+            prefs.edit().putString("userEmail", userLogged.email).apply();
+            parent.cycleFragments("MainAC", "", userLogged);
+        }else{
+            snackBarShow.display(binding.getRoot(), getString(R.string.authActivity_LoginFrag_LocalDB_Insert_Error), -1, 1, binding.snackbarViewLoginFrag, context);
         }
     }
     //----------------------DATABASE OPERATIONS---------------------------

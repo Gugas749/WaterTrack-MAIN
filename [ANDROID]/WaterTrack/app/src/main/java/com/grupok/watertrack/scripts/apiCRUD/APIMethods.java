@@ -19,7 +19,6 @@ import com.grupok.watertrack.database.entities.EnterpriseEntity;
 import com.grupok.watertrack.database.entities.MeterReadingEntity;
 import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.MeterTypeEntity;
-import com.grupok.watertrack.database.entities.TecnicoInfoEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
 
@@ -396,9 +395,9 @@ public class APIMethods {
         this.getMetersByEnterpriseResponse = listener;
     }
 
-    public void getMetersByEnterprise(Context context , TecnicoInfoEntity tec,UserInfosEntity user, String pass) {
+    public void getMetersByEnterprise(Context context, UserInfosEntity user, String pass) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/meters/fromenterprise/" + tec.enterpriseID;
+        String url = "http://172.22.21.222/watertrack/backend/web/api/meters/fromenterprise/" + user.enterpriseID;
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, url, null,
@@ -427,7 +426,8 @@ public class APIMethods {
                         if (getMetersByEnterpriseResponse != null)
                             getMetersByEnterpriseResponse.onGetMetersByEnterpriseResponse(true, "", list);
                     } catch (JSONException e) {
-                        Log.d("erros", "getMetersByEnterprise: jsonERROR: error:"+ e.getMessage());
+                        Log.d("erros", "getMetersByEnterprise: url: " + url);
+                        Log.d("erros", "getMetersByEnterprise: JSON: error:"+ e.getMessage());
                         if (getMetersByEnterpriseResponse != null)
                             getMetersByEnterpriseResponse.onGetMetersByEnterpriseResponse(
                                     false,
@@ -437,6 +437,7 @@ public class APIMethods {
                     }
                 },
                 error -> {
+                    Log.d("erros", "getMetersByEnterprise: url: " + url);
                     Log.d("erros", "getMetersByEnterprise: VolleyError: error:"+ error.getMessage());
                     if (getMetersByEnterpriseResponse != null)
                         getMetersByEnterpriseResponse.onGetMetersByEnterpriseResponse(

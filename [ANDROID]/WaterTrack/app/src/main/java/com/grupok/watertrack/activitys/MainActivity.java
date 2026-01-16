@@ -30,12 +30,10 @@ import com.grupok.watertrack.database.daos.AvariasContadoresDao;
 import com.grupok.watertrack.database.daos.MeterDao;
 import com.grupok.watertrack.database.daos.EmpresasDao;
 import com.grupok.watertrack.database.daos.MeterReadingDao;
-import com.grupok.watertrack.database.daos.TecnicoInfoDao;
 import com.grupok.watertrack.database.daos.TiposContadoresDao;
 import com.grupok.watertrack.database.daos.UserInfosDao;
 import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.MeterReadingEntity;
-import com.grupok.watertrack.database.entities.TecnicoInfoEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.databinding.ActivityMainBinding;
 import com.grupok.watertrack.fragments.alertDialogFragments.AlertDialogQuestionFragment;
@@ -60,8 +58,7 @@ public class MainActivity extends AppCompatActivity implements
         APIMethods.GetMetersByUserIdResponse,
         APIMethods.GetMetersResponse,
         APIMethods.GetReadingsByMeterIdResponse,
-        APIMethods.GetMetersByEnterpriseResponse,
-        APIMethods.GetUserRoleResponse{
+        APIMethods.GetMetersByEnterpriseResponse {
 
     private ActivityMainBinding binding;
     private MainActivity parent;
@@ -69,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements
     private Context context;
     private int currentView;
     public UserInfosEntity currentUserInfo;
-    public TecnicoInfoEntity tecnicoInfoEntity;
     private Boolean allDisable;
     private ActionBarDrawerToggle drawerToggleSideMenu;
     public SnackBarShow snackBarShow = new SnackBarShow();
@@ -82,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements
     private MeterDao meterDao;
     private AvariasContadoresDao avariasContadoresDao;
     private EmpresasDao empresasDao;
-    private TecnicoInfoDao tecnicoInfoDao;
     private TiposContadoresDao tiposContadoresDao;
     private UserInfosDao userInfosDao;
 
@@ -111,17 +106,13 @@ public class MainActivity extends AppCompatActivity implements
         meterReagindsEntitiesList = new ArrayList<>();
         contadoresEntityList = new ArrayList<>();
 
+        setupLocalDataBase();
+
         setupSideMenu();
         setupBackButton();
         setupKeyboardListener();
 
         cycleFragments("MainViewFrag", null);
-
-        setupLocalDataBase();
-
-        APIMethods apiMethods = new APIMethods();
-        apiMethods.setGetUserRoleResponse(this);
-        apiMethods.getUserRole(this, currentUserInfo);
     }
 
     // <editor-fold desc="SETUPS">
@@ -131,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements
         meterDao = localDataBase.contadoresDao();
         avariasContadoresDao = localDataBase.avariasContadoresDao();
         empresasDao = localDataBase.empresasDao();
-        tecnicoInfoDao = localDataBase.tecnicoInfoDao();
         tiposContadoresDao = localDataBase.tiposContadoresDao();
         userInfosDao = localDataBase.userInfosDao();
     }
@@ -275,20 +265,27 @@ public class MainActivity extends AppCompatActivity implements
                 binding.loadingViewMainAc.setVisibility(View.VISIBLE);
 
                 SharedPreferences prefs = getSharedPreferences("Perf_User", MODE_PRIVATE);
-                String role = prefs.getString("role", "resident");
+                String role = prefs.getString("role", "");
                 String pass = prefs.getString(currentUserInfo.email, "");
 
-                Log.d("roles", "cycleFragments: role do user: " + role);
 
-                if (role.equals("resident")) {
-                    apiMethods.getMetersByUserId(this, currentUserInfo, pass);
-                    apiMethods.setGetMetersByUserIdResponse(this);
-                } else if (role.equals("technician")) {
-                    apiMethods.getMetersByEnterprise(getApplicationContext(), tecnicoInfoEntity,currentUserInfo, pass);
-                    apiMethods.setGetMetersByEnterpriseResponse(this);
-                }else if (role.equals("admin")) {
-                    apiMethods.getMeters(getApplicationContext());
-                    apiMethods.setGetMetersResponse(this);
+
+                switch (role){
+                    case "admin":
+                        apiMethods.getMeters(getApplicationContext());
+                        apiMethods.setGetMetersResponse(this);
+                        break;
+                    case "technician":
+                        apiMethods.getMetersByEnterprise(this, currentUserInfo, pass);
+                        apiMethods.setGetMetersByEnterpriseResponse(this);
+                        break;
+                    case "resident":
+                        apiMethods.getMetersByUserId(this, currentUserInfo, pass);
+                        apiMethods.setGetMetersByUserIdResponse(this);
+                        break;
+                    default:
+                        logout();
+                        break;
                 }
                 break;
             case "AddContadorFrag":
@@ -480,22 +477,6 @@ public class MainActivity extends AppCompatActivity implements
                     .commitAllowingStateLoss();
 
             currentView = 3;
-        }
-    }
-    @Override
-    public void onGetUserRoleResponse(boolean response, String responseText, String role) {
-        // TODO: ROLES
-        Log.i("ROLE", "RESPONSE: "+response);
-        Log.i("ROLE", "RESPONSE TEXT: "+responseText);
-        Log.i("ROLE", "ROLE DO USER: "+role);
-
-        getSharedPreferences("Perf_User", MODE_PRIVATE)
-                .edit()
-                .putString("role", role)
-                .apply();
-
-        if(role.equals("admin")){
-            binding.imageViewTesteMainAC.setVisibility(View.VISIBLE);
         }
     }
     // </editor-fold>
