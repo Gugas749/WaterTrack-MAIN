@@ -288,13 +288,161 @@ public class APIMethods {
                             contador.setId(meter.getInt("id"));
                             list.add(contador);
                         }
+                        Log.d("erros", "size by meter: " + list.size());
                         getMetersResponse.onGetMetersResponse(true, "", list);
                     } catch (JSONException e) {
+                        Log.d("erros", "getMeters: jsonERROR: error:"+ e.getMessage());
                         getMetersResponse.onGetMetersResponse(false, context.getString(R.string.apiMethods_JsonParseError), null);
                     }
                 },
                 error -> {
+                    Log.d("erros", "getMeters: VolleyError: error:"+ error.getMessage());
                     getMetersResponse.onGetMetersResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
+                }
+        );
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="GET METERS BY USER ID">
+    private GetMetersByUserIdResponse getMetersByUserIdResponse;
+
+    public interface GetMetersByUserIdResponse {
+        void onGetMetersByUserIdResponse(boolean response, String message, List<MeterEntity> list);
+    }
+
+    public void setGetMetersByUserIdResponse(GetMetersByUserIdResponse listenner) {
+        this.getMetersByUserIdResponse = listenner;
+    }
+
+    public void getMetersByUserId(Context context, int userId, UserInfosEntity user, String pass) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/meters/fromuser/" + userId;
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        List<MeterEntity> list = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject meter = response.getJSONObject(i);
+                            MeterEntity contador = new MeterEntity(
+                                    meter.getString("address"),
+                                    meter.getInt("userID"),
+                                    meter.getInt("meterTypeID"),
+                                    meter.getInt("enterpriseID"),
+                                    meter.getString("class"),
+                                    meter.getString("instalationDate"),
+                                    meter.getString("shutdownDate"),
+                                    meter.getString("maxCapacity"),
+                                    meter.getString("measureUnity"),
+                                    meter.getString("supportedTemperature"),
+                                    meter.getInt("state")
+                            );
+                            contador.setId(meter.getInt("id"));
+                            list.add(contador);
+                        }
+                        Log.d("erros", "size by userid: " + list.size());
+                        if (getMetersByUserIdResponse != null)
+                            getMetersByUserIdResponse.onGetMetersByUserIdResponse(true, "", list);
+                    } catch (JSONException e) {
+                        Log.d("erros", "getMetersByUserId: jsonERROR: error:"+ e.getMessage());
+                        if (getMetersByUserIdResponse != null)
+                            getMetersByUserIdResponse.onGetMetersByUserIdResponse(
+                                    false,
+                                    context.getString(R.string.apiMethods_JsonParseError),
+                                    null
+                            );
+                    }
+                },
+                error -> {
+                    Log.d("erros", "getMetersByUserId: VolleyError: error:"+ error.getMessage());
+                    if (getMetersByUserIdResponse != null)
+                        getMetersByUserIdResponse.onGetMetersByUserIdResponse(
+                                false,
+                                context.getString(R.string.apiMethods_VolleyError),
+                                null
+                        );
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = user.username + ":" + pass;
+                String auth = "Basic " + Base64.encodeToString(credentials.getBytes(StandardCharsets.UTF_8), Base64.NO_WRAP);
+
+                headers.put("Authorization", auth);
+                headers.put("Accept", "application/json");
+                headers.put("Host", "172.22.21.222");
+
+                return headers;
+            }
+        };
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="GET METERS BY ENTERPRISE ID">
+    private GetMetersByEnterpriseResponse getMetersByEnterpriseResponse;
+
+    public interface GetMetersByEnterpriseResponse {
+        void onGetMetersByEnterpriseResponse(boolean response, String message, List<MeterEntity> list);
+    }
+
+    public void setGetMetersByEnterpriseResponse(GetMetersByEnterpriseResponse listener) {
+        this.getMetersByEnterpriseResponse = listener;
+    }
+
+    public void getMetersByEnterprise(Context context, int enterpriseId) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/meters/fromenterprise/" + enterpriseId;
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        List<MeterEntity> list = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject meter = response.getJSONObject(i);
+                            MeterEntity contador = new MeterEntity(
+                                    meter.getString("address"),
+                                    meter.getInt("userID"),
+                                    meter.getInt("meterTypeID"),
+                                    meter.getInt("enterpriseID"),
+                                    meter.getString("class"),
+                                    meter.getString("instalationDate"),
+                                    meter.getString("shutdownDate"),
+                                    meter.getString("maxCapacity"),
+                                    meter.getString("measureUnity"),
+                                    meter.getString("supportedTemperature"),
+                                    meter.getInt("state")
+                            );
+                            contador.setId(meter.getInt("id"));
+                            list.add(contador);
+                        }
+                        Log.d("erros", "size by enterpriseid: " + list.size());
+                        if (getMetersByEnterpriseResponse != null)
+                            getMetersByEnterpriseResponse.onGetMetersByEnterpriseResponse(true, "", list);
+                    } catch (JSONException e) {
+                        Log.d("erros", "getMetersByEnterprise: jsonERROR: error:"+ e.getMessage());
+                        if (getMetersByEnterpriseResponse != null)
+                            getMetersByEnterpriseResponse.onGetMetersByEnterpriseResponse(
+                                    false,
+                                    context.getString(R.string.apiMethods_JsonParseError),
+                                    null
+                            );
+                    }
+                },
+                error -> {
+                    Log.d("erros", "getMetersByEnterprise: VolleyError: error:"+ error.getMessage());
+                    if (getMetersByEnterpriseResponse != null)
+                        getMetersByEnterpriseResponse.onGetMetersByEnterpriseResponse(
+                                false,
+                                context.getString(R.string.apiMethods_VolleyError),
+                                null
+                        );
                 }
         );
 

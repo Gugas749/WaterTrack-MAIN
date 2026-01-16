@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,6 +24,7 @@ import androidx.room.Room;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.grupok.watertrack.R;
+import android.content.SharedPreferences;
 import com.grupok.watertrack.database.LocalDataBase;
 import com.grupok.watertrack.database.daos.AvariasContadoresDao;
 import com.grupok.watertrack.database.daos.MeterDao;
@@ -54,8 +56,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements
         CustomAlertDialogFragment.ConfirmButtonClickAlertDialogQuestionFrag,
         CustomAlertDialogFragment.CancelButtonClickAlertDialogQuestionFrag,
+        APIMethods.GetMetersByUserIdResponse,
         APIMethods.GetMetersResponse,
         APIMethods.GetReadingsByMeterIdResponse,
+        APIMethods.GetMetersByEnterpriseResponse,
         APIMethods.GetUserRoleResponse{
 
     private ActivityMainBinding binding;
@@ -100,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void init(){
-        THIS = this;
         allDisable = false;
         disableBackPressed();
         meterReagindsEntitiesList = new ArrayList<>();
@@ -115,8 +118,8 @@ public class MainActivity extends AppCompatActivity implements
         setupLocalDataBase();
 
         APIMethods apiMethods = new APIMethods();
-        apiMethods.getUserRole(this, currentUserInfo);
         apiMethods.setGetUserRoleResponse(this);
+        apiMethods.getUserRole(this, currentUserInfo);
     }
 
     // <editor-fold desc="SETUPS">
@@ -139,8 +142,8 @@ public class MainActivity extends AppCompatActivity implements
 
                 switch (currentView){
                     case 1: // ADD CONTADOR
-                        customAlertDialogFragment.setConfirmListenner(THIS);
-                        customAlertDialogFragment.setCancelListenner(THIS);
+                        customAlertDialogFragment.setConfirmListenner(MainActivity.this);
+                        customAlertDialogFragment.setCancelListenner(MainActivity.this);
                         customAlertDialogFragment.setCustomFragment(fragment);
                         customAlertDialogFragment.setTag("MainACAddContadorView_BackPressed");
                         customAlertDialogFragment.show(getSupportFragmentManager(), "CustomAlertDialogFragment");
@@ -205,6 +208,9 @@ public class MainActivity extends AppCompatActivity implements
                         data.putBoolean("fromSideMenu", true);
                         cycleFragments("ReportFrag", data);
                     }
+                    else if (item.getItemId() == R.id.mainAc_SideMenu_Logout) {
+                        logout();
+                    }
                     item.setEnabled(true);
                     binding.drawerLayoutMainAcSideMenu.closeDrawer(GravityCompat.END);
                 }
@@ -213,6 +219,27 @@ public class MainActivity extends AppCompatActivity implements
         });
         binding.navigationViewMainAcSideMenu.bringToFront();
     }
+
+    private void logout() {
+        SharedPreferences prefs = getSharedPreferences("Perf_User", MODE_PRIVATE);
+        prefs.edit().clear().apply();
+
+        if (contadoresEntityList != null) contadoresEntityList.clear();
+        if (meterReagindsEntitiesList != null) meterReagindsEntitiesList.clear();
+        currentUserInfo = null;
+
+        new Thread(() -> {
+            localDataBase.logsContadoresDao().clearAllEntries();
+            localDataBase.contadoresDao().clearAllEntries();
+            localDataBase.avariasContadoresDao().clearAllEntries();
+        }).start();
+
+        Intent intent = new Intent(MainActivity.this, AuthActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
     public void enableSwipeToOpenSideMenu() {
         if (binding.drawerLayoutMainAcSideMenu != null) {
             binding.drawerLayoutMainAcSideMenu.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -243,10 +270,24 @@ public class MainActivity extends AppCompatActivity implements
         APIMethods apiMethods = new APIMethods();
         switch (goTo){
             case "MainViewFrag":
-                //TODO: listenner mosquito para mudanças na api relacionadas aos contadores
                 binding.loadingViewMainAc.setVisibility(View.VISIBLE);
-                apiMethods.getMeters(getApplicationContext());
-                apiMethods.setGetMetersResponse(THIS);
+
+                SharedPreferences prefs = getSharedPreferences("Perf_User", MODE_PRIVATE);
+                String role = prefs.getString("role", "resident");
+                String pass = prefs.getString(currentUserInfo.email, "");
+
+                Log.d("roles", "cycleFragments: role do user: " + role);
+
+                if (role.equals("resident")) {
+                    apiMethods.getMetersByUserId(this, currentUserInfo.userId, currentUserInfo, pass);
+                    apiMethods.setGetMetersByUserIdResponse(this);
+                } else if (role.equals("technician")) {
+                    apiMethods.getMetersByEnterprise(getApplicationContext(), currentUserInfo.enterpriseID);
+                    apiMethods.setGetMetersByEnterpriseResponse(this);
+                }else if (role.equals("admin")) {
+                    apiMethods.getMeters(getApplicationContext());
+                    apiMethods.setGetMetersResponse(this);
+                }
                 break;
             case "AddContadorFrag":
                 getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_fragmentContainer_MainAC, new MainAcAddContadorFrag(this)).commitAllowingStateLoss();
@@ -396,6 +437,37 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
     @Override
+    public void onGetMetersByUserIdResponse(boolean response, String message, List<MeterEntity> list) {
+        binding.loadingViewMainAc.setVisibility(View.GONE);
+
+        if (response) {
+            contadoresEntityList = list;
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frameLayout_fragmentContainer_MainAC, new MainACMainViewFrag(this, list))
+                    .commitAllowingStateLoss();
+            binding.imageViewButtonBackMainAC.setVisibility(View.GONE);
+            currentView = 0;
+        } else {
+            snackBarShow.display(binding.getRoot(), message, -1, 1, binding.snackbarViewMainActivity, context);
+        }
+    }
+    @Override
+    public void onGetMetersByEnterpriseResponse(boolean response, String message, List<MeterEntity> list) {
+        binding.loadingViewMainAc.setVisibility(View.GONE);
+
+        if (response) {
+            contadoresEntityList = list;
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frameLayout_fragmentContainer_MainAC, new MainACMainViewFrag(this, list))
+                    .commitAllowingStateLoss();
+            binding.imageViewButtonBackMainAC.setVisibility(View.GONE);
+            currentView = 0;
+        } else {
+            snackBarShow.display(binding.getRoot(), message, -1, 1, binding.snackbarViewMainActivity, context);
+        }
+    }
+
+    @Override
     public void onGetReadingsByMeterIdResponse(boolean response, String message, List<MeterReadingEntity> list, MainACReadingsContadorFrag frag) {
         if (response) {
             frag.setMeterReadings(list);
@@ -410,10 +482,16 @@ public class MainActivity extends AppCompatActivity implements
     }
     @Override
     public void onGetUserRoleResponse(boolean response, String responseText, String role) {
-        // TODO: TA AQUI
+        // TODO: ROLES
         Log.i("ROLE", "RESPONSE: "+response);
         Log.i("ROLE", "RESPONSE TEXT: "+responseText);
         Log.i("ROLE", "ROLE DO USER: "+role);
+
+        getSharedPreferences("Perf_User", MODE_PRIVATE)
+                .edit()
+                .putString("role", role)
+                .apply();
+
         if(role.equals("admin")){
             binding.imageViewTesteMainAC.setVisibility(View.VISIBLE);
         }
