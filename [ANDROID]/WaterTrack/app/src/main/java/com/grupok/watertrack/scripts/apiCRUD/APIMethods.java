@@ -19,6 +19,7 @@ import com.grupok.watertrack.database.entities.EnterpriseEntity;
 import com.grupok.watertrack.database.entities.MeterReadingEntity;
 import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.MeterTypeEntity;
+import com.grupok.watertrack.database.entities.TecnicoInfoEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
 
@@ -316,9 +317,9 @@ public class APIMethods {
         this.getMetersByUserIdResponse = listenner;
     }
 
-    public void getMetersByUserId(Context context, int userId, UserInfosEntity user, String pass) {
+    public void getMetersByUserId(Context context, UserInfosEntity user, String pass) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/meters/fromuser/" + userId;
+        String url = "http://172.22.21.222/watertrack/backend/web/api/meters/fromuser/" + user.userId;
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, url, null,
@@ -395,9 +396,9 @@ public class APIMethods {
         this.getMetersByEnterpriseResponse = listener;
     }
 
-    public void getMetersByEnterprise(Context context, int enterpriseId) {
+    public void getMetersByEnterprise(Context context , TecnicoInfoEntity tec,UserInfosEntity user, String pass) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/meters/fromenterprise/" + enterpriseId;
+        String url = "http://172.22.21.222/watertrack/backend/web/api/meters/fromenterprise/" + tec.enterpriseID;
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, url, null,
@@ -444,8 +445,20 @@ public class APIMethods {
                                 null
                         );
                 }
-        );
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = user.username + ":" + pass;
+                String auth = "Basic " + Base64.encodeToString(credentials.getBytes(StandardCharsets.UTF_8), Base64.NO_WRAP);
 
+                headers.put("Authorization", auth);
+                headers.put("Accept", "application/json");
+                headers.put("Host", "172.22.21.222");
+
+                return headers;
+            }
+        };
         queue.add(request);
     }
     // </editor-fold>

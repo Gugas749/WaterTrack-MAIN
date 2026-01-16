@@ -35,6 +35,7 @@ import com.grupok.watertrack.database.daos.TiposContadoresDao;
 import com.grupok.watertrack.database.daos.UserInfosDao;
 import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.MeterReadingEntity;
+import com.grupok.watertrack.database.entities.TecnicoInfoEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.databinding.ActivityMainBinding;
 import com.grupok.watertrack.fragments.alertDialogFragments.AlertDialogQuestionFragment;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements
     private Context context;
     private int currentView;
     public UserInfosEntity currentUserInfo;
+    public TecnicoInfoEntity tecnicoInfoEntity;
     private Boolean allDisable;
     private ActionBarDrawerToggle drawerToggleSideMenu;
     public SnackBarShow snackBarShow = new SnackBarShow();
@@ -279,10 +281,10 @@ public class MainActivity extends AppCompatActivity implements
                 Log.d("roles", "cycleFragments: role do user: " + role);
 
                 if (role.equals("resident")) {
-                    apiMethods.getMetersByUserId(this, currentUserInfo.userId, currentUserInfo, pass);
+                    apiMethods.getMetersByUserId(this, currentUserInfo, pass);
                     apiMethods.setGetMetersByUserIdResponse(this);
                 } else if (role.equals("technician")) {
-                    apiMethods.getMetersByEnterprise(getApplicationContext(), currentUserInfo.enterpriseID);
+                    apiMethods.getMetersByEnterprise(getApplicationContext(), tecnicoInfoEntity,currentUserInfo, pass);
                     apiMethods.setGetMetersByEnterpriseResponse(this);
                 }else if (role.equals("admin")) {
                     apiMethods.getMeters(getApplicationContext());

@@ -10,18 +10,18 @@ public class TecnicoInfoEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    @ColumnInfo(name = "id_user")
-    public int idUser;
+    @ColumnInfo(name = "userID")
+    public int userID;
 
-    @ColumnInfo(name = "id_empresa")
-    public int idEmpresa;
+    @ColumnInfo(name = "enterpriseID")
+    public int enterpriseID;
 
-    @ColumnInfo(name = "num_cedula_profissional")
-    public String numCedulaProfissional;
+    @ColumnInfo(name = "profissionalCertificateNumber")
+    public String profissionalCertificateNumber;
 
-    public TecnicoInfoEntity(int idUser, int idEmpresa, String numCedulaProfissional) {
-        this.idUser = idUser;
-        this.idEmpresa = idEmpresa;
-        this.numCedulaProfissional = numCedulaProfissional;
+    public TecnicoInfoEntity(int userID, int enterpriseID, String profissionalCertificateNumber) {
+        this.userID = userID;
+        this.enterpriseID = enterpriseID;
+        this.profissionalCertificateNumber = profissionalCertificateNumber;
     }
 }
