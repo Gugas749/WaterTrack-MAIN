@@ -45,6 +45,7 @@ import com.grupok.watertrack.fragments.mainactivityfrags.creditsview.MainACCredi
 import com.grupok.watertrack.fragments.mainactivityfrags.detailsmeterview.MainACDetailsMeterFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.mainview.MainACMainViewFrag;
+import com.grupok.watertrack.fragments.mainactivityfrags.settings.MainACSettingsFrag;
 import com.grupok.watertrack.scripts.CustomAlertDialogFragment;
 import com.grupok.watertrack.scripts.SnackBarShow;
 import com.grupok.watertrack.scripts.apiCRUD.APIMethods;
@@ -160,6 +161,9 @@ public class MainActivity extends AppCompatActivity implements
                     case 7: // Add Reports
                         cycleFragments("ReportFrag", null);
                         break;
+                    case 8: // Settings
+                        cycleFragments("MainViewFrag", null);
+                        break;
                 }
             }
         });
@@ -195,6 +199,10 @@ public class MainActivity extends AppCompatActivity implements
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if(!allDisable){
                     item.setEnabled(false);
+                    if (item.getItemId() == R.id.mainAc_SideMenu_Settings) {
+                        Bundle data = null;
+                        cycleFragments("SettingsFrag", data);
+                    }
                     if (item.getItemId() == R.id.mainAc_SideMenu_Credits) {
                         Bundle data = null;
                         cycleFragments("CreditsFrag", data);
@@ -374,6 +382,15 @@ public class MainActivity extends AppCompatActivity implements
                 //ReportsEntity report = new Gson().fromJson(data.getString("report"), ReportsEntity.class);
                 //MainACAddReportFrag addReportFrag = new MainACAddReportFrag(this, currentUserInfo, report);
                 break;
+                case "SettingsFrag": // TODO: Settings Frag
+                    currentView = 8;
+                    MainACSettingsFrag settingsFrag = new MainACSettingsFrag(this, currentUserInfo);
+                    binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.frameLayout_fragmentContainer_MainAC, settingsFrag)
+                            .commitAllowingStateLoss();
+                    break;
         }
     }
     // </editor-fold>

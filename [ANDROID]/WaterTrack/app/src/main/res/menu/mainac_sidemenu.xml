@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/mainAc_SideMenu_ReportProblem"
+        android:id="@+id/mainAc_SideMenu_Settings"
         android:icon="@drawable/settings_24"
         android:title="@string/mainActivity_SideMenu_Settings"
         android:checkable="false" />
