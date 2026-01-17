@@ -110,6 +110,12 @@
     <!-- MAIN ACTIVITY | READINGS CONTADOR -->
     <string name="mainActivity_ReadingsContadorFrag_LabelDetails">Reading Details</string>
     <string name="mainActivity_ReadingsContadorFrag_LabelReadings">Readings</string>
+    <!-- MAIN ACTIVITY | ADD READINGS -->
+    <string name="mainActivity_AddReadingsFrag_Meter">Meter</string>
+    <string name="mainActivity_AddReadingsFrag_Technician">Technician</string>
+    <string name="mainActivity_AddReadingsFrag_Reading">Reading</string>
+    <string name="mainActivity_AddReadingsFrag_AcConsumption">Accumulated Consumption</string>
+    <string name="mainActivity_AddReadingsFrag_WaterPressure">Water Pressure</string>
     <!-- MAIN ACTIVITY | REPORTS -->
     <string name="mainActivity_ReportsFrag_TextView_NothingToDisplay">Theres no Reports to be displayed.</string>
     <string name="mainActivity_ReportsFrag_Label">Reports</string>

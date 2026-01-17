@@ -1,4 +1,4 @@
-package com.grupok.watertrack.fragments.mainactivityfrags.detailsmeterview;
+package com.grupok.watertrack.fragments.mainactivityfrags.meters.detailsmeterview;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -23,7 +23,7 @@ import com.grupok.watertrack.database.entities.MeterReadingEntity;
 import com.grupok.watertrack.database.entities.MeterTypeEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.databinding.FragmentMainACDetailsContadorBinding;
-import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
+import com.grupok.watertrack.fragments.mainactivityfrags.readings.readingsview.MainACReadingsContadorFrag;
 import com.grupok.watertrack.scripts.SnackBarShow;
 import com.grupok.watertrack.scripts.apiCRUD.APIMethods;
 

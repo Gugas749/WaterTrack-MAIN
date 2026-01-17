@@ -1,27 +1,22 @@
-package com.grupok.watertrack.fragments.mainactivityfrags.addmeterview;
+package com.grupok.watertrack.fragments.mainactivityfrags.meters.addmeterview;
 
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.room.Room;
 
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.grupok.watertrack.R;
 import com.grupok.watertrack.activitys.MainActivity;
-import com.grupok.watertrack.database.LocalDataBase;
-import com.grupok.watertrack.database.daos.UserInfosDao;
 import com.grupok.watertrack.database.entities.EnterpriseEntity;
 import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.MeterTypeEntity;

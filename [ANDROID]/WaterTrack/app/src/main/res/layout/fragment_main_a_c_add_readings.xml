@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.mainactivityfrags.readings.addreadings.MainACAddReadingsFrag">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <!-- ID METER - COMBO BOX -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout_ComboBox_Meter_AddReadingsFrag_MainAc"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/mainActivity_AddReadingsFrag_Meter"
+                app:hintTextColor="@color/textfield_stroke_colors"
+                app:boxStrokeColor="@color/textfield_stroke_colors"
+                app:boxStrokeErrorColor="?attr/colorError"
+                app:boxStrokeWidth="@dimen/_2sdp"
+                app:boxStrokeWidthFocused="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                app:endIconMode="dropdown_menu">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/comboBox_Meter_AddReadingsFrag_MainAc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:focusable="true"
+                    android:importantForAutofill="no"
+                    android:padding="@dimen/_12sdp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <!-- ID TECNICO - COMBO BOX -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout_ComboBox_Technician_AddReadingsFrag_MainAc"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textInputLayout_ComboBox_Meter_AddReadingsFrag_MainAc"
+                android:hint="@string/mainActivity_AddReadingsFrag_Technician"
+                app:hintTextColor="@color/textfield_stroke_colors"
+                app:boxStrokeColor="@color/textfield_stroke_colors"
+                app:boxStrokeErrorColor="?attr/colorError"
+                app:boxStrokeWidth="@dimen/_2sdp"
+                app:boxStrokeWidthFocused="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                app:endIconMode="dropdown_menu">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/comboBox_Technician_AddReadingsFrag_MainAc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:focusable="true"
+                    android:importantForAutofill="no"
+                    android:padding="@dimen/_12sdp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <!-- READING - TEXT INPUT -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayout_TextInput_Reading_AddReadingsFrag_MainAc"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textInputLayout_ComboBox_Technician_AddReadingsFrag_MainAc"
+                android:hint="@string/mainActivity_AddReadingsFrag_Reading"
+                app:hintTextColor="@color/textfield_stroke_colors"
+                app:boxStrokeColor="@color/textfield_stroke_colors"
+                app:boxStrokeErrorColor="?attr/colorError"
+                app:boxStrokeWidth="@dimen/_2sdp"
+                app:boxStrokeWidthFocused="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_12sdp"  >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editText_Reading_AddReadingsFrag_MainAc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!-- ACUMULATED CONSUMPTION - TEXT INPUT -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayout_TextInput_AcConsumption_AddReadingsFrag_MainAc"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inputLayout_TextInput_Reading_AddReadingsFrag_MainAc"
+                android:hint="@string/mainActivity_AddReadingsFrag_AcConsumption"
+                app:hintTextColor="@color/textfield_stroke_colors"
+                app:boxStrokeColor="@color/textfield_stroke_colors"
+                app:boxStrokeErrorColor="?attr/colorError"
+                app:boxStrokeWidth="@dimen/_2sdp"
+                app:boxStrokeWidthFocused="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_12sdp"  >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editText_AcConsumption_AddReadingsFrag_MainAc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!-- WATER PRESSURE - TEXT INPUT -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayout_TextInput_WaterPressure_AddReadingsFrag_MainAc"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inputLayout_TextInput_AcConsumption_AddReadingsFrag_MainAc"
+                android:hint="@string/mainActivity_AddReadingsFrag_WaterPressure"
+                app:hintTextColor="@color/textfield_stroke_colors"
+                app:boxStrokeColor="@color/textfield_stroke_colors"
+                app:boxStrokeErrorColor="?attr/colorError"
+                app:boxStrokeWidth="@dimen/_2sdp"
+                app:boxStrokeWidthFocused="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_12sdp"  >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editText_WaterPressure_AddReadingsFrag_MainAc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <!-- DATE - DATE PICKER -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayout_DatePicker_Date_AddReadingsFrag_MainAc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inputLayout_TextInput_WaterPressure_AddReadingsFrag_MainAc"
+                android:hint="Date"
+                app:hintTextColor="@color/textfield_stroke_colors"
+                app:boxStrokeColor="@color/textfield_stroke_colors"
+                app:boxStrokeErrorColor="?attr/colorError"
+                app:boxStrokeWidth="@dimen/_2sdp"
+                app:boxStrokeWidthFocused="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/baseline_date_range_24"
+                app:endIconContentDescription="@string/mainActivity_AddContadorFrag_DatePicker_Date_IconDesc"
+                style="?attr/textInputOutlinedStyle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/datePicker_InstallationDate_AddReadingsFrag_MainAc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <!-- ADD - BUTTON -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/butSave_AddReadingsFrag_AuthAc"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_7sdp"
+                android:paddingTop="@dimen/_7sdp"
+                android:text="@string/general_save"
+                android:layout_below="@+id/inputLayout_DatePicker_Date_AddReadingsFrag_MainAc"
+                app:cornerRadius="@dimen/_8sdp"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="?attr/buttonTint"
+                android:textColor="?attr/textColorButtons"/>
+        </RelativeLayout>
+    </ScrollView>
+    <FrameLayout
+        android:id="@+id/loadingView_AddReadingsFrag_MainAc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            app:indicatorSize="48dp"
+            app:trackThickness="4dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            app:indicatorColor="?attr/textOutlineColor"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/snackbarView_AddReadingsFrag_MainAC"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+</FrameLayout>

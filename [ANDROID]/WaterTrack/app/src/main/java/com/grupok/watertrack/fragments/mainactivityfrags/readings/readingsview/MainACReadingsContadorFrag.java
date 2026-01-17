@@ -1,8 +1,7 @@
-package com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview;
+package com.grupok.watertrack.fragments.mainactivityfrags.readings.readingsview;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import com.grupok.watertrack.R;
 import com.grupok.watertrack.activitys.MainActivity;
 import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.MeterReadingEntity;
-import com.grupok.watertrack.database.entities.MeterTypeEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.databinding.FragmentMainACReadingsContadorBinding;
 import com.grupok.watertrack.scripts.SnackBarShow;

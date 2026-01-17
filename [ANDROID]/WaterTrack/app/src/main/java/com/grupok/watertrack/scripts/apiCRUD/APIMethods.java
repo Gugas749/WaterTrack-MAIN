@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -21,7 +20,7 @@ import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.MeterTypeEntity;
 import com.grupok.watertrack.database.entities.ReportsEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
-import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
+import com.grupok.watertrack.fragments.mainactivityfrags.readings.readingsview.MainACReadingsContadorFrag;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -241,6 +240,47 @@ public class APIMethods {
                 },
                 error -> {
                     signUpResponse.onSignUpResponse(false, context.getString(R.string.apiMethods_VolleyError));
+                }
+        );
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="GET TECHNICIAN INFOS">
+    private GetTechniciansResponse getTechniciansResponse;
+    public interface GetTechniciansResponse{
+        void onGetTechniciansResponse(boolean response, String message, List<UserInfosEntity> list);
+    }
+    public void setGetTechniciansResponse(GetTechniciansResponse listenner){
+        this.getTechniciansResponse = listenner;
+    }
+    public void getTechnicians(Context context, List<UserInfosEntity> users){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/technician-infos";
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        List<UserInfosEntity> list = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject meter = response.getJSONObject(i);
+                            for (UserInfosEntity user : users) {
+                                if(meter.getInt("userID") == user.userId){
+                                    user.enterpriseID = meter.getInt("enterpriseID");
+                                    user.certificationNumber = meter.getString("profissionalCertificateNumber");
+                                    list.add(user);
+                                }
+                            }
+                        }
+                        getTechniciansResponse.onGetTechniciansResponse(true, "", list);
+                    } catch (JSONException e) {
+                        getTechniciansResponse.onGetTechniciansResponse(false, context.getString(R.string.apiMethods_JsonParseError), null);
+                    }
+                },
+                error -> {
+                    getTechniciansResponse.onGetTechniciansResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
                 }
         );
 
@@ -1100,9 +1140,9 @@ public class APIMethods {
             json.put("class", meter.classe);
             json.put("instalationDate", meter.instalationDate);
             json.put("shutdownDate", null);
-            json.put("maxCapacity", meter.maxCapacity);
+            json.put("maxCapacity", Double.parseDouble(meter.maxCapacity));
+            json.put("supportedTemperature", Double.parseDouble(meter.supportedTemperature));
             json.put("measureUnity", meter.measureUnity);
-            json.put("supportedTemperature", meter.supportedTemperature);
             json.put("state", meter.state);
         } catch (JSONException e) {
             throw new RuntimeException(e);

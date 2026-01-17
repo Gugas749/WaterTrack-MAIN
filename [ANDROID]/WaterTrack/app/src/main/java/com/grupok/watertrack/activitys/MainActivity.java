@@ -37,13 +37,14 @@ import com.grupok.watertrack.database.entities.MeterReadingEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.databinding.ActivityMainBinding;
 import com.grupok.watertrack.fragments.alertDialogFragments.AlertDialogQuestionFragment;
-import com.grupok.watertrack.fragments.mainactivityfrags.addmeterview.MainAcAddMeterFrag;
+import com.grupok.watertrack.fragments.mainactivityfrags.meters.addmeterview.MainAcAddMeterFrag;
 
+import com.grupok.watertrack.fragments.mainactivityfrags.readings.addreadings.MainACAddReadingsFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.reportsview.MainACAddReportFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.reportsview.MainACReportsFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.creditsview.MainACCreditsFrag;
-import com.grupok.watertrack.fragments.mainactivityfrags.detailsmeterview.MainACDetailsMeterFrag;
-import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
+import com.grupok.watertrack.fragments.mainactivityfrags.meters.detailsmeterview.MainACDetailsMeterFrag;
+import com.grupok.watertrack.fragments.mainactivityfrags.readings.readingsview.MainACReadingsContadorFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.mainview.MainACMainViewFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.settings.MainACSettingsFrag;
 import com.grupok.watertrack.scripts.CustomAlertDialogFragment;
@@ -161,6 +162,9 @@ public class MainActivity extends AppCompatActivity implements
                         break;
                     case 7: // Add Reports
                         cycleFragments("ReportFrag", null);
+                        break;
+                    case 10: // Add Readings
+                        cycleFragments("MainViewFrag", null);
                         break;
                     case 11: // Settings
                         cycleFragments("MainViewFrag", null);
@@ -382,11 +386,16 @@ public class MainActivity extends AppCompatActivity implements
                 //ReportsEntity report = new Gson().fromJson(data.getString("report"), ReportsEntity.class);
                 //MainACAddReportFrag addReportFrag = new MainACAddReportFrag(this, currentUserInfo, report);
                 break;
-            case "AddReadingFrag": // TODO: Add Reading Frag
-                //ReportsEntity report = new Gson().fromJson(data.getString("report"), ReportsEntity.class);
-                //MainACAddReportFrag addReportFrag = new MainACAddReportFrag(this, currentUserInfo, report);
+            case "AddReadingFrag":
+                currentView = 10;
+                MainACAddReadingsFrag addReadingsFrag = new MainACAddReadingsFrag(this, currentUserInfo, contadoresEntityList);
+                binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frameLayout_fragmentContainer_MainAC, addReadingsFrag)
+                        .commitAllowingStateLoss();
                 break;
-                case "SettingsFrag": // TODO: Settings Frag
+                case "SettingsFrag":
                     currentView = 11;
                     MainACSettingsFrag settingsFrag = new MainACSettingsFrag(this, currentUserInfo);
                     binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);

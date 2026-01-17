@@ -1,4 +1,4 @@
-package com.grupok.watertrack.fragments.mainactivityfrags.detailsmeterview;
+package com.grupok.watertrack.fragments.mainactivityfrags.meters.detailsmeterview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
