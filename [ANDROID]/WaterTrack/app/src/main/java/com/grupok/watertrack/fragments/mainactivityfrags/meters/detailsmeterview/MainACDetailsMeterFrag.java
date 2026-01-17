@@ -84,7 +84,6 @@ public class MainACDetailsMeterFrag extends Fragment implements APIMethods.GetEn
 
         setupReadingsButton();
         setupReportsButton();
-        setupEditButton();
     }
     //-----------------------SETUPS-------------------------------
     private void setupReadingsButton(){
@@ -100,22 +99,6 @@ public class MainACDetailsMeterFrag extends Fragment implements APIMethods.GetEn
             data.putBoolean("fromMeterView", true);
             data.putInt("meterID", meterSelected.id);
             parent.cycleFragments("ReportFrag", data);
-        });
-    }
-    private void setupEditButton(){
-        SharedPreferences prefs = parent.getSharedPreferences("Perf_User", MODE_PRIVATE);
-        String role = prefs.getString("role", "");
-        if(role.equals("technician") || role.equals("admin")){
-            binding.butEditDetailsMeterFragMainAc.setVisibility(View.VISIBLE);
-        }
-
-        binding.butEditDetailsMeterFragMainAc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle data = new Bundle();
-                data.putString("meter", new Gson().toJson(meterSelected));
-                parent.cycleFragments("EditMeterFrag", data);
-            }
         });
     }
     //------------------------------------------------------
