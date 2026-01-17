@@ -91,7 +91,7 @@ public class MainACAddReportFrag extends Fragment implements APIMethods.PostRepo
                 }
 
                 binding.loadingViewAddReportFragMainAc.setVisibility(View.VISIBLE);
-                APIMethods apiMethods = new APIMethods();
+                APIMethods apiMethods = new APIMethods(parent);
                 apiMethods.setPostReportResponse(MainACAddReportFrag.this);
                 apiMethods.postReport(getContext(), currentUser, selectedMeterID, binding.editTextDescriptionReportFragFragMainAc.getText().toString().trim());
             }

@@ -88,7 +88,7 @@ public class MainACDetailsMeterFrag extends Fragment implements APIMethods.GetEn
     //-----------------------SETUPS-------------------------------
     private void setupReadingsButton(){
         binding.butReadingsDetailsContadorFragMainAc.setOnClickListener(v -> {
-            APIMethods api = new APIMethods();
+            APIMethods api = new APIMethods(parent);
             api.setGetReadingsByMeterIdResponse(MainACDetailsMeterFrag.this, null);
             api.getReadingsByMeterId(context, meterSelected.id, parent.currentUserInfo);
         });
@@ -119,7 +119,7 @@ public class MainACDetailsMeterFrag extends Fragment implements APIMethods.GetEn
     //------------------------------LOAD RV RELATED---------------------------------
     private void actionLoadRV(){
         binding.loadingViewDetailsContadorFragMainAc.setVisibility(View.VISIBLE);
-        APIMethods apiMethods = new APIMethods();
+        APIMethods apiMethods = new APIMethods(parent);
         apiMethods.getEnterpriseById(context, meterSelected.enterpriseID);
         apiMethods.setGetEnterpriseByIdResponse(this);
 

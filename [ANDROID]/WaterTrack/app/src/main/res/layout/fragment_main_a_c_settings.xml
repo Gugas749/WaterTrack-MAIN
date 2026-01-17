@@ -5,22 +5,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.mainactivityfrags.mainview.MainACMainViewFrag">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/_12sdp">
-
+        android:layout_height="match_parent">
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayout_TextInput_Username_SettingsFrag_MainAc"
+            android:id="@+id/inputLayout_TextInput_APIURL_SettingsFrag_MainAc"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/mainActivity_SettingsFrag_Username"
+            android:hint="@string/mainActivity_SettingsFrag_APIURL"
             app:hintTextColor="@color/textfield_stroke_colors"
             app:boxStrokeColor="@color/textfield_stroke_colors"
             app:boxStrokeErrorColor="?attr/colorError"
@@ -31,83 +25,15 @@
             android:layout_marginRight="@dimen/_12sdp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText_Username_SettingsFrag_MainAc"
+                android:id="@+id/editText_APIURL_SettingsFrag_MainAc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"/>
         </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayout_TextInput_Email_SettingsFrag_MainAc"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/mainActivity_SettingsFrag_Email"
-            app:hintTextColor="@color/textfield_stroke_colors"
-            app:boxStrokeColor="@color/textfield_stroke_colors"
-            app:boxStrokeErrorColor="?attr/colorError"
-            app:boxStrokeWidth="@dimen/_2sdp"
-            app:boxStrokeWidthFocused="@dimen/_3sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginLeft="@dimen/_12sdp"
-            android:layout_marginRight="@dimen/_12sdp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText_Email_SettingsFrag_MainAc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayout_BDate_SettingsFrag_MainAc"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/mainActivity_SettingsFrag_BDate"
-            app:hintTextColor="@color/textfield_stroke_colors"
-            app:boxStrokeColor="@color/textfield_stroke_colors"
-            app:boxStrokeErrorColor="?attr/colorError"
-            app:boxStrokeWidth="@dimen/_2sdp"
-            app:boxStrokeWidthFocused="@dimen/_3sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginLeft="@dimen/_12sdp"
-            android:layout_marginRight="@dimen/_12sdp"
-            app:endIconMode="custom"
-            app:endIconDrawable="@drawable/info_24">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText_BDate_SettingsFrag_MainAc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayout_TextInput_Address_SettingsFrag_MainAc"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/mainActivity_SettingsFrag_Address"
-            app:hintTextColor="@color/textfield_stroke_colors"
-            app:boxStrokeColor="@color/textfield_stroke_colors"
-            app:boxStrokeErrorColor="?attr/colorError"
-            app:boxStrokeWidth="@dimen/_2sdp"
-            app:boxStrokeWidthFocused="@dimen/_3sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginLeft="@dimen/_12sdp"
-            android:layout_marginRight="@dimen/_12sdp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText_Address_SettingsFrag_MainAc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/butSave_SettingsFrag_MainAC"
             style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_below="@+id/inputLayout_TextInput_APIURL_SettingsFrag_MainAc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_12sdp"
@@ -118,9 +44,7 @@
             android:layout_gravity="center_horizontal"
             android:backgroundTint="?attr/buttonTint"
             android:textColor="?attr/textColorButtons"/>
-    </LinearLayout>
-</ScrollView>
-
+    </RelativeLayout>
     <FrameLayout
         android:id="@+id/loadingView_SettingsFrag_MainAc"
         android:layout_width="match_parent"

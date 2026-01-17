@@ -133,7 +133,7 @@
     <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_Date">Date</string>
     <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_WaterPressure">WaterPressure</string>
     <!-- MAIN ACTIVITY | SETTINGS -->
-    <string name="mainActivity_SettingsFrag_Username">Username</string>
+    <string name="mainActivity_SettingsFrag_APIURL">API Url</string>
     <string name="mainActivity_SettingsFrag_Email">Email</string>
     <string name="mainActivity_SettingsFrag_BDate">Birth Date</string>
     <string name="mainActivity_SettingsFrag_Address">Address</string>

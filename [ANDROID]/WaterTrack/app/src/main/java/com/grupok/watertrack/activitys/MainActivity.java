@@ -204,10 +204,10 @@ public class MainActivity extends AppCompatActivity implements
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if(!allDisable){
                     item.setEnabled(false);
-//                    if (item.getItemId() == R.id.mainAc_SideMenu_Settings) {
-//                        Bundle data = null;
-//                        cycleFragments("SettingsFrag", data);
-//                    }
+                    if (item.getItemId() == R.id.mainAc_SideMenu_Settings) {
+                        Bundle data = null;
+                        cycleFragments("SettingsFrag", data);
+                    }
                     if (item.getItemId() == R.id.mainAc_SideMenu_Credits) {
                         Bundle data = null;
                         cycleFragments("CreditsFrag", data);
@@ -276,7 +276,8 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
     public void cycleFragments(String goTo, Bundle data){
-        APIMethods apiMethods = new APIMethods();
+        APIMethods apiMethods = new APIMethods(getApplicationContext());
+        closeKeyboard();
         switch (goTo){
             case "MainViewFrag":
                 binding.loadingViewMainAc.setVisibility(View.VISIBLE);
@@ -377,14 +378,6 @@ public class MainActivity extends AppCompatActivity implements
                         .beginTransaction()
                         .replace(R.id.frameLayout_fragmentContainer_MainAC, addReportFrag)
                         .commitAllowingStateLoss();
-                break;
-            case "DetailsReportFrag": // TODO: Details Reports
-                //ReportsEntity report = new Gson().fromJson(data.getString("report"), ReportsEntity.class);
-                //MainACAddReportFrag addReportFrag = new MainACAddReportFrag(this, currentUserInfo, report);
-                break;
-            case "EditMeterFrag": // TODO: Edit Meter
-                //ReportsEntity report = new Gson().fromJson(data.getString("report"), ReportsEntity.class);
-                //MainACAddReportFrag addReportFrag = new MainACAddReportFrag(this, currentUserInfo, report);
                 break;
             case "AddReadingFrag":
                 currentView = 10;

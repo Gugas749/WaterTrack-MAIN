@@ -86,7 +86,7 @@ public class MainACAddReadingsFrag extends Fragment implements
     }
     private void getInfos(){
         binding.loadingViewAddReadingsFragMainAc.setVisibility(View.VISIBLE);
-        APIMethods apiMethods = new APIMethods();
+        APIMethods apiMethods = new APIMethods(parent);
 
         SharedPreferences prefs = parent.getSharedPreferences("Perf_User", MODE_PRIVATE);
         String role = prefs.getString("role", "");
@@ -224,7 +224,7 @@ public class MainACAddReadingsFrag extends Fragment implements
                     );
 
                     binding.loadingViewAddReadingsFragMainAc.setVisibility(View.VISIBLE);
-                    APIMethods apiMethods = new APIMethods();
+                    APIMethods apiMethods = new APIMethods(parent);
                     apiMethods.setPostReadingResponse(THIS);
                     apiMethods.postReading(getContext(), currentUser, reading);
                 }
@@ -299,7 +299,7 @@ public class MainACAddReadingsFrag extends Fragment implements
     @Override
     public void onGetUsersResponse(boolean response, String responseText, List<UserInfosEntity> users) {
         if(response){
-            APIMethods apiMethods = new APIMethods();
+            APIMethods apiMethods = new APIMethods(parent);
             apiMethods.setGetTechniciansResponse(THIS);
             apiMethods.getTechnicians(THIS.getContext(), users);
         }else{

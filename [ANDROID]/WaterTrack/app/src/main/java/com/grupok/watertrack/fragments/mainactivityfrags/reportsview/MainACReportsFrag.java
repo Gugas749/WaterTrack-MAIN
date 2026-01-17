@@ -87,7 +87,7 @@ public class MainACReportsFrag extends Fragment implements APIMethods.GetReports
     // <editor-fold desc="FUNCTIONS">
     private void getInfos(){
         boolean aux = false;
-        APIMethods apiMethods = new APIMethods();
+        APIMethods apiMethods = new APIMethods(parent);
 
         if(getArguments() != null){
             aux = getArguments().getBoolean("fromMeterView", false);

@@ -72,7 +72,7 @@ public class MainACReadingsContadorFrag extends Fragment implements APIMethods.G
         binding.loadingViewReadingsContadorFragMainAc.setVisibility(View.VISIBLE);
         binding.textViewEmptyFields.setVisibility(View.VISIBLE);
 
-        APIMethods apiMethods = new APIMethods();
+        APIMethods apiMethods = new APIMethods(context);
         apiMethods.getUserById(context, meterSelected.userID);
         apiMethods.setGetUserByIdResponse(this);
     }

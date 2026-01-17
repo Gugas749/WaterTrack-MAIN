@@ -34,6 +34,15 @@ import java.util.List;
 import java.util.Map;
 
 public class APIMethods {
+
+    private String urlAPI = "";
+
+    public APIMethods(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
+        String urlAPI = prefs.getString("urlAPI", "172.22.21.222");
+        this.urlAPI = urlAPI;
+    }
+
     //-------------------------------------------------------------------------------------------
     // <editor-fold desc="GET USERS">
     private GetUsersResponse getUsersResponse;
@@ -45,7 +54,7 @@ public class APIMethods {
     }
     public void getUsers(Context context){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url ="http://172.22.21.222/watertrack/backend/web/api/users";
+        String url ="http://"+urlAPI+"/watertrack/backend/web/api/users";
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,
@@ -91,7 +100,7 @@ public class APIMethods {
     }
     public void getUserRole(Context context, UserInfosEntity user){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url ="http://172.22.21.222/watertrack/backend/web/api/users/getrole/"+user.userId;
+        String url ="http://"+urlAPI+"/watertrack/backend/web/api/users/getrole/"+user.userId;
 
         SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
         String pass = prefs.getString(user.email, "");
@@ -125,7 +134,7 @@ public class APIMethods {
                 headers.put("Authorization", auth);
                 headers.put("Accept", "application/json");
 
-                headers.put("Host", "172.22.21.222");
+                headers.put("Host", ""+urlAPI+"");
 
                 return headers;
             }
@@ -145,7 +154,7 @@ public class APIMethods {
     }
     public void login(Context context, String username, String password) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/auth/login";
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/auth/login";
 
         JSONObject json = new JSONObject();
         try{
@@ -213,7 +222,7 @@ public class APIMethods {
     }
     public void signup(Context context, String Email, String password){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/auth/signup";
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/auth/signup";
 
         JSONObject json = new JSONObject();
         try{
@@ -259,7 +268,7 @@ public class APIMethods {
     }
     public void getTechnicians(Context context, List<UserInfosEntity> users){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/technician-infos";
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/technician-infos";
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, url, null,
@@ -300,7 +309,7 @@ public class APIMethods {
     }
     public void getMeters(Context context){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/meters";
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/meters";
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, url, null,
@@ -355,7 +364,7 @@ public class APIMethods {
 
     public void getMetersByUserId(Context context, UserInfosEntity user, String pass) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/meters/fromuser/" + user.userId;
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/meters/fromuser/" + user.userId;
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, url, null,
@@ -411,7 +420,7 @@ public class APIMethods {
 
                 headers.put("Authorization", auth);
                 headers.put("Accept", "application/json");
-                headers.put("Host", "172.22.21.222");
+                headers.put("Host", ""+urlAPI+"");
 
                 return headers;
             }
@@ -434,7 +443,7 @@ public class APIMethods {
 
     public void getMetersByEnterprise(Context context, UserInfosEntity user, String pass) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/meters/fromenterprise/" + user.enterpriseID;
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/meters/fromenterprise/" + user.enterpriseID;
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, url, null,
@@ -492,7 +501,7 @@ public class APIMethods {
 
                 headers.put("Authorization", auth);
                 headers.put("Accept", "application/json");
-                headers.put("Host", "172.22.21.222");
+                headers.put("Host", ""+urlAPI+"");
 
                 return headers;
             }
@@ -511,7 +520,7 @@ public class APIMethods {
     }
     public void getEnterprises(Context context){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/enterprises";
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/enterprises";
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, url, null,
@@ -554,7 +563,7 @@ public class APIMethods {
     }
     public void getEnterpriseById(Context context, int id){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/enterprises/"+id;
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/enterprises/"+id;
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, url, null,
@@ -590,7 +599,7 @@ public class APIMethods {
     }
     public void getUserById(Context context, int id){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/users/"+id;
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/users/"+id;
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, url, null,
@@ -624,7 +633,7 @@ public class APIMethods {
     }
     public void getMeterTypes(Context context){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/meter-types";
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/meter-types";
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, url, null,
@@ -663,7 +672,7 @@ public class APIMethods {
     }
     public void getMeterTypeById(Context context, int id){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/meter-types/"+id;
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/meter-types/"+id;
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, url, null,
@@ -697,7 +706,7 @@ public class APIMethods {
     }
     public void getReadingsByMeterId(Context context, int id, UserInfosEntity user){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/meter-readings/frommeter/"+id;
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/meter-readings/frommeter/"+id;
 
         SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
         String pass = prefs.getString(user.email, "");
@@ -745,7 +754,7 @@ public class APIMethods {
                 headers.put("Authorization", auth);
                 headers.put("Accept", "application/json");
 
-                headers.put("Host", "172.22.21.222");
+                headers.put("Host", ""+urlAPI+"");
 
                 return headers;
             }
@@ -765,7 +774,7 @@ public class APIMethods {
     }
     public void getReports(Context context){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url ="http://172.22.21.222/watertrack/backend/web/api/meter-problems";
+        String url ="http://"+urlAPI+"/watertrack/backend/web/api/meter-problems";
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,
@@ -816,7 +825,7 @@ public class APIMethods {
     }
     public void getReportsByUserID(Context context, UserInfosEntity user){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url ="http://172.22.21.222/watertrack/backend/web/api/meter-problems/fromuser/"+user.userId;
+        String url ="http://"+urlAPI+"/watertrack/backend/web/api/meter-problems/fromuser/"+user.userId;
 
         SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
         String pass = prefs.getString(user.email, "");
@@ -868,7 +877,7 @@ public class APIMethods {
                 headers.put("Authorization", auth);
                 headers.put("Accept", "application/json");
 
-                headers.put("Host", "172.22.21.222");
+                headers.put("Host", ""+urlAPI+"");
 
                 return headers;
             }
@@ -888,7 +897,7 @@ public class APIMethods {
     }
     public void getReportsByMeterID(Context context, UserInfosEntity user, int meterID){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url ="http://172.22.21.222/watertrack/backend/web/api/meter-problems/frommeter/"+meterID;
+        String url ="http://"+urlAPI+"/watertrack/backend/web/api/meter-problems/frommeter/"+meterID;
 
         SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
         String pass = prefs.getString(user.email, "");
@@ -940,7 +949,7 @@ public class APIMethods {
                 headers.put("Authorization", auth);
                 headers.put("Accept", "application/json");
 
-                headers.put("Host", "172.22.21.222");
+                headers.put("Host", ""+urlAPI+"");
 
                 return headers;
             }
@@ -960,7 +969,7 @@ public class APIMethods {
     }
     public void postReport(Context context, UserInfosEntity user, int meterID, String descripiton) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/meter-problems";
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/meter-problems";
 
         SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
         String pass = prefs.getString(user.email, "");
@@ -998,7 +1007,7 @@ public class APIMethods {
                 headers.put("Authorization", auth);
                 headers.put("Accept", "application/json");
 
-                headers.put("Host", "172.22.21.222");
+                headers.put("Host", ""+urlAPI+"");
 
                 return headers;
             }
@@ -1018,7 +1027,7 @@ public class APIMethods {
     }
     public void patchUserProfile(Context context, UserInfosEntity user, String address, String bDate) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/user-profiles/"+user.profileID;
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/user-profiles/"+user.profileID;
 
         SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
         String pass = prefs.getString(user.email, "");
@@ -1053,7 +1062,7 @@ public class APIMethods {
                 headers.put("Authorization", auth);
                 headers.put("Accept", "application/json");
 
-                headers.put("Host", "172.22.21.222");
+                headers.put("Host", ""+urlAPI+"");
 
                 return headers;
             }
@@ -1073,7 +1082,7 @@ public class APIMethods {
     }
     public void patchUser(Context context, UserInfosEntity user, String username, String email) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/users/"+user.userId;
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/users/"+user.userId;
 
         SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
         String pass = prefs.getString(user.email, "");
@@ -1108,7 +1117,7 @@ public class APIMethods {
                 headers.put("Authorization", auth);
                 headers.put("Accept", "application/json");
 
-                headers.put("Host", "172.22.21.222");
+                headers.put("Host", ""+urlAPI+"");
 
                 return headers;
             }
@@ -1128,7 +1137,7 @@ public class APIMethods {
     }
     public void postMeter(Context context, UserInfosEntity user, MeterEntity meter) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/meters";
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/meters";
 
         SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
         String pass = prefs.getString(user.email, "");
@@ -1197,7 +1206,7 @@ public class APIMethods {
                 headers.put("Authorization", auth);
                 headers.put("Accept", "application/json");
 
-                headers.put("Host", "172.22.21.222");
+                headers.put("Host", ""+urlAPI+"");
 
                 return headers;
             }
@@ -1217,7 +1226,7 @@ public class APIMethods {
     }
     public void postReading(Context context, UserInfosEntity user, MeterReadingEntity reading) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://172.22.21.222/watertrack/backend/web/api/meter-readings";
+        String url = "http://"+urlAPI+"/watertrack/backend/web/api/meter-readings";
 
         SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
         String pass = prefs.getString(user.email, "");
@@ -1263,7 +1272,7 @@ public class APIMethods {
                 headers.put("Authorization", auth);
                 headers.put("Accept", "application/json");
 
-                headers.put("Host", "172.22.21.222");
+                headers.put("Host", ""+urlAPI+"");
 
                 return headers;
             }

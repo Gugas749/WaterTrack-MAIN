@@ -83,7 +83,7 @@ public class MainAcAddMeterFrag extends Fragment implements APIMethods.GetUsersR
     }
     private void getInfos(){
         binding.loadingViewAddMeterFragMainAc.setVisibility(View.VISIBLE);
-        APIMethods apiMethods = new APIMethods();
+        APIMethods apiMethods = new APIMethods(parent);
         apiMethods.setGetUsersResponse(THIS);
         apiMethods.setGetMeterTypesResponse(THIS);
         apiMethods.setGetEnterpriseResponse(THIS);
@@ -180,7 +180,7 @@ public class MainAcAddMeterFrag extends Fragment implements APIMethods.GetUsersR
                     );
 
                     binding.loadingViewAddMeterFragMainAc.setVisibility(View.VISIBLE);
-                    APIMethods apiMethods = new APIMethods();
+                    APIMethods apiMethods = new APIMethods(parent);
                     apiMethods.setPostMeterResponse(THIS);
                     apiMethods.postMeter(getContext(), currentUser, meter);
                 }

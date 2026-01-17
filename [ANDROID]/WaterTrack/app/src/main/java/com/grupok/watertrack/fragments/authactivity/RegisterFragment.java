@@ -158,7 +158,7 @@ public class RegisterFragment extends Fragment implements APIMethods.SignUpRespo
     }
     private void signupAction(){
         binding.loadingViewRegisterFrag.setVisibility(View.VISIBLE);
-        APIMethods apiMethods = new APIMethods();
+        APIMethods apiMethods = new APIMethods(parent);
         apiMethods.signup(getContext(),
                 binding.editTextEmailRegisterFragAuthAc.getText().toString().trim(),
                 binding.editTextConfirmPasswordRegisterFragAuthAc.getText().toString().trim());

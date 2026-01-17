@@ -151,7 +151,7 @@ public class LoginFragment extends Fragment implements APIMethods.LoginResponse,
     }
     private void loginAction(){
         binding.loadingViewLoginFrag.setVisibility(View.VISIBLE);
-        APIMethods apiMethods = new APIMethods();
+        APIMethods apiMethods = new APIMethods(parent);
         apiMethods.login(getContext(),
                 binding.editTextEmailLoginFragAuthAc.getText().toString().trim(),
                 binding.editTextPasswordLoginFragAuthAc.getText().toString().trim());
@@ -166,7 +166,7 @@ public class LoginFragment extends Fragment implements APIMethods.LoginResponse,
                 public void onTaskCompleted(UserInfosEntity result) {
                     userLogged = result;
 
-                    APIMethods apiMethods = new APIMethods();
+                    APIMethods apiMethods = new APIMethods(parent);
                     apiMethods.setGetUserRoleResponse(THIS);
                     apiMethods.getUserRole(parent, result);
                 }
@@ -178,14 +178,11 @@ public class LoginFragment extends Fragment implements APIMethods.LoginResponse,
     }
     @Override
     public void onGetUserRoleResponse(boolean response, String responseText, String role) {
-        parent.getSharedPreferences("Perf_User", MODE_PRIVATE)
-                .edit()
-                .putString("role", role)
-                .apply();
         if(userLogged != null){
             SharedPreferences prefs = parent.getSharedPreferences("Perf_User", MODE_PRIVATE);
             prefs.edit().putBoolean("logged", true).apply();
             prefs.edit().putString("userEmail", userLogged.email).apply();
+            prefs.edit().putString("role",role).apply();
             parent.cycleFragments("MainAC", "", userLogged);
         }else{
             snackBarShow.display(binding.getRoot(), getString(R.string.authActivity_LoginFrag_LocalDB_Insert_Error), -1, 1, binding.snackbarViewLoginFrag, context);
