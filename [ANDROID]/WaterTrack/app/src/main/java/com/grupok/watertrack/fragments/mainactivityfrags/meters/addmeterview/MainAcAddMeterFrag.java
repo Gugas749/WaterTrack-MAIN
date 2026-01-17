@@ -163,7 +163,7 @@ public class MainAcAddMeterFrag extends Fragment implements APIMethods.GetUsersR
                     List<String> list = Arrays.asList(getResources().getStringArray(R.array.meterStatus));
                     int state = getSelectedItemId(binding.comboBoxStatusAddContadorFragMainAc, list);
                     List<String> list2 = Arrays.asList(getResources().getStringArray(R.array.meterUnitys));
-                    String unity = String.valueOf(getSelectedItemId(binding.comboBoxStatusAddContadorFragMainAc, list2));
+                    String unity = String.valueOf(getSelectedItemId(binding.comboBoxMesureUnityAddContadorFragMainAc, list2));
 
                     MeterEntity meter = new MeterEntity(
                             binding.editTextAddressAddContadorFragMainAc.getText().toString().trim(),
