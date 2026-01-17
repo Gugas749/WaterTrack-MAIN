@@ -9,10 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.grupok.watertrack.R;
+import com.grupok.watertrack.activitys.MainActivity;
+import com.grupok.watertrack.database.entities.ReportsEntity;
+import com.grupok.watertrack.database.entities.UserInfosEntity;
 
 public class MainACAddReportFrag extends Fragment {
 
-    public MainACAddReportFrag() {
+    public MainACAddReportFrag(MainActivity parent, UserInfosEntity currentUserInfo) {
         // Required empty public constructor
     }
 

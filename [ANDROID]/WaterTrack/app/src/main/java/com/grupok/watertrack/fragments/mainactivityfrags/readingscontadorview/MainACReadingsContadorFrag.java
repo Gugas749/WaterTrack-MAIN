@@ -21,7 +21,9 @@ import com.grupok.watertrack.databinding.FragmentMainACReadingsContadorBinding;
 import com.grupok.watertrack.scripts.SnackBarShow;
 import com.grupok.watertrack.scripts.apiCRUD.APIMethods;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainACReadingsContadorFrag extends Fragment implements APIMethods.GetUserByIdResponse {
@@ -79,6 +81,12 @@ public class MainACReadingsContadorFrag extends Fragment implements APIMethods.G
 
     private void finalLoadRV() {
         binding.loadingViewReadingsContadorFragMainAc.setVisibility(View.GONE);
+
+        meterReadingEntities.sort(
+                Comparator.comparing(
+                        (MeterReadingEntity r) -> LocalDate.parse(r.date)
+                ).reversed()
+        );
 
         readingsAdapter = new RVAdapterReadingsACReadingsContadores(context, meterReadingEntities);
         readingsAdapter.setOnSelectionChangedListener(selectedReading -> {

@@ -1,6 +1,5 @@
 package com.grupok.watertrack.fragments.mainactivityfrags.creditsview;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,8 +12,6 @@ import android.view.ViewGroup;
 import com.grupok.watertrack.R;
 import com.grupok.watertrack.activitys.MainActivity;
 import com.grupok.watertrack.databinding.FragmentMainACCreditsBinding;
-import com.grupok.watertrack.databinding.FragmentMainACDetailsContadorBinding;
-import com.grupok.watertrack.fragments.mainactivityfrags.detailscontadorview.RVAdapterFieldsDetailsContadores;
 
 import java.util.ArrayList;
 import java.util.List;

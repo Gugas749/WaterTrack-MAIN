@@ -577,9 +577,12 @@ public class APIMethods {
         this.getReadingsByMeterIdResponse = listenner;
         this.fragGetreadings = frag;
     }
-    public void getReadingsByMeterId(Context context, int id){
+    public void getReadingsByMeterId(Context context, int id, UserInfosEntity user){
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "http://172.22.21.222/watertrack/backend/web/api/meter-readings/frommeter/"+id;
+
+        SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
+        String pass = prefs.getString(user.email, "");
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET, url, null,
@@ -610,7 +613,25 @@ public class APIMethods {
                 error -> {
                     getReadingsByMeterIdResponse.onGetReadingsByMeterIdResponse(false, context.getString(R.string.apiMethods_VolleyError), null, fragGetreadings);
                 }
-        );
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+
+                String credentials = user.username + ":" + pass;
+                String auth = "Basic " + Base64.encodeToString(
+                        credentials.getBytes(StandardCharsets.UTF_8),
+                        Base64.NO_WRAP
+                );
+
+                headers.put("Authorization", auth);
+                headers.put("Accept", "application/json");
+
+                headers.put("Host", "172.22.21.222");
+
+                return headers;
+            }
+        };
 
         queue.add(request);
     }
@@ -667,6 +688,147 @@ public class APIMethods {
     }
     // </editor-fold>
     //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="GET REPORTS BY USER ID">
+    private GetReportsByUserIDResponse getReportsByUserIDResponse;
+    public interface GetReportsByUserIDResponse{
+        void onGetReportsByUserIDResponse(boolean response, String responseText, List<ReportsEntity> reportsEntities);
+    }
+    public void setGetReportsByUserIDResponse(GetReportsByUserIDResponse listenner){
+        this.getReportsByUserIDResponse = listenner;
+    }
+    public void getReportsByUserID(Context context, UserInfosEntity user){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url ="http://172.22.21.222/watertrack/backend/web/api/meter-problems/fromuser/"+user.userId;
+
+        SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
+        String pass = prefs.getString(user.email, "");
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                response -> {
+                    try {
+                        List<ReportsEntity> reportsEntities = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject object = response.getJSONObject(i);
+
+                            int tecnicoID = 0;
+                            if(!object.isNull("tecnicoID")){
+                                tecnicoID = object.getInt("tecnicoID");
+                            }
+
+                            ReportsEntity report = new ReportsEntity(
+                                    object.getInt("meterID"),
+                                    object.getInt("userID"),
+                                    tecnicoID,
+                                    object.getInt("problemState"),
+                                    object.getString("description"));
+                            report.setId(object.getInt("id"));
+                            reportsEntities.add(report);
+                        }
+
+                        getReportsByUserIDResponse.onGetReportsByUserIDResponse(true, "", reportsEntities);
+                    } catch (JSONException e) {
+                        getReportsByUserIDResponse.onGetReportsByUserIDResponse(false, context.getString(R.string.apiMethods_JsonParseError), null);
+                    }
+                },
+                error -> {
+                    getReportsByUserIDResponse.onGetReportsByUserIDResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+
+                String credentials = user.username + ":" + pass;
+                String auth = "Basic " + Base64.encodeToString(
+                        credentials.getBytes(StandardCharsets.UTF_8),
+                        Base64.NO_WRAP
+                );
+
+                headers.put("Authorization", auth);
+                headers.put("Accept", "application/json");
+
+                headers.put("Host", "172.22.21.222");
+
+                return headers;
+            }
+        };
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
     // <editor-fold desc="GET REPORTS BY METER ID">
+    private GetReportsByMeterIDResponse getReportsByMeterIDResponse;
+    public interface GetReportsByMeterIDResponse{
+        void onGetReportsByMeterIDResponse(boolean response, String responseText, List<ReportsEntity> reportsEntities);
+    }
+    public void setGetReportsByMeterIDResponse(GetReportsByMeterIDResponse listenner){
+        this.getReportsByMeterIDResponse = listenner;
+    }
+    public void getReportsByMeterID(Context context, UserInfosEntity user, int meterID){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url ="http://172.22.21.222/watertrack/backend/web/api/meter-problems/frommeter/"+meterID;
+
+        SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
+        String pass = prefs.getString(user.email, "");
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                response -> {
+                    try {
+                        List<ReportsEntity> reportsEntities = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject object = response.getJSONObject(i);
+
+                            int tecnicoID = 0;
+                            if(!object.isNull("tecnicoID")){
+                                tecnicoID = object.getInt("tecnicoID");
+                            }
+
+                            ReportsEntity report = new ReportsEntity(
+                                    object.getInt("meterID"),
+                                    object.getInt("userID"),
+                                    tecnicoID,
+                                    object.getInt("problemState"),
+                                    object.getString("description"));
+                            report.setId(object.getInt("id"));
+                            reportsEntities.add(report);
+                        }
+
+                        getReportsByMeterIDResponse.onGetReportsByMeterIDResponse(true, "", reportsEntities);
+                    } catch (JSONException e) {
+                        getReportsByMeterIDResponse.onGetReportsByMeterIDResponse(false, context.getString(R.string.apiMethods_JsonParseError), null);
+                    }
+                },
+                error -> {
+                    getReportsByMeterIDResponse.onGetReportsByMeterIDResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+
+                String credentials = user.username + ":" + pass;
+                String auth = "Basic " + Base64.encodeToString(
+                        credentials.getBytes(StandardCharsets.UTF_8),
+                        Base64.NO_WRAP
+                );
+
+                headers.put("Authorization", auth);
+                headers.put("Accept", "application/json");
+
+                headers.put("Host", "172.22.21.222");
+
+                return headers;
+            }
+        };
+
+        queue.add(request);
+    }
     // </editor-fold>
 }

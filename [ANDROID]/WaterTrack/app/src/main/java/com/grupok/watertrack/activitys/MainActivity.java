@@ -39,9 +39,10 @@ import com.grupok.watertrack.databinding.ActivityMainBinding;
 import com.grupok.watertrack.fragments.alertDialogFragments.AlertDialogQuestionFragment;
 import com.grupok.watertrack.fragments.mainactivityfrags.addcontadorview.MainAcAddContadorFrag;
 
+import com.grupok.watertrack.fragments.mainactivityfrags.reportsview.MainACAddReportFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.reportsview.MainACReportsFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.creditsview.MainACCreditsFrag;
-import com.grupok.watertrack.fragments.mainactivityfrags.detailscontadorview.MainACDetailsContadorFrag;
+import com.grupok.watertrack.fragments.mainactivityfrags.detailsmeterview.MainACDetailsMeterFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.mainview.MainACMainViewFrag;
 import com.grupok.watertrack.scripts.CustomAlertDialogFragment;
@@ -155,6 +156,9 @@ public class MainActivity extends AppCompatActivity implements
                         break;
                     case 6: // Reports (Details Contador)
                         cycleFragments("DetailsContadorFrag", null);
+                        break;
+                    case 7: // Add Reports
+                        cycleFragments("ReportFrag", null);
                         break;
                 }
             }
@@ -301,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
 
-                MainACDetailsContadorFrag detailsFrag = new MainACDetailsContadorFrag(this);
+                MainACDetailsMeterFrag detailsFrag = new MainACDetailsMeterFrag(this);
                 detailsFrag.setArguments(data);
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -319,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
 
                 apiMethods.setGetReadingsByMeterIdResponse(this, readingsContadorFrag);
-                apiMethods.getReadingsByMeterId(getApplicationContext(), data.getInt("contadorId", -1));
+                apiMethods.getReadingsByMeterId(getApplicationContext(), data.getInt("contadorId", -1), currentUserInfo);
                 currentView = 3;
                 break;
 
@@ -336,16 +340,39 @@ public class MainActivity extends AppCompatActivity implements
 
             case "ReportFrag":
                 MainACReportsFrag reportFrag = new MainACReportsFrag(this, contadoresEntityList, currentUserInfo);
+                reportFrag.setArguments(data);
                 binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.frameLayout_fragmentContainer_MainAC, reportFrag)
                         .commitAllowingStateLoss();
-                if(data.getBoolean("fromSideMenu")){
+                boolean fromSideMenu = data.getBoolean("fromSideMenu", true);
+                if(fromSideMenu){
                     currentView = 5;
                 }else{
                     currentView = 6;
                 }
+                break;
+            case "AddReportFrag": // Add Reports
+                currentView = 7;
+                MainACAddReportFrag addReportFrag = new MainACAddReportFrag(this, currentUserInfo);
+                binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frameLayout_fragmentContainer_MainAC, addReportFrag)
+                        .commitAllowingStateLoss();
+                break;
+            case "DetailsReportFrag": // TODO: Details Reports
+                //ReportsEntity report = new Gson().fromJson(data.getString("report"), ReportsEntity.class);
+                //MainACAddReportFrag addReportFrag = new MainACAddReportFrag(this, currentUserInfo, report);
+                break;
+            case "EditMeterFrag": // TODO: Edit Meter
+                //ReportsEntity report = new Gson().fromJson(data.getString("report"), ReportsEntity.class);
+                //MainACAddReportFrag addReportFrag = new MainACAddReportFrag(this, currentUserInfo, report);
+                break;
+            case "AddReadingFrag": // TODO: Add Reading Frag
+                //ReportsEntity report = new Gson().fromJson(data.getString("report"), ReportsEntity.class);
+                //MainACAddReportFrag addReportFrag = new MainACAddReportFrag(this, currentUserInfo, report);
                 break;
         }
     }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/option_AddMeter_PopupMenu_MainView_MainAC"
+        android:title="@string/mainActivity_MainViewFrag_PopUpMenuAdd_Meter" />
+    <item android:id="@+id/option_AddReading_PopupMenu_MainView_MainAC"
+        android:title="@string/mainActivity_MainViewFrag_PopUpMenuAdd_Reading" />
+</menu>

@@ -121,7 +121,25 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
         binding.butAddContadorMainViewMainAc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                parent.cycleFragments("AddContadorFrag", null);
+                PopupMenu popupMenu = new PopupMenu(context, binding.butAddContadorMainViewMainAc);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu_add_mainview_mainac, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id = item.getItemId();
+                        if (id == R.id.option_AddMeter_PopupMenu_MainView_MainAC) {
+                            popUpMenuOption = 1;
+                            menuAddItemClickHandler(1);
+                            return true;
+                        } else if (id == R.id.option_AddReading_PopupMenu_MainView_MainAC) {
+                            popUpMenuOption = 2;
+                            menuAddItemClickHandler(2);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
             }
         });
     }
@@ -158,6 +176,15 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
         }else{
             binding.textViewNoItemsToDisplayFragBackups.setVisibility(View.VISIBLE);
             binding.rvContadoresMainViewMainAc.setVisibility(View.GONE);
+        }
+
+    }
+    private void menuAddItemClickHandler(int option){
+        if (option == 1) { // ADD METER
+            parent.cycleFragments("AddContadorFrag", null);
+        }
+        else if(option == 2) { // ADD READING
+            parent.cycleFragments("AddReadingFrag", null);
         }
 
     }

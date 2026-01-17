@@ -1,12 +1,14 @@
-package com.grupok.watertrack.fragments.mainactivityfrags.detailscontadorview;
+package com.grupok.watertrack.fragments.mainactivityfrags.detailsmeterview;
+
+import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +19,21 @@ import com.grupok.watertrack.R;
 import com.grupok.watertrack.activitys.MainActivity;
 import com.grupok.watertrack.database.entities.EnterpriseEntity;
 import com.grupok.watertrack.database.entities.MeterEntity;
+import com.grupok.watertrack.database.entities.MeterReadingEntity;
 import com.grupok.watertrack.database.entities.MeterTypeEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.databinding.FragmentMainACDetailsContadorBinding;
+import com.grupok.watertrack.fragments.mainactivityfrags.readingscontadorview.MainACReadingsContadorFrag;
 import com.grupok.watertrack.scripts.SnackBarShow;
 import com.grupok.watertrack.scripts.apiCRUD.APIMethods;
 
 import java.util.List;
 
 
-public class MainACDetailsContadorFrag extends Fragment implements APIMethods.GetEnterpriseByIdResponse, APIMethods.GetUserByIdResponse, APIMethods.GetMeterTypeByIdResponse {
+public class MainACDetailsMeterFrag extends Fragment implements APIMethods.GetEnterpriseByIdResponse,
+        APIMethods.GetUserByIdResponse,
+        APIMethods.GetMeterTypeByIdResponse,
+        APIMethods.GetReadingsByMeterIdResponse {
 
     private MainActivity parent;
     private Context context;
@@ -40,12 +47,12 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
     private UserInfosEntity selectedUser;
     public SnackBarShow snackBarShow = new SnackBarShow();
 
-    public MainACDetailsContadorFrag() {
+    public MainACDetailsMeterFrag() {
         // Required empty public constructor
     }
 
 
-    public MainACDetailsContadorFrag(MainActivity parent) {
+    public MainACDetailsMeterFrag(MainActivity parent) {
         this.parent = parent;
     }
     @Override
@@ -77,27 +84,14 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
 
         setupReadingsButton();
         setupReportsButton();
+        setupEditButton();
     }
     //-----------------------SETUPS-------------------------------
     private void setupReadingsButton(){
         binding.butReadingsDetailsContadorFragMainAc.setOnClickListener(v -> {
             APIMethods api = new APIMethods();
-            api.setGetReadingsByMeterIdResponse((response, message, list, frag) -> {
-                if(response && list != null && !list.isEmpty()){
-                    Bundle data = new Bundle();
-                    data.putInt("contadorId", meterSelected.id);
-                    data.putString("lastMeterData", new Gson().toJson(meterSelected));
-                    parent.cycleFragments("ReadingsContadorFrag", data);
-                } else {
-                    snackBarShow.display(binding.getRoot(),
-                            "Este contador não tem leituras associadas.",
-                            -1, 1,
-                            binding.butReadingsDetailsContadorFragMainAc,
-                            context);
-                }
-            }, null);
-
-            api.getReadingsByMeterId(context, meterSelected.id);
+            api.setGetReadingsByMeterIdResponse(MainACDetailsMeterFrag.this, null);
+            api.getReadingsByMeterId(context, meterSelected.id, parent.currentUserInfo);
         });
     }
     private void setupReportsButton(){
@@ -106,6 +100,22 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
             data.putBoolean("fromMeterView", true);
             data.putInt("meterID", meterSelected.id);
             parent.cycleFragments("ReportFrag", data);
+        });
+    }
+    private void setupEditButton(){
+        SharedPreferences prefs = parent.getSharedPreferences("Perf_User", MODE_PRIVATE);
+        String role = prefs.getString("role", "");
+        if(role.equals("technician") || role.equals("admin")){
+            binding.butEditDetailsMeterFragMainAc.setVisibility(View.VISIBLE);
+        }
+
+        binding.butEditDetailsMeterFragMainAc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle data = new Bundle();
+                data.putString("meter", new Gson().toJson(meterSelected));
+                parent.cycleFragments("EditMeterFrag", data);
+            }
         });
     }
     //------------------------------------------------------
@@ -176,6 +186,21 @@ public class MainACDetailsContadorFrag extends Fragment implements APIMethods.Ge
             }
         }else{
             snackBarShow.display(binding.getRoot(), getString(R.string.apiMethods_VolleyError), -1, 1, binding.snackbarViewDetailsContadorFrag, context);
+        }
+    }
+    @Override
+    public void onGetReadingsByMeterIdResponse(boolean response, String message, List<MeterReadingEntity> list, MainACReadingsContadorFrag frag) {
+        if(response && list != null && !list.isEmpty()){
+            Bundle data = new Bundle();
+            data.putInt("contadorId", meterSelected.id);
+            data.putString("lastMeterData", new Gson().toJson(meterSelected));
+            parent.cycleFragments("ReadingsContadorFrag", data);
+        } else {
+            snackBarShow.display(binding.getRoot(),
+                    "Este contador não tem leituras associadas.",
+                    -1, 1,
+                    binding.butReadingsDetailsContadorFragMainAc,
+                    context);
         }
     }
     //------------------------------------------------------

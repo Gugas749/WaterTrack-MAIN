@@ -17,6 +17,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 import com.grupok.watertrack.R;
 import com.grupok.watertrack.activitys.MainActivity;
 import com.grupok.watertrack.database.entities.MeterEntity;
@@ -30,7 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MainACReportsFrag extends Fragment implements APIMethods.GetReportsResponse {
+public class MainACReportsFrag extends Fragment implements APIMethods.GetReportsResponse,
+        RVAdapterMainAcReportsView.ReportsItemClick,
+        APIMethods.GetReportsByUserIDResponse,
+        APIMethods.GetReportsByMeterIDResponse {
 
     private MainActivity parent;
     private UserInfosEntity currentUser;
@@ -55,35 +60,6 @@ public class MainACReportsFrag extends Fragment implements APIMethods.GetReports
         binding = FragmentMainACReportBinding.inflate(inflater, container, false);
 
         if (parent != null && parent.currentUserInfo != null) {
-            boolean aux = false;
-
-            if(getArguments() != null){
-                aux = getArguments().getBoolean("fromMeterView", false);
-            }
-
-            if(aux){
-                int meterID = getArguments().getInt("meterID", -1);
-                getMeterReports(meterID);
-            }else{
-                SharedPreferences prefs = parent.getSharedPreferences("Perf_User", MODE_PRIVATE);
-                String role = prefs.getString("role", "");
-
-                APIMethods apiMethods = new APIMethods();
-                apiMethods.setGetReportsResponse(MainACReportsFrag.this);
-
-                switch (role){
-                    case "resident":
-                        getReportsResident();
-                        break;
-                    case "technician":
-                        getReportsEnterprise();
-                        break;
-                    case "admin":
-                        apiMethods.getReports(getContext());
-                        break;
-                }
-            }
-
             init();
         }
 
@@ -91,29 +67,72 @@ public class MainACReportsFrag extends Fragment implements APIMethods.GetReports
     }
 
     private void init() {
-        //fillProblem(listString);
-        //setupComboProblem();
-        //setupComboMeter();
-        //setupButtonSave();
-        //setupUserType();
+        setupAddReportsButton();
+
+        getInfos();
     }
 
-    private void getMeterReports(int meterID){
-        for (MeterEntity meter : meterEntityList) {
-            if(meter.id == meterID){
+    // <editor-fold desc="SETUPS">
+    private void setupAddReportsButton(){
+        binding.butCreateReportReportsFragMainAC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parent.cycleFragments("AddReportFrag", null);
+            }
+        });
+    }
+    // </editor-fold>
 
+    // <editor-fold desc="FUNCTIONS">
+    private void getInfos(){
+        boolean aux = false;
+        APIMethods apiMethods = new APIMethods();
+
+        if(getArguments() != null){
+            aux = getArguments().getBoolean("fromMeterView", false);
+        }
+
+        if(aux){
+            int meterID = getArguments().getInt("meterID", -1);
+            apiMethods.setGetReportsByMeterIDResponse(MainACReportsFrag.this);
+            apiMethods.getReportsByMeterID(getContext(), currentUser, meterID);
+        }else{
+            SharedPreferences prefs = parent.getSharedPreferences("Perf_User", MODE_PRIVATE);
+            String role = prefs.getString("role", "");
+
+            apiMethods.setGetReportsResponse(MainACReportsFrag.this);
+            apiMethods.setGetReportsByUserIDResponse(MainACReportsFrag.this);
+
+            switch (role){
+                case "resident":
+                    apiMethods.getReportsByUserID(getContext(), currentUser);
+                    break;
+                case "technician":
+                case "admin":
+                    apiMethods.getReports(getContext());
+                    break;
             }
         }
     }
-    private void getReportsResident(){
+    private void filterReportsByEnterprise(){
+        List<ReportsEntity> filteredList = new ArrayList<>();
+        for (MeterEntity meter : meterEntityList) {
+            for (ReportsEntity report : reportsEntityList) {
+                if(report.meterID == meter.id){
+                    filteredList.add(report);
+                }
+            }
+        }
 
-    }
-    private void getReportsEnterprise(){
+        reportsEntityList.clear();
+        reportsEntityList.addAll(filteredList);
 
+        loadReports();
     }
     private void loadReports(){
         RVAdapterMainAcReportsView adapter = new RVAdapterMainAcReportsView(getContext(), reportsEntityList, parent, meterEntityList);
         adapter.updateData(new ArrayList<>());
+        adapter.setItemClickListenner(this);
         adapter.notifyDataSetChanged();
         if(!reportsEntityList.isEmpty()){
             adapter.updateData(reportsEntityList);
@@ -126,6 +145,7 @@ public class MainACReportsFrag extends Fragment implements APIMethods.GetReports
         }
 
     }
+    // </editor-fold>
 
 //    private void fillProblem(List<String> list) {
 //        String[] problemas = getResources().getStringArray(R.array.problem_report);
@@ -220,8 +240,26 @@ public class MainACReportsFrag extends Fragment implements APIMethods.GetReports
 //        }
 //    }
 
+    // <editor-fold desc="API RESPONSES">
     @Override
     public void onGetReportsResponse(boolean response, String responseText, List<ReportsEntity> reportsEntities) {
+        if(response){
+            if(!reportsEntities.isEmpty()){
+                reportsEntityList.addAll(reportsEntities);
+            }
+            SharedPreferences prefs = parent.getSharedPreferences("Perf_User", MODE_PRIVATE);
+            String role = prefs.getString("role", "");
+            if(role.equals("technician")){
+                filterReportsByEnterprise();
+            }else{
+                loadReports();
+            }
+        }else{
+            snackBarShow.display(binding.getRoot(), responseText, -1, 1, binding.snackbarViewReportsFragMainAC, parent);
+        }
+    }
+    @Override
+    public void onGetReportsByUserIDResponse(boolean response, String responseText, List<ReportsEntity> reportsEntities) {
         if(response){
             if(!reportsEntities.isEmpty()){
                 reportsEntityList.addAll(reportsEntities);
@@ -230,6 +268,25 @@ public class MainACReportsFrag extends Fragment implements APIMethods.GetReports
         }else{
             snackBarShow.display(binding.getRoot(), responseText, -1, 1, binding.snackbarViewReportsFragMainAC, parent);
         }
+    }
+    @Override
+    public void onGetReportsByMeterIDResponse(boolean response, String responseText, List<ReportsEntity> reportsEntities) {
+        if(response){
+            if(!reportsEntities.isEmpty()){
+                reportsEntityList.addAll(reportsEntities);
+            }
+            loadReports();
+        }else{
+            snackBarShow.display(binding.getRoot(), responseText, -1, 1, binding.snackbarViewReportsFragMainAC, parent);
+        }
+    }
+    // </editor-fold>
+
+    @Override
+    public void onReportsItemClick(ReportsEntity report) {
+        Bundle data = new Bundle();
+        data.putString("report", new Gson().toJson(report));
+        parent.cycleFragments("DetailsReportFrag", data);
     }
 
     private static class MeterAdapter extends ArrayAdapter<String> implements Filterable {

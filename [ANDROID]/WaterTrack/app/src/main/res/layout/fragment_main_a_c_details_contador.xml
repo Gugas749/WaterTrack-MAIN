@@ -51,6 +51,20 @@
             android:backgroundTint="?attr/buttonTint"
             app:iconTint="?attr/buttonIconTintPrimary"/>
         <Button
+            android:id="@+id/butEdit_DetailsMeterFrag_MainAc"
+            style="?attr/materialIconButtonFilledStyle"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/_15sdp"
+            app:icon="@drawable/edit_24"
+            app:iconSize="@dimen/_20sdp"
+            android:padding="@dimen/_13sdp"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Large"
+            android:backgroundTint="?attr/buttonTint"
+            app:iconTint="?attr/buttonIconTintPrimary"/>
+        <Button
             android:id="@+id/butReportProblem_DetailsContadorFrag_MainAc"
             style="?attr/materialIconButtonFilledStyle"
             android:layout_width="wrap_content"

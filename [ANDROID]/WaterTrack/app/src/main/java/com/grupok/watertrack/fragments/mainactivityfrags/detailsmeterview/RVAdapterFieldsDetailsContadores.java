@@ -1,4 +1,4 @@
-package com.grupok.watertrack.fragments.mainactivityfrags.detailscontadorview;
+package com.grupok.watertrack.fragments.mainactivityfrags.detailsmeterview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import com.grupok.watertrack.database.entities.EnterpriseEntity;
 import com.grupok.watertrack.database.entities.MeterEntity;
 import com.grupok.watertrack.database.entities.MeterTypeEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
-import com.grupok.watertrack.scripts.apiCRUD.APIMethods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +25,6 @@ public class RVAdapterFieldsDetailsContadores extends RecyclerView.Adapter<RVAda
     private EnterpriseEntity selectedEnterprise;
     private MeterTypeEntity selectedType;
     private UserInfosEntity selectedUser;
-
-    private ContadorItemClick callback;
-
-    public interface ContadorItemClick{
-        void onBackupsItemClick(MeterEntity contador);
-    }
 
     public RVAdapterFieldsDetailsContadores(Context context, MeterEntity meterEntity, MeterTypeEntity selectedType, UserInfosEntity selectedUser, EnterpriseEntity selectedEnterprise) {
         this.context = context;
@@ -52,7 +45,7 @@ public class RVAdapterFieldsDetailsContadores extends RecyclerView.Adapter<RVAda
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_Classe), meterEntity.classe));
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_InstalationDate), meterEntity.instalationDate));
 
-        if(meterEntity.shutdownDate != null && !meterEntity.shutdownDate.isEmpty()){
+        if(meterEntity.shutdownDate != null && !meterEntity.shutdownDate.equals("null")){
             fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_ShutdownDate), meterEntity.shutdownDate));
         }
 

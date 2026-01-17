@@ -71,6 +71,8 @@
     <string name="mainActivity_MainViewFrag_TextField_Search">Search</string>
     <string name="mainActivity_MainViewFrag_PopUpMenu_Address">Address</string>
     <string name="mainActivity_MainViewFrag_PopUpMenu_Name">Name</string>
+    <string name="mainActivity_MainViewFrag_PopUpMenuAdd_Meter">Add Meter</string>
+    <string name="mainActivity_MainViewFrag_PopUpMenuAdd_Reading">Add Reading</string>
     <string name="mainActivity_MainViewFrag_SnackBar_OptionNotSelected">Please select address or name.</string>
     <!-- MAIN ACTIVITY | ADD CONTADOR -->
     <string name="mainActivity_AddContadorFrag_TextField_Address">Address</string>
@@ -141,4 +143,5 @@
     <string name="credits_icons_settings">Settings - Created by Freepik - Flaticon</string>
     <string name="credits_icons_arrow">Arrow - Created by Ilham Fitrotul Hayat - Flaticon</string>
     <string name="credits_icons_close">Close - Created by inkubators - Flaticon</string>
+    <string name="credits_icons_edit">Edit - Created by Pixel perfect - Flaticon</string>
 </resources>
