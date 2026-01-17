@@ -8,24 +8,26 @@
         <item>System Sync</item>
     </string-array>
 
+    <string-array name="meterStatus">
+        <item>0 - Inactive</item>
+        <item>1 - Active</item>
+        <item>2 - With Problems</item>
+    </string-array>
 
-    <string-array name="problem_report">
-        <item>Water leak in the meter</item>
-        <item>Incorrect consumption reading</item>
-        <item>Fogged display glass</item>
-        <item>Internal mechanism blockage</item>
-        <item>Meter malfunction or stopped</item>
-        <item>Loose or damaged connection</item>
-        <item>Presence of air in the pipes</item>
-        <item>Dirt or debris infiltration</item>
-        <item>Meter freezing (in cold weather)</item>
-        <item>Improper handling of the equipment</item>
-        <item>Oxidation or rust on metal connections</item>
-        <item>Communication failure with remote system</item>
-        <item>Internal battery discharged (in electronic meters)</item>
-        <item>Broken security seal</item>
-        <item>Incorrect meter installation</item>
-        <item>Other</item>
+    <string-array name="meterClass">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+    </string-array>
+
+    <string-array name="meterUnitys">
+        <item>1 - m^3</item>
+        <item>2 - m^3/h</item>
+        <item>3 - L/s</item>
+        <item>5 - bar</item>
+        <item>6 - Litres</item>
+        <item>7 - Decilitres</item>
     </string-array>
 
 
@@ -39,6 +41,8 @@
     <string name="general_no">No</string>
     <string name="general_cancel">Cancel</string>
     <string name="general_delete">Delete</string>
+    <string name="general_selectValidOption">Please select a valid option</string>
+    <string name="general_requiredField">Required Field</string>
     <!-- AUTH ACTIVITY | LOGIN FRAGMENT -->
     <string name="authActivity_LoginFrag_TextField_Email">Email</string>
     <string name="authActivity_LoginFrag_TextField_Password">Password</string>
@@ -102,6 +106,7 @@
     <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_MaxCapacity">Maximum Capacity</string>
     <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_MeasureUnity">Unit of Measure</string>
     <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_SupportedTemperature">Supported Temperature</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Status">Meter Status</string>
     <!-- MAIN ACTIVITY | READINGS CONTADOR -->
     <string name="mainActivity_ReadingsContadorFrag_LabelDetails">Reading Details</string>
     <string name="mainActivity_ReadingsContadorFrag_LabelReadings">Readings</string>
@@ -113,8 +118,6 @@
     <string name="mainActivity_AddReportFrag_ComboBox_Problem">Problem</string>
     <string name="mainActivity_AddReportFrag_TextField_Description">Description</string>
     <string name="mainActivity_AddReportFrag_TextField_Other_Problem">Other</string>
-
-
     <!-- MAIN ACTIVITY | READINGS DO CONTADOR | RV-->
     <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_ID">Reference</string>
     <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_Creator">Creator</string>
@@ -123,6 +126,14 @@
     <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_AccumulatedConsumption">Accumulated Consumption</string>
     <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_Date">Date</string>
     <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_WaterPressure">WaterPressure</string>
+    <!-- MAIN ACTIVITY | SETTINGS -->
+    <string name="mainActivity_SettingsFrag_Username">Username</string>
+    <string name="mainActivity_SettingsFrag_Email">Email</string>
+    <string name="mainActivity_SettingsFrag_BDate">Birth Date</string>
+    <string name="mainActivity_SettingsFrag_Address">Address</string>
+    <string name="mainActivity_SettingsFrag_UserEmailTaken">Username or Email already taken.</string>
+    <string name="mainActivity_SettingsFrag_AlertDialog_SaveButton_Title">Do you wish to continue?</string>
+    <string name="mainActivity_SettingsFrag_AlertDialog_SaveButton_Desc">For security reason after editing your information you are gonna need to login again. Do you wish to continue?</string>
 
 
     <!-- API METHODS -->

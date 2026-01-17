@@ -81,7 +81,7 @@
         android:layout_gravity="end"
         app:headerLayout="@layout/header_navigation_drawer_mainac_sidemenu"
         app:itemIconTint="?attr/iconTintPrimary"
-        app:itemTextColor="?attr/textColorSideMenu"/>
+        app:itemTextColor="?attr/textColorPrimary"/>
     <!--                -->
 
     <!-- FULL SCREEN CONTAINER -->

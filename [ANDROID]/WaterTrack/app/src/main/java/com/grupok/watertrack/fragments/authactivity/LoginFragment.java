@@ -80,7 +80,7 @@ public class LoginFragment extends Fragment implements APIMethods.LoginResponse,
 
     //------------------------------- SETUPS -----------------------------------
     private void setupLocalDataBase(){
-        localDataBase = Room.databaseBuilder(parent, LocalDataBase.class, "WaterTrackLocalDB").build();
+        localDataBase = Room.databaseBuilder(THIS.context, LocalDataBase.class, "WaterTrackLocalDB").build();
         userInfosDao = localDataBase.userInfosDao();
     }
     private void setupLoginBut(){

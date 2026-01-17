@@ -37,7 +37,7 @@ public class APIMethods {
     // <editor-fold desc="GET USERS">
     private GetUsersResponse getUsersResponse;
     public interface GetUsersResponse{
-        void onGetUsersResponse(int responseType, List<UserInfosEntity> users);
+        void onGetUsersResponse(boolean response, String responseText, List<UserInfosEntity> users);
     }
     public void setGetUsersResponse(GetUsersResponse listenner){
         this.getUsersResponse = listenner;
@@ -45,39 +45,33 @@ public class APIMethods {
     public void getUsers(Context context){
         RequestQueue queue = Volley.newRequestQueue(context);
         String url ="http://172.22.21.222/watertrack/backend/web/api/users";
-        List<UserInfosEntity> users = new ArrayList<>();
+
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 null,
                 response -> {
                     try {
+                        List<UserInfosEntity> list = new ArrayList<>();
                         for (int i = 0; i < response.length(); i++) {
-                            JSONObject hit = response.getJSONObject(i);
+                            JSONObject userObject = response.getJSONObject(i);
 
-                            /*UserInfosEntity user = new UserInfosEntity(
-                                    hit.getString("username"),
-                                    hit.getString("email"),
-                                    hit.getString("password_hash"),
-                                    "",
-                                    1,
-                                    "",
-                                    ""
-                            );*/
+                            UserInfosEntity user = new UserInfosEntity(userObject.getInt("id"),
+                                    userObject.getString("username"),
+                                    userObject.getString("email"),
+                                    userObject.getInt("status"));
 
-                            //users.add(user);
+                            list.add(user);
                         }
 
-                        getUsersResponse.onGetUsersResponse(1, users);
+                        getUsersResponse.onGetUsersResponse(true, "", list);
 
                     } catch (JSONException e) {
-                        e.printStackTrace();
-                        getUsersResponse.onGetUsersResponse(0, users);
+                        getUsersResponse.onGetUsersResponse(false, context.getString(R.string.apiMethods_JsonParseError), null);
                     }
                 },
                 error -> {
-                    Toast.makeText(context, "NETWORK ERROR", Toast.LENGTH_SHORT).show();
-                    getUsersResponse.onGetUsersResponse(0, users);
+                    getUsersResponse.onGetUsersResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
                 }
         );
 
@@ -174,7 +168,7 @@ public class APIMethods {
                                         userObject.getInt("status"));
 
                                 try{
-                                    user.setProfileInfo(userObject.getString("birthDate"), userObject.getString("address"));
+                                    user.setProfileInfo(userObject.getString("birthDate"), userObject.getString("address"), userObject.getInt("profileID"));
                                 } catch (Exception e) {
                                     Log.i("API_Login", "Profile Info not found.");
                                 }
@@ -465,6 +459,49 @@ public class APIMethods {
     }
     // </editor-fold>
     //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="GET ENTERPRISES">
+    private GetEnterpriseResponse getEnterpriseResponse;
+    public interface GetEnterpriseResponse{
+        void onGetEnterpriseResponse(boolean response, String message, List<EnterpriseEntity> enterprise);
+    }
+    public void setGetEnterpriseResponse(GetEnterpriseResponse listenner){
+        this.getEnterpriseResponse = listenner;
+    }
+    public void getEnterprises(Context context){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/enterprises";
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        List<EnterpriseEntity> list = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject meter = response.getJSONObject(i);
+                            EnterpriseEntity enterprise = new EnterpriseEntity(
+                                    meter.getString("name"),
+                                    meter.getString("address"),
+                                    meter.getString("contactNumber"),
+                                    meter.getString("contactEmail"),
+                                    meter.getString("website"));
+                            enterprise.setId(meter.getInt("id"));
+                            list.add(enterprise);
+                        }
+                        Log.d("erros", "size by meter: " + list.size());
+                        getEnterpriseResponse.onGetEnterpriseResponse(true, "", list);
+                    } catch (JSONException e) {
+                        getEnterpriseResponse.onGetEnterpriseResponse(false, context.getString(R.string.apiMethods_JsonParseError), null);
+                    }
+                },
+                error -> {
+                    getEnterpriseResponse.onGetEnterpriseResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
+                }
+        );
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
     // <editor-fold desc="GET ENTERPRISE BY ID">
     private GetEnterpriseByIdResponse getEnterpriseByIdResponse;
     public interface GetEnterpriseByIdResponse{
@@ -528,6 +565,45 @@ public class APIMethods {
                 },
                 error -> {
                     getUserByIdResponse.onGetUserByIdResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
+                }
+        );
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="GET METERS TYPES">
+    private GetMeterTypesResponse getMeterTypesResponse;
+    public interface GetMeterTypesResponse{
+        void onGetMeterTypesResponse(boolean response, String message, List<MeterTypeEntity> list);
+    }
+    public void setGetMeterTypesResponse(GetMeterTypesResponse listenner){
+        this.getMeterTypesResponse = listenner;
+    }
+    public void getMeterTypes(Context context){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/meter-types";
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        List<MeterTypeEntity> list = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject meter = response.getJSONObject(i);
+                            MeterTypeEntity type = new MeterTypeEntity(
+                                    meter.getString("description"));
+                            type.setId(meter.getInt("id"));
+                            list.add(type);
+                        }
+                        Log.d("erros", "size by meter: " + list.size());
+                        getMeterTypesResponse.onGetMeterTypesResponse(true, "", list);
+                    } catch (JSONException e) {
+                        getMeterTypesResponse.onGetMeterTypesResponse(false, context.getString(R.string.apiMethods_JsonParseError), null);
+                    }
+                },
+                error -> {
+                    getMeterTypesResponse.onGetMeterTypesResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
                 }
         );
 
@@ -807,6 +883,238 @@ public class APIMethods {
                 },
                 error -> {
                     getReportsByMeterIDResponse.onGetReportsByMeterIDResponse(false, context.getString(R.string.apiMethods_VolleyError), null);
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+
+                String credentials = user.username + ":" + pass;
+                String auth = "Basic " + Base64.encodeToString(
+                        credentials.getBytes(StandardCharsets.UTF_8),
+                        Base64.NO_WRAP
+                );
+
+                headers.put("Authorization", auth);
+                headers.put("Accept", "application/json");
+
+                headers.put("Host", "172.22.21.222");
+
+                return headers;
+            }
+        };
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="POST REPORT">
+    private PostReportResponse postReportResponse;
+    public interface PostReportResponse{
+        void onPostReportResponse(boolean response, String message);
+    }
+    public void setPostReportResponse(PostReportResponse listenner){
+        this.postReportResponse = listenner;
+    }
+    public void postReport(Context context, UserInfosEntity user, int meterID, String descripiton) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/meter-problems";
+
+        SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
+        String pass = prefs.getString(user.email, "");
+
+        JSONObject json = new JSONObject();
+        try{
+            json.put("meterID", meterID);
+            json.put("userID", user.userId);
+            json.put("tecnicoID", null);
+            json.put("problemState", 2);
+            json.put("description", descripiton);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST, url, json,
+                response -> {
+                    postReportResponse.onPostReportResponse(true, "");
+                },
+                error -> {
+                    postReportResponse.onPostReportResponse(false, context.getString(R.string.apiMethods_VolleyError));
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+
+                String credentials = user.username + ":" + pass;
+                String auth = "Basic " + Base64.encodeToString(
+                        credentials.getBytes(StandardCharsets.UTF_8),
+                        Base64.NO_WRAP
+                );
+
+                headers.put("Authorization", auth);
+                headers.put("Accept", "application/json");
+
+                headers.put("Host", "172.22.21.222");
+
+                return headers;
+            }
+        };
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="PATCH USER PROFILE">
+    private PatchUserProfileResponse patchUserProfileResponse;
+    public interface PatchUserProfileResponse{
+        void onPatchUserProfileResponse(boolean response, String message);
+    }
+    public void setPatchUserProfileResponse(PatchUserProfileResponse listenner){
+        this.patchUserProfileResponse = listenner;
+    }
+    public void patchUserProfile(Context context, UserInfosEntity user, String address, String bDate) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/user-profiles/"+user.profileID;
+
+        SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
+        String pass = prefs.getString(user.email, "");
+
+        JSONObject json = new JSONObject();
+        try{
+            json.put("birthDate", bDate);
+            json.put("address", address);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.PATCH, url, json,
+                response -> {
+                    patchUserProfileResponse.onPatchUserProfileResponse(true, "");
+                },
+                error -> {
+                    patchUserProfileResponse.onPatchUserProfileResponse(false, context.getString(R.string.apiMethods_VolleyError));
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+
+                String credentials = user.username + ":" + pass;
+                String auth = "Basic " + Base64.encodeToString(
+                        credentials.getBytes(StandardCharsets.UTF_8),
+                        Base64.NO_WRAP
+                );
+
+                headers.put("Authorization", auth);
+                headers.put("Accept", "application/json");
+
+                headers.put("Host", "172.22.21.222");
+
+                return headers;
+            }
+        };
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="PATCH USER">
+    private PatchUserResponse patchUserResponse;
+    public interface PatchUserResponse{
+        void onPatchUserResponse(boolean response, String message, Context context);
+    }
+    public void setPatchUserResponse(PatchUserResponse listenner){
+        this.patchUserResponse = listenner;
+    }
+    public void patchUser(Context context, UserInfosEntity user, String username, String email) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/users/"+user.userId;
+
+        SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
+        String pass = prefs.getString(user.email, "");
+
+        JSONObject json = new JSONObject();
+        try{
+            json.put("username", username);
+            json.put("email", email);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.PATCH, url, json,
+                response -> {
+                    patchUserResponse.onPatchUserResponse(true, "", context);
+                },
+                error -> {
+                    patchUserResponse.onPatchUserResponse(false, context.getString(R.string.apiMethods_VolleyError), context);
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+
+                String credentials = user.username + ":" + pass;
+                String auth = "Basic " + Base64.encodeToString(
+                        credentials.getBytes(StandardCharsets.UTF_8),
+                        Base64.NO_WRAP
+                );
+
+                headers.put("Authorization", auth);
+                headers.put("Accept", "application/json");
+
+                headers.put("Host", "172.22.21.222");
+
+                return headers;
+            }
+        };
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="POST METER">
+    private PostMeterResponse postMeterResponse;
+    public interface PostMeterResponse{
+        void onPostMeterResponse(boolean response, String message);
+    }
+    public void setPostMeterResponse(PostMeterResponse listenner){
+        this.postMeterResponse = listenner;
+    }
+    public void postMeter(Context context, UserInfosEntity user, MeterEntity meter) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/meters";
+
+        SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
+        String pass = prefs.getString(user.email, "");
+
+        JSONObject json = new JSONObject();
+        try{
+            json.put("address", meter.address);
+            json.put("userID", user.userId);
+            json.put("meterTypeID", meter.meterTypeID);
+            json.put("enterpriseID", meter.enterpriseID);
+            json.put("class", meter.classe);
+            json.put("instalationDate", meter.instalationDate);
+            json.put("shutdownDate", null);
+            json.put("maxCapacity", meter.maxCapacity);
+            json.put("measureUnity", meter.measureUnity);
+            json.put("supportedTemperature", meter.supportedTemperature);
+            json.put("state", meter.state);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST, url, json,
+                response -> {
+                    postMeterResponse.onPostMeterResponse(true, "");
+                },
+                error -> {
+                    postMeterResponse.onPostMeterResponse(false, context.getString(R.string.apiMethods_VolleyError));
                 }
         ){
             @Override

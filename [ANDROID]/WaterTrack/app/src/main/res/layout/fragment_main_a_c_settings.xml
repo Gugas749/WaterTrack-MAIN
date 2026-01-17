@@ -16,97 +16,136 @@
         android:padding="@dimen/_12sdp">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayout_TextInput_Username_SettingsFrag_MainAc"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username">
+            android:hint="@string/mainActivity_SettingsFrag_Username"
+            app:hintTextColor="@color/textfield_stroke_colors"
+            app:boxStrokeColor="@color/textfield_stroke_colors"
+            app:boxStrokeErrorColor="?attr/colorError"
+            app:boxStrokeWidth="@dimen/_2sdp"
+            app:boxStrokeWidthFocused="@dimen/_3sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:layout_marginRight="@dimen/_12sdp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextUsernameSettings"
+                android:id="@+id/editText_Username_SettingsFrag_MainAc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayout_TextInput_Email_SettingsFrag_MainAc"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/mainActivity_SettingsFrag_Email"
+            app:hintTextColor="@color/textfield_stroke_colors"
+            app:boxStrokeColor="@color/textfield_stroke_colors"
+            app:boxStrokeErrorColor="?attr/colorError"
+            app:boxStrokeWidth="@dimen/_2sdp"
+            app:boxStrokeWidthFocused="@dimen/_3sdp"
             android:layout_marginTop="@dimen/_12sdp"
-            android:hint="Email">
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:layout_marginRight="@dimen/_12sdp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextEmailSettings"
+                android:id="@+id/editText_Email_SettingsFrag_MainAc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayoutBirthDateSettings"
+            android:id="@+id/inputLayout_BDate_SettingsFrag_MainAc"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/mainActivity_SettingsFrag_BDate"
+            app:hintTextColor="@color/textfield_stroke_colors"
+            app:boxStrokeColor="@color/textfield_stroke_colors"
+            app:boxStrokeErrorColor="?attr/colorError"
+            app:boxStrokeWidth="@dimen/_2sdp"
+            app:boxStrokeWidthFocused="@dimen/_3sdp"
             android:layout_marginTop="@dimen/_12sdp"
-            android:hint="Data de nascimento"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:layout_marginRight="@dimen/_12sdp"
             app:endIconMode="custom"
             app:endIconDrawable="@drawable/info_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextBirthDateSettings"
+                android:id="@+id/editText_BDate_SettingsFrag_MainAc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayout_TextInput_Address_SettingsFrag_MainAc"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/mainActivity_SettingsFrag_Address"
+            app:hintTextColor="@color/textfield_stroke_colors"
+            app:boxStrokeColor="@color/textfield_stroke_colors"
+            app:boxStrokeErrorColor="?attr/colorError"
+            app:boxStrokeWidth="@dimen/_2sdp"
+            app:boxStrokeWidthFocused="@dimen/_3sdp"
             android:layout_marginTop="@dimen/_12sdp"
-            android:hint="Morada">
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:layout_marginRight="@dimen/_12sdp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextAddressSettings"
+                android:id="@+id/editText_Address_SettingsFrag_MainAc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPostalAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:hint="Idioma"
-            app:endIconMode="dropdown_menu">
-
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/comboBoxLanguageSettings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:hint="Tema"
-            app:endIconMode="dropdown_menu">
-
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/comboBoxThemeSettings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonSaveSettings"
+            android:id="@+id/butSave_SettingsFrag_MainAC"
+            style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:text="@string/general_save"/>
+            android:layout_margin="@dimen/_12sdp"
+            android:paddingBottom="@dimen/_7sdp"
+            android:paddingTop="@dimen/_7sdp"
+            android:text="@string/general_save"
+            app:cornerRadius="@dimen/_8sdp"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="?attr/buttonTint"
+            android:textColor="?attr/textColorButtons"/>
     </LinearLayout>
 </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/loadingView_SettingsFrag_MainAc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            app:indicatorSize="48dp"
+            app:trackThickness="4dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            app:indicatorColor="?attr/textOutlineColor"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/snackbarView_SettingsFrag_MainAC"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
 </FrameLayout>

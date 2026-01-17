@@ -35,7 +35,7 @@
             android:textAlignment="center"
             android:textSize="@dimen/_12sdp"
             android:visibility="gone"
-            android:layout_below="@+id/txt_LabelContadores_ReportsFrag_MainAC"
+            android:layout_below="@+id/txt_LabelReports_ReportsFrag_MainAC"
             android:layout_margin="@dimen/_16sdp"/>
     </RelativeLayout>
     <!-- BOTTOM NAVIGATION -->
@@ -59,6 +59,24 @@
             android:layout_gravity="end" />
     </FrameLayout>
     <!--                -->
+    <FrameLayout
+        android:id="@+id/loadingView_ReportFrag_MainAc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            app:indicatorSize="48dp"
+            app:trackThickness="4dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            app:indicatorColor="?attr/textOutlineColor"/>
+    </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

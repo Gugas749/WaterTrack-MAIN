@@ -34,7 +34,7 @@ public class SnackBarShow {
 
         TypedValue textColor = new TypedValue();
         context.getTheme().resolveAttribute(
-                R.attr.textColorPrimary,
+                R.attr.textColorSideMenu,
                 textColor,
                 true
         );

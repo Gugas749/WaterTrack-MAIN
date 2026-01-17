@@ -12,6 +12,9 @@ public class UserInfosEntity {
     @ColumnInfo(name = "userId")
     public int userId;
 
+    @ColumnInfo(name = "profileID")
+    public int profileID;
+
     @ColumnInfo(name = "username")
     public String username;
 
@@ -52,9 +55,10 @@ public class UserInfosEntity {
         this.status = status;
     }
 
-    public void setProfileInfo(String birthDate, String address){
+    public void setProfileInfo(String birthDate, String address, int profileID){
         this.birthDate = birthDate;
         this.address = address;
+        this.profileID = profileID;
     }
 
     public void setTechInfo(int enterpriseID, String certificationNumber){

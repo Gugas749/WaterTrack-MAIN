@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/mainAc_SideMenu_Settings"
-        android:icon="@drawable/settings_24"
-        android:title="@string/mainActivity_SideMenu_Settings"
-        android:checkable="false" />
+<!--    <item-->
+<!--        android:id="@+id/mainAc_SideMenu_Settings"-->
+<!--        android:icon="@drawable/settings_24"-->
+<!--        android:title="@string/mainActivity_SideMenu_Settings"-->
+<!--        android:checkable="false" />-->
     <item
         android:id="@+id/mainAc_SideMenu_Reports"
         android:icon="@drawable/rounded_bug_report_24"

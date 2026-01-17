@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.mainactivityfrags.addcontadorview.MainAcAddContadorFrag">
+    tools:context=".fragments.mainactivityfrags.addmeterview.MainAcAddMeterFrag">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:inputType="textPassword" />
+                    android:inputType="textPostalAddress" />
             </com.google.android.material.textfield.TextInputLayout>
             <!-- ID RESIDENT - COMBO BOX -->
             <com.google.android.material.textfield.TextInputLayout
@@ -139,7 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:importantForAutofill="no"
                     android:padding="@dimen/_12sdp"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -194,7 +194,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:inputType="textPassword" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
             <!-- MEASURE UNITY - COMBO BOX -->
             <com.google.android.material.textfield.TextInputLayout
@@ -219,7 +219,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:importantForAutofill="no"
                     android:padding="@dimen/_12sdp"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -245,7 +245,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:inputType="textPassword" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
             <!-- STATUS - COMBO BOX -->
             <com.google.android.material.textfield.TextInputLayout
@@ -270,13 +270,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:importantForAutofill="no"
                     android:padding="@dimen/_12sdp"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!-- ADD - BUTTON -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/butLogin_LoginFrag_AuthAc"
+                android:id="@+id/butSave_AddMeterFrag_AuthAc"
                 style="@style/Widget.Material3.Button.ElevatedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -291,5 +291,31 @@
                 android:textColor="?attr/textColorButtons"/>
         </RelativeLayout>
     </ScrollView>
-
+    <FrameLayout
+        android:id="@+id/loadingView_AddMeterFrag_MainAc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            app:indicatorSize="48dp"
+            app:trackThickness="4dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            app:indicatorColor="?attr/textOutlineColor"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/snackbarView_AddMeterFrag_MainAC"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
 </FrameLayout>

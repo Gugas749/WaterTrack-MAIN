@@ -16,6 +16,7 @@ import com.grupok.watertrack.database.entities.MeterTypeEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RVAdapterFieldsDetailsContadores extends RecyclerView.Adapter<RVAdapterFieldsDetailsContadores.ViewHolder>{
@@ -50,22 +51,23 @@ public class RVAdapterFieldsDetailsContadores extends RecyclerView.Adapter<RVAda
         }
 
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_MaxCapacity), meterEntity.maxCapacity));
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_MeasureUnity), meterEntity.measureUnity));
+
+        String unity = "N/A";
+        List<String> list1 = Arrays.asList(context.getResources().getStringArray(R.array.meterUnitys));
+        int auxUnity = Integer.parseInt(meterEntity.measureUnity);
+        auxUnity--;
+        unity = list1.get(auxUnity);
+        String unityFinal = unity.split("-", 2)[1].trim();
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_MeasureUnity), unityFinal));
+
         fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_SupportedTemperature), meterEntity.supportedTemperature));
 
         String status = "N/A";
-        switch (meterEntity.state){
-            case 0:
-                status = "Desativado";
-                break;
-            case 1:
-                status = "Ativo";
-                break;
-            case 2:
-                status = "Com Problema";
-                break;
-        }
-        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields("Estado do Contador", status)); //TODO STRING
+        List<String> list2 = Arrays.asList(context.getResources().getStringArray(R.array.meterStatus));
+        status = list2.get(meterEntity.state);
+        String statusFinal = status.split("-", 2)[1].trim();
+        fieldsList.add(new RVAdapterFieldsDetailsContadores.ShownFields(context.getString(R.string.mainActivity_DetailsContadorFrag_RV_fieldsList_Status), statusFinal));
+
         notifyDataSetChanged();
     }
 

@@ -62,12 +62,15 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     public void cycleFragments(String goTo, String extra, UserInfosEntity user){
+        if(THIS == null){
+            THIS = this;
+        }
         switch (goTo){
             case "LoginFrag":
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_auth_activity, new LoginFragment(this, extra)).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_auth_activity, new LoginFragment(THIS, extra)).commitAllowingStateLoss();
                 break;
             case "RegisterFrag":
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_auth_activity, new RegisterFragment(this, extra)).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_auth_activity, new RegisterFragment(THIS, extra)).commitAllowingStateLoss();
                 break;
             case "MainAC":
                 Intent intent = new Intent(AuthActivity.this, MainActivity.class);

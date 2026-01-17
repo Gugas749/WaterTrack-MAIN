@@ -11,7 +11,7 @@
         android:layout_marginStart="@dimen/_22sdp"
         android:layout_marginEnd="@dimen/_22sdp"
         android:textAppearance="?attr/textAppearanceHeadlineSmall"
-        android:textColor="?attr/textColorSideMenu"
+        android:textColor="?attr/textColorPrimary"
         android:text="Username" />
 
     <TextView
@@ -22,7 +22,7 @@
         android:layout_marginStart="@dimen/_22sdp"
         android:layout_marginEnd="@dimen/_22sdp"
         android:textAppearance="?attr/textAppearanceTitleSmall"
-        android:textColor="?attr/textColorSideMenu"
+        android:textColor="?attr/textColorPrimary"
         android:text="Address" />
 
 </LinearLayout>

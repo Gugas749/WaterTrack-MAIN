@@ -1,6 +1,9 @@
 package com.grupok.watertrack.fragments.mainactivityfrags.mainview;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.PopupMenu;
@@ -71,13 +74,9 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
         adapter.setItemClickListenner(this);
         snackBarShow = new SnackBarShow();
 
-        if(parent.currentUserInfo.cargo == 1){
-            binding.butAddContadorMainViewMainAc.setVisibility(View.GONE);
-        }
-
         loadRv();
         setupSearchButton();
-        setupAddContadorButton();
+        setupAddButton();
         setupSeachTextChange();
         disableBackPressed();
     }
@@ -117,7 +116,13 @@ public class MainACMainViewFrag extends Fragment implements RVAdapterMainAcMainV
             }
         });
     }
-    private void setupAddContadorButton(){
+    private void setupAddButton(){
+        SharedPreferences prefs = parent.getSharedPreferences("Perf_User", MODE_PRIVATE);
+        String role = prefs.getString("role", "");
+        if(role.equals("resident")){
+            binding.butAddContadorMainViewMainAc.setVisibility(View.GONE);
+        }
+
         binding.butAddContadorMainViewMainAc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

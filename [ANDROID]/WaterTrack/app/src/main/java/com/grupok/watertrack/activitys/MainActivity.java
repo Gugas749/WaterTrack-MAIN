@@ -37,7 +37,7 @@ import com.grupok.watertrack.database.entities.MeterReadingEntity;
 import com.grupok.watertrack.database.entities.UserInfosEntity;
 import com.grupok.watertrack.databinding.ActivityMainBinding;
 import com.grupok.watertrack.fragments.alertDialogFragments.AlertDialogQuestionFragment;
-import com.grupok.watertrack.fragments.mainactivityfrags.addcontadorview.MainAcAddContadorFrag;
+import com.grupok.watertrack.fragments.mainactivityfrags.addmeterview.MainAcAddMeterFrag;
 
 import com.grupok.watertrack.fragments.mainactivityfrags.reportsview.MainACAddReportFrag;
 import com.grupok.watertrack.fragments.mainactivityfrags.reportsview.MainACReportsFrag;
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void init(){
+        THIS = this;
         allDisable = false;
         disableBackPressed();
         meterReagindsEntitiesList = new ArrayList<>();
@@ -161,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements
                     case 7: // Add Reports
                         cycleFragments("ReportFrag", null);
                         break;
-                    case 8: // Settings
+                    case 11: // Settings
                         cycleFragments("MainViewFrag", null);
                         break;
                 }
@@ -199,10 +200,10 @@ public class MainActivity extends AppCompatActivity implements
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if(!allDisable){
                     item.setEnabled(false);
-                    if (item.getItemId() == R.id.mainAc_SideMenu_Settings) {
-                        Bundle data = null;
-                        cycleFragments("SettingsFrag", data);
-                    }
+//                    if (item.getItemId() == R.id.mainAc_SideMenu_Settings) {
+//                        Bundle data = null;
+//                        cycleFragments("SettingsFrag", data);
+//                    }
                     if (item.getItemId() == R.id.mainAc_SideMenu_Credits) {
                         Bundle data = null;
                         cycleFragments("CreditsFrag", data);
@@ -224,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements
         binding.navigationViewMainAcSideMenu.bringToFront();
     }
 
-    private void logout() {
+    public void logout() {
         SharedPreferences prefs = getSharedPreferences("Perf_User", MODE_PRIVATE);
         prefs.edit().clear().apply();
 
@@ -299,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 break;
             case "AddContadorFrag":
-                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_fragmentContainer_MainAC, new MainAcAddContadorFrag(this)).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout_fragmentContainer_MainAC, new MainAcAddMeterFrag(THIS, currentUserInfo)).commitAllowingStateLoss();
                 binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
                 currentView = 1;
                 break;
@@ -354,7 +355,10 @@ public class MainActivity extends AppCompatActivity implements
                         .beginTransaction()
                         .replace(R.id.frameLayout_fragmentContainer_MainAC, reportFrag)
                         .commitAllowingStateLoss();
-                boolean fromSideMenu = data.getBoolean("fromSideMenu", true);
+                boolean fromSideMenu = true;
+                if (data != null) {
+                    fromSideMenu = data.getBoolean("fromSideMenu", true);
+                }
                 if(fromSideMenu){
                     currentView = 5;
                 }else{
@@ -363,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case "AddReportFrag": // Add Reports
                 currentView = 7;
-                MainACAddReportFrag addReportFrag = new MainACAddReportFrag(this, currentUserInfo);
+                MainACAddReportFrag addReportFrag = new MainACAddReportFrag(this, currentUserInfo, contadoresEntityList);
                 binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -383,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements
                 //MainACAddReportFrag addReportFrag = new MainACAddReportFrag(this, currentUserInfo, report);
                 break;
                 case "SettingsFrag": // TODO: Settings Frag
-                    currentView = 8;
+                    currentView = 11;
                     MainACSettingsFrag settingsFrag = new MainACSettingsFrag(this, currentUserInfo);
                     binding.imageViewButtonBackMainAC.setVisibility(View.VISIBLE);
                     getSupportFragmentManager()

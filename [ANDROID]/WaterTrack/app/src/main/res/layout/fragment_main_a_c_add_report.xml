@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.mainactivityfrags.addcontadorview.MainAcAddContadorFrag">
+    tools:context=".fragments.mainactivityfrags.addmeterview.MainAcAddMeterFrag">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <!--ID Meter - TEXT INPUT -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayout_TextInput_Meter_ReportFrag_MainAc"
+            android:id="@+id/inputLayout_TextInput_Meter_AddReportFrag_MainAc"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             app:endIconMode="dropdown_menu">
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/comboBox_Meter_ReportFrag_MainAc"
+                android:id="@+id/comboBox_Meter_AddReportFrag_MainAc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textAutoComplete"
@@ -36,67 +36,13 @@
                 android:importantForAutofill="no"
                 android:padding="@dimen/_12sdp"/>
         </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- PROBLEM - COMBO BOX -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayout_ComboBox_Problem_ReportFrag_MainAc"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/inputLayout_TextInput_Meter_ReportFrag_MainAc"
-            android:hint="@string/mainActivity_AddReportFrag_ComboBox_Problem"
-            app:hintTextColor="@color/textfield_stroke_colors"
-            app:boxStrokeColor="@color/textfield_stroke_colors"
-            app:boxStrokeErrorColor="?attr/colorError"
-            app:boxStrokeWidth="@dimen/_2sdp"
-            app:boxStrokeWidthFocused="@dimen/_3sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginLeft="@dimen/_12sdp"
-            android:layout_marginRight="@dimen/_12sdp"
-            app:endIconMode="dropdown_menu">
-
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/comboBox_Problem_ReportFrag_MainAc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:focusable="true"
-                android:importantForAutofill="no"
-                android:padding="@dimen/_12sdp"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <!-- OTHER PROBLEM INPUT - TEXT INPUT -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayout_TextInput_Other_Problem_ReportFrag_MainAc"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/inputLayout_ComboBox_Problem_ReportFrag_MainAc"
-            android:layout_marginLeft="@dimen/_12sdp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="@dimen/_12sdp"
-            android:hint="@string/mainActivity_AddReportFrag_TextField_Other_Problem"
-            app:boxStrokeColor="@color/textfield_stroke_colors"
-            app:boxStrokeErrorColor="?attr/colorError"
-            app:boxStrokeWidth="@dimen/_2sdp"
-            app:boxStrokeWidthFocused="@dimen/_3sdp"
-            app:hintTextColor="@color/textfield_stroke_colors">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText_Other_Problem_ReportFrag_MainAc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
         <!-- DESCRIPTION - TEXT INPUT -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayout_TextInput_Description_ReportFrag_MainAc"
+            android:id="@+id/inputLayout_TextInput_Description_AddReportFrag_MainAc"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/inputLayout_TextInput_Other_Problem_ReportFrag_MainAc"
+            android:layout_below="@+id/inputLayout_TextInput_Meter_AddReportFrag_MainAc"
             android:hint="@string/mainActivity_AddReportFrag_TextField_Description"
             app:hintTextColor="@color/textfield_stroke_colors"
             app:boxStrokeColor="@color/textfield_stroke_colors"
@@ -118,7 +64,7 @@
         </com.google.android.material.textfield.TextInputLayout>
         <!-- ADD - BUTTON -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/butSave_ReportFragMainAC"
+            android:id="@+id/butSave_AddReportFrag_MainAC"
             style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,12 +72,30 @@
             android:paddingBottom="@dimen/_7sdp"
             android:paddingTop="@dimen/_7sdp"
             android:text="@string/general_save"
-            android:layout_below="@+id/inputLayout_TextInput_Description_ReportFrag_MainAc"
+            android:layout_below="@+id/inputLayout_TextInput_Description_AddReportFrag_MainAc"
             app:cornerRadius="@dimen/_8sdp"
             android:layout_gravity="center_horizontal"
             android:backgroundTint="?attr/buttonTint"
             android:textColor="?attr/textColorButtons"/>
     </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/loadingView_AddReportFrag_MainAc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            app:indicatorSize="48dp"
+            app:trackThickness="4dp"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            app:indicatorColor="?attr/textOutlineColor"/>
+    </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
