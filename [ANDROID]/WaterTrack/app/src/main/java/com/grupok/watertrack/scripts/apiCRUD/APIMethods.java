@@ -26,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1132,21 +1134,36 @@ public class APIMethods {
         String pass = prefs.getString(user.email, "");
 
         JSONObject json = new JSONObject();
-        try{
+        try {
             json.put("address", meter.address);
             json.put("userID", user.userId);
             json.put("meterTypeID", meter.meterTypeID);
             json.put("enterpriseID", meter.enterpriseID);
             json.put("class", meter.classe);
-            json.put("instalationDate", meter.instalationDate);
-            json.put("shutdownDate", null);
-            json.put("maxCapacity", Double.parseDouble(meter.maxCapacity));
-            json.put("supportedTemperature", Double.parseDouble(meter.supportedTemperature));
+
+            DateTimeFormatter in = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter out = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            String formattedDate = LocalDate
+                    .parse(meter.instalationDate, in)
+                    .format(out);
+
+            json.put("instalationDate", formattedDate);
+            json.put("maxCapacity", meter.maxCapacity);
+            json.put("supportedTemperature", meter.supportedTemperature);
             json.put("measureUnity", meter.measureUnity);
             json.put("state", meter.state);
+
+            if (meter.state == 0) {
+                json.put("shutdownDate", LocalDate.now().format(out));
+            } else {
+                json.put("shutdownDate", null);
+            }
+
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST, url, json,
@@ -1154,7 +1171,83 @@ public class APIMethods {
                     postMeterResponse.onPostMeterResponse(true, "");
                 },
                 error -> {
+                    if (error.networkResponse != null) {
+                        Log.d("erros", "StatusCode: " + error.networkResponse.statusCode);
+
+                        if (error.networkResponse.data != null) {
+                            String body = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                            Log.d("erros", "Body: " + body);
+                        }
+                    } else {
+                        Log.d("erros", "Erro sem networkResponse: " + error.toString());
+                    }
                     postMeterResponse.onPostMeterResponse(false, context.getString(R.string.apiMethods_VolleyError));
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+
+                String credentials = user.username + ":" + pass;
+                String auth = "Basic " + Base64.encodeToString(
+                        credentials.getBytes(StandardCharsets.UTF_8),
+                        Base64.NO_WRAP
+                );
+
+                headers.put("Authorization", auth);
+                headers.put("Accept", "application/json");
+
+                headers.put("Host", "172.22.21.222");
+
+                return headers;
+            }
+        };
+
+        queue.add(request);
+    }
+    // </editor-fold>
+    //-------------------------------------------------------------------------------------------
+    // <editor-fold desc="POST READING">
+    private PostReadingResponse postReadingResponse;
+    public interface PostReadingResponse{
+        void onPostReadingResponse(boolean response, String message);
+    }
+    public void setPostReadingResponse(PostReadingResponse listenner){
+        this.postReadingResponse = listenner;
+    }
+    public void postReading(Context context, UserInfosEntity user, MeterReadingEntity reading) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://172.22.21.222/watertrack/backend/web/api/meter-readings";
+
+        SharedPreferences prefs = context.getSharedPreferences("Perf_User", MODE_PRIVATE);
+        String pass = prefs.getString(user.email, "");
+
+        JSONObject json = new JSONObject();
+        try{
+            json.put("tecnicoID", reading.tecnicoID);
+            json.put("meterID", reading.meterID);
+            json.put("reading", reading.reading);
+            json.put("accumulatedConsumption", reading.accumulatedConsumption);
+            DateTimeFormatter in = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter out = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            String formattedDate = LocalDate
+                    .parse(reading.date, in)
+                    .format(out);
+
+            json.put("date", formattedDate);
+            json.put("waterPressure", reading.waterPressure);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST, url, json,
+                response -> {
+                    postReadingResponse.onPostReadingResponse(true, "");
+                },
+                error -> {
+                    postReadingResponse.onPostReadingResponse(false, context.getString(R.string.apiMethods_VolleyError));
                 }
         ){
             @Override
