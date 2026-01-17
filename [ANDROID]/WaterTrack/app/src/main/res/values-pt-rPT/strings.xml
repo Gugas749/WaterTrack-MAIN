@@ -1,4 +1,175 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">WaterTrack</string>
+    <string name="hello_blank_fragment">hello_blank_fragment</string>
 
+    <string-array name="theme_options">
+        <item>Claro</item>
+        <item>Escuro</item>
+        <item>Sincronizar com o Sistema</item>
+    </string-array>
+
+    <string-array name="meterStatus">
+        <item>0 - Inativo</item>
+        <item>1 - Ativo</item>
+        <item>2 - Com Problemas</item>
+    </string-array>
+
+    <string-array name="meterClass">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+    </string-array>
+
+    <string-array name="meterUnitys">
+        <item>1 - m³</item>
+        <item>2 - m³/h</item>
+        <item>3 - L/s</item>
+        <item>5 - bar</item>
+        <item>6 - Litros</item>
+        <item>7 - Decilitros</item>
+    </string-array>
+
+    <!-- GENERAL -->
+    <string name="general_continue">Continuar</string>
+    <string name="general_confirm">Confirmar</string>
+    <string name="general_ok">Ok</string>
+    <string name="general_yes">Sim</string>
+    <string name="general_save">Guardar</string>
+    <string name="general_dontSave">Não Guardar</string>
+    <string name="general_no">Não</string>
+    <string name="general_cancel">Cancelar</string>
+    <string name="general_delete">Eliminar</string>
+    <string name="general_selectValidOption">Por favor, selecione uma opção válida</string>
+    <string name="general_requiredField">Campo Obrigatório</string>
+
+    <!-- AUTH ACTIVITY | LOGIN FRAGMENT -->
+    <string name="authActivity_LoginFrag_TextField_Email">Email</string>
+    <string name="authActivity_LoginFrag_TextField_Password">Palavra-passe</string>
+    <string name="authActivity_LoginFrag_Button_Login">Entrar</string>
+    <string name="authActivity_LoginFrag_TextButton_ForgotPassword">Esqueceu-se da palavra-passe?</string>
+    <string name="authActivity_LoginFrag_TextButton_NewUser">Novo Utilizador? Registe-se</string>
+    <string name="authActivity_LoginFrag_Field_RequiredField_Error">Campo obrigatório</string>
+    <string name="authActivity_LoginFrag_LocalDB_Insert_Error">Não foi possível guardar a informação do utilizador. Por favor, inicie sessão novamente.</string>
+
+    <!-- AUTH ACTIVITY | REGISTER FRAGMENT -->
+    <string name="authActivity_RegisterFrag_TextField_Email">Email</string>
+    <string name="authActivity_RegisterFrag_TextField_Password">Palavra-passe</string>
+    <string name="authActivity_RegisterFrag_TextField_ConfirmPassword">Confirmar Palavra-passe</string>
+    <string name="authActivity_RegisterFrag_Button_Register">Registar</string>
+    <string name="authActivity_RegisterFrag_TextButton_OldUser">Já é Utilizador? Inicie sessão</string>
+    <string name="authActivity_RegisterFrag_VerifyEmail">Utilizador criado com sucesso. Por favor, verifique o seu email para confirmar a conta.</string>
+    <string name="authActivity_RegisterFrag_Field_RequiredField_Error">Campo obrigatório</string>
+    <string name="authActivity_RegisterFrag_Field_PasswordsDiferent_Error">As palavras-passe não coincidem</string>
+    <string name="authActivity_RegisterFrag_Field_EmailNotValid_Error">Este email não é válido</string>
+
+    <!-- MAIN ACTIVITY -->
+    <string name="mainActivity_SideMenu_Settings">Definições</string>
+    <string name="mainActivity_SideMenu_Reports">Relatórios</string>
+    <string name="mainActivity_SideMenu_Credits">Créditos</string>
+    <string name="mainActivity_SideMenu_Logout">Terminar Sessão</string>
+    <string name="mainActivity_AlertDialog_BackPressed_AddContador_Title">Sair</string>
+    <string name="mainActivity_AlertDialog_BackPressed_AddContador_Desc">Deseja sair sem guardar?</string>
+
+    <!-- MAIN ACTIVITY | MAIN VIEW -->
+    <string name="mainActivity_MainViewFrag_LabelConadores">Os Meus Contadores</string>
+    <string name="mainActivity_MainViewFrag_TextView_NothingToDisplay">Não existem contadores para mostrar.</string>
+    <string name="mainActivity_MainViewFrag_SnackBar_NothingToSearch">Não existem contadores para pesquisar.</string>
+    <string name="mainActivity_MainViewFrag_TextField_Search">Pesquisar</string>
+    <string name="mainActivity_MainViewFrag_PopUpMenu_Address">Morada</string>
+    <string name="mainActivity_MainViewFrag_PopUpMenu_Name">Nome</string>
+    <string name="mainActivity_MainViewFrag_PopUpMenuAdd_Meter">Adicionar Contador</string>
+    <string name="mainActivity_MainViewFrag_PopUpMenuAdd_Reading">Adicionar Leitura</string>
+    <string name="mainActivity_MainViewFrag_SnackBar_OptionNotSelected">Por favor, selecione morada ou nome.</string>
+
+    <!-- MAIN ACTIVITY | ADD CONTADOR -->
+    <string name="mainActivity_AddContadorFrag_TextField_Address">Morada</string>
+    <string name="mainActivity_AddContadorFrag_ComboBox_Residents">Residente</string>
+    <string name="mainActivity_AddContadorFrag_ComboBox_Type">Tipo</string>
+    <string name="mainActivity_AddContadorFrag_ComboBox_Enterprise">Empresa</string>
+    <string name="mainActivity_AddContadorFrag_ComboBox_Class">Classe</string>
+    <string name="mainActivity_AddContadorFrag_DatePicker_Date">Data de Instalação</string>
+    <string name="mainActivity_AddContadorFrag_DatePicker_Date_IconDesc">Abrir Seletor de Data</string>
+    <string name="mainActivity_AddContadorFrag_TextField_MaxCap">Capacidade Máxima</string>
+    <string name="mainActivity_AddContadorFrag_ComboBox_MeasureUnity">Unidade de Medida</string>
+    <string name="mainActivity_AddContadorFrag_TextField_SupportedTemp">Temperatura Suportada</string>
+    <string name="mainActivity_AddContadorFrag_ComboBox_Status">Estado</string>
+
+    <!-- MAIN ACTIVITY | DETAILS CONTADOR -->
+    <string name="mainActivity_DetailsContadorFrag_Header">Contador</string>
+    <string name="mainActivity_DetailsContadorFrag_infoRow_Contador_Name">Contador</string>
+    <string name="mainActivity_DetailsContadorFrag_infoRow_Contador_Address">Morada</string>
+
+    <!-- MAIN ACTIVITY | DETAILS CONTADOR | RV-->
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_ID">Referência</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Address">Morada do Contador</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Username">Residente</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Description">Tipo</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_EnterpriseName">Empresa</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Classe">Classe</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_InstalationDate">Data de Instalação</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_ShutdownDate">Data de Desativação</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_MaxCapacity">Capacidade Máxima</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_MeasureUnity">Unidade de Medida</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_SupportedTemperature">Temperatura Suportada</string>
+    <string name="mainActivity_DetailsContadorFrag_RV_fieldsList_Status">Estado do Contador</string>
+
+    <!-- MAIN ACTIVITY | READINGS CONTADOR -->
+    <string name="mainActivity_ReadingsContadorFrag_LabelDetails">Detalhes da Leitura</string>
+    <string name="mainActivity_ReadingsContadorFrag_LabelReadings">Leituras</string>
+
+    <!-- MAIN ACTIVITY | ADD READINGS -->
+    <string name="mainActivity_AddReadingsFrag_Meter">Contador</string>
+    <string name="mainActivity_AddReadingsFrag_Technician">Técnico</string>
+    <string name="mainActivity_AddReadingsFrag_Reading">Leitura</string>
+    <string name="mainActivity_AddReadingsFrag_AcConsumption">Consumo Acumulado</string>
+    <string name="mainActivity_AddReadingsFrag_WaterPressure">Pressão da Água</string>
+
+    <!-- MAIN ACTIVITY | REPORTS -->
+    <string name="mainActivity_ReportsFrag_TextView_NothingToDisplay">Não existem relatórios para mostrar.</string>
+    <string name="mainActivity_ReportsFrag_Label">Relatórios</string>
+
+    <!-- MAIN ACTIVITY | ADD REPORT -->
+    <string name="mainActivity_AddReportFrag_ComboBox_Meter">Contador</string>
+    <string name="mainActivity_AddReportFrag_ComboBox_Problem">Problema</string>
+    <string name="mainActivity_AddReportFrag_TextField_Description">Descrição</string>
+    <string name="mainActivity_AddReportFrag_TextField_Other_Problem">Outro</string>
+
+    <!-- MAIN ACTIVITY | READINGS DO CONTADOR | RV-->
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_ID">Referência</string>
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_Creator">Criador</string>
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_AdressContador">Morada do Contador</string>
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_Reading">Leitura</string>
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_AccumulatedConsumption">Consumo Acumulado</string>
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_Date">Data</string>
+    <string name="mainActivity_ReadingsContadorFrag_RV_fieldsList_WaterPressure">Pressão da Água</string>
+
+    <!-- MAIN ACTIVITY | SETTINGS -->
+    <string name="mainActivity_SettingsFrag_APIURL">URL da API</string>
+    <string name="mainActivity_SettingsFrag_Email">Email</string>
+    <string name="mainActivity_SettingsFrag_BDate">Data de Nascimento</string>
+    <string name="mainActivity_SettingsFrag_Address">Morada</string>
+    <string name="mainActivity_SettingsFrag_UserEmailTaken">Nome de utilizador ou email já existe.</string>
+    <string name="mainActivity_SettingsFrag_AlertDialog_SaveButton_Title">Deseja continuar?</string>
+    <string name="mainActivity_SettingsFrag_AlertDialog_SaveButton_Desc">Por motivos de segurança, após alterar a sua informação será necessário iniciar sessão novamente. Deseja continuar?</string>
+
+    <!-- API METHODS -->
+    <string name="apiMethods_JsonParseError">ERRO DE PARSING JSON</string>
+    <string name="apiMethods_VolleyError">ERRO VOLLEY</string>
+
+    <!-- CREDITS -->
+    <string name="mainActivity_CreditsFrag_Header">Créditos</string>
+    <string name="credits_developers_1">2241567 - Alexandre Conrado</string>
+    <string name="credits_developers_2">2241570 - Guilherme Silva</string>
+    <string name="credits_developers_3">2241572 - Diogo Soares</string>
+    <string name="credits_icons_search">Pesquisar - Criado por Royyan Wijaya - Flaticon</string>
+    <string name="credits_icons_water_drop">Gota de Água - Criado por Good Ware - Flaticon</string>
+    <string name="credits_icons_radios_button_icon">Ícone de Botão Rádio - Criado por Bharat Icons - Flaticon</string>
+    <string name="credits_icons_warning">Aviso - Criado por Gregor Cresnar - Flaticon</string>
+    <string name="credits_icons_info">Informação - Criado por Stockio - Flaticon</string>
+    <string name="credits_icons_exit">Sair - Criado por Freepik - Flaticon</string>
+    <string name="credits_icons_settings">Definições - Criado por Freepik - Flaticon</string>
+    <string name="credits_icons_arrow">Seta - Criado por Ilham Fitrotul Hayat - Flaticon</string>
+    <string name="credits_icons_close">Fechar - Criado por inkubators - Flaticon</string>
+    <string name="credits_icons_edit">Editar - Criado por Pixel perfect - Flaticon</string>
 </resources>
